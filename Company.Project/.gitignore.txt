@@ -1,71 +1,49 @@
-# Ignore Visual Studio temporary files, build results, and user-specific files
-.vs/
-bin/
-obj/
-*.suo
-*.user
-*.sln.docstates
-
 # Ignore JetBrains Rider/IntelliJ IDEA files
 .idea/
-*.sln.iml
+*.iml
 
-# Ignore build results
+# Ignore Visual Studio temporary files
+.vs/
+*.vsidx
+*.wsuo
+*.backup.json
+
+# Ignore build output directories
+bin/
+obj/
 Debug/
 Release/
-x64/
-x86/
-bld/
 
-# Ignore NuGet packages (handled by Package Restore)
-**/packages/
-!**/packages/repositories.config
+# Ignore compiled files
+*.dll
+*.pdb
+*.exe
 
-# Ignore test results
-TestResults/
+# Ignore source link files
+*.sourcelink.json
 
-# Ignore local development settings
-appsettings.Development.json
-appsettings.*.json
-!.gitignore
-!.gitattributes
-!Company.Project.PL/appsettings.json
+# Ignore Razor cache files
+*.dswa.cache.json
 
-# Ignore Visual Studio code coverage results
-*.coverage
-*.coveragexml
+# Ignore database and metadata files
+*.db
+*.meta
+
+# Ignore user-specific files
+*.user
+*.suo
 
 # Ignore temporary files
-*.[Pp]ublish.xml
-*.publishproj
-
-# Ignore database files (if any)
-*.mdf
-*.ldf
-
-# Ignore local history and temp files
-.history/
 *.tmp
 *.bak
 
-# Ignore VS Code specific files (if used)
-.vscode/
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
+# Ignore logs
+*.log
 
-# Ignore specific project-generated files
-Company.Project.Application/bin/
+# Ignore other untracked files
 Company.Project.Application/obj/
-Company.Project.Domain/bin/
-Company.Project.Domain/obj/
-Company.Project.DTO/bin/
 Company.Project.DTO/obj/
-Company.Project.Infrastructure/bin/
+Company.Project.Domain/obj/
 Company.Project.Infrastructure/obj/
-Company.Project.PL/bin/
 Company.Project.PL/obj/
-Company.Project.theDbContext/bin/
-Company.Project.theDbContext/obj/
-Company.Project.theDbContext/Migrations/*.Designer.cs
+Company.Project.theDbcontext/obj/

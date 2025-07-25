@@ -36,3 +36,4 @@ C:\Users\DELL\Desktop\ITI\.Net\API\ITI Final Project\Company.Project\Company.Pro
 C:\Users\DELL\Desktop\ITI\.Net\API\ITI Final Project\Company.Project\Company.Project.Infrastructure\obj\Debug\net8.0\refint\Company.Project.Infrastructure.dll
 C:\Users\DELL\Desktop\ITI\.Net\API\ITI Final Project\Company.Project\Company.Project.Infrastructure\obj\Debug\net8.0\Company.Project.Infrastructure.pdb
 C:\Users\DELL\Desktop\ITI\.Net\API\ITI Final Project\Company.Project\Company.Project.Infrastructure\obj\Debug\net8.0\ref\Company.Project.Infrastructure.dll
+C:\Users\DELL\Desktop\ITI\.Net\API\ITI Final Project\Company.Project\Company.Project.Infrastructure\obj\Debug\net8.0\Company.Project.Infrastructure.sourcelink.json

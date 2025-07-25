@@ -32,3 +32,4 @@ C:\Users\DELL\Desktop\ITI\.Net\API\ITI Final Project\Company.Project\Company.Pro
 C:\Users\DELL\Desktop\ITI\.Net\API\ITI Final Project\Company.Project\Company.Project.theDbcontext\obj\Debug\net8.0\Company.Project.theDbcontext.pdb
 C:\Users\DELL\Desktop\ITI\.Net\API\ITI Final Project\Company.Project\Company.Project.theDbcontext\obj\Debug\net8.0\Company.Project.theDbcontext.genruntimeconfig.cache
 C:\Users\DELL\Desktop\ITI\.Net\API\ITI Final Project\Company.Project\Company.Project.theDbcontext\obj\Debug\net8.0\ref\Company.Project.theDbcontext.dll
+C:\Users\DELL\Desktop\ITI\.Net\API\ITI Final Project\Company.Project\Company.Project.theDbcontext\obj\Debug\net8.0\Company.Project.theDbcontext.sourcelink.json

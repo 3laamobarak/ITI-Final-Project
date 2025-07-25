@@ -18,6 +18,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/aspnetcore/cea5fa610dba4e0c024727f4c528a66018b820a3/src/Identity/Extensions.Stores/src/IdentityUser.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/79618d88db254d9aa7c84c04b8e7252826ae38/9e/adf28059/DbContext.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="ProjectColorInfo">{
@@ -31,10 +32,9 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    ".NET Launch Settings Profile.Company.Project.PL: http.executor": "Debug",
+    ".NET Launch Settings Profile.Company.Project.PL: http.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -44,6 +44,9 @@
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "sqlserver.localdb"
+    ],
     "rider.external.source.directories": [
       "C:\\Users\\DELL\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\DecompilerCache",
       "C:\\Users\\DELL\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\SourcesCache",
@@ -99,7 +102,12 @@
       <workItem from="1752779768266" duration="104000" />
       <workItem from="1752779893317" duration="918000" />
       <workItem from="1752780824304" duration="2256000" />
-      <workItem from="1752783447806" duration="1121000" />
+      <workItem from="1752783447806" duration="1380000" />
+      <workItem from="1753361828054" duration="114000" />
+      <workItem from="1753361990705" duration="28000" />
+      <workItem from="1753362136208" duration="668000" />
+      <workItem from="1753366575766" duration="465000" />
+      <workItem from="1753459722197" duration="7517000" />
     </task>
     <servers />
   </component>
