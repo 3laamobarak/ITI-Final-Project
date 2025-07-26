@@ -327,3 +327,5 @@ C:\Users\DELL\Desktop\ITI\.Net\API\ITI Final Project\Company.Project\Company.Pro
 C:\Users\DELL\Desktop\ITI\.Net\API\ITI Final Project\Company.Project\Company.Project.PL\obj\Debug\net8.0\Company.Project.PL.genruntimeconfig.cache
 C:\Users\DELL\Desktop\ITI\.Net\API\ITI Final Project\Company.Project\Company.Project.PL\obj\Debug\net8.0\ref\Company.Project.PL.dll
 C:\Users\DELL\Desktop\ITI\.Net\API\ITI Final Project\Company.Project\Company.Project.PL\obj\Debug\net8.0\Company.Project.PL.sourcelink.json
+C:\Users\DELL\Desktop\ITI\.Net\API\ITI Final Project\Company.Project\Company.Project.PL\bin\Debug\net8.0\MediatR.dll
+C:\Users\DELL\Desktop\ITI\.Net\API\ITI Final Project\Company.Project\Company.Project.PL\bin\Debug\net8.0\MediatR.Contracts.dll

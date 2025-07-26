@@ -1,8 +1,10 @@
+using Company.Project.Application;
 using Company.Project.Application.Contracts;
 using Company.Project.Application.Services;
 using Company.Project.Domain.Interfaces;
 using Company.Project.Domain.Models;
 using Company.Project.DTO.DTO.ExampleClass;
+using Company.Project.Infrastructure;
 using Company.Project.Infrastructure.Repositories;
 using Company.Project.Infrastructure.UnitOfWork;
 using Company.Project.theDbcontext;
@@ -24,15 +26,13 @@ namespace Company.Project.PL
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            // register services
-            builder.Services.AddScoped<IExampleClassService, ExampleClassService>();
-            builder.Services.AddScoped<IExampleClassRepository, ExampleClassRepository>();
-            builder.Services.AddScoped<IBaseRepository<ExampleClass>, BaseRepository<ExampleClass>>(); 
-            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-
+            
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<Context>();
-            builder.Services.AddDbContext<Context>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            // call the infrastructure and application methods
+            builder.Services.Application_CS(builder.Configuration);
+            builder.Services.Infrastructure_CS(builder.Configuration);
+            
+            
             // validation
             builder.Services.AddControllers()
                 .AddFluentValidation(fv =>
@@ -41,7 +41,13 @@ namespace Company.Project.PL
                       .RegisterValidatorsFromAssemblyContaining<UpdateExampleClassDto>();
                 });
             
-            
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAllOrigins",
+                    builder => builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader());
+            });
 
             var app = builder.Build();
 
@@ -51,10 +57,11 @@ namespace Company.Project.PL
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+            app.UseCors("AllowAllOrigins");
 
+            app.UseAuthentication();
             app.UseAuthorization();
-
-
+            
             app.MapControllers();
 
             app.Run();
