@@ -64,10 +64,14 @@ namespace Company.Project.theDbcontext
         
         #region Dbsets
         public DbSet<ExampleClass> ExClass { get; set; }
-        
+
+        public DbSet<Product> Products { get; set; }
+
+        public DbSet<Category> Categories { get; set; }
+
 
 
         #endregion
-        
+
     }
 }
