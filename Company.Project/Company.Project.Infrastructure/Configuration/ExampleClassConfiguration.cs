@@ -14,4 +14,5 @@ namespace Company.Project.Infrastructure.Configuration
                 .HasMaxLength(100);
         }
     }
+        
 }

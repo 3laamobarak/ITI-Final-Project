@@ -22,6 +22,7 @@ namespace Company.Project.Application
                 
             services.AddScoped<IExampleClassService, ExampleClassService>();
             services.AddScoped<IExampleClassRepository, ExampleClassRepository>();
+            services.AddScoped<IBrandService, BrandService>();
             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             
 
@@ -33,7 +34,6 @@ namespace Company.Project.Application
             
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
-            
         }
         
     }
