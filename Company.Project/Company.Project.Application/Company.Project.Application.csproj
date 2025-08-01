@@ -12,7 +12,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="15.0.1" />
     <PackageReference Include="MediatR" Version="13.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Mappings\" />
   </ItemGroup>
 
 </Project>

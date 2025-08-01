@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Company.Project.Domain.Models;
+using Company.Project.DTO.DTO.Product;
 
 namespace Company.Project.Application.Contracts
 {
     public interface IProductService
     {
-        Task<IEnumerable<Product>> GetAllAsync();
-        Task<Product> GetByIdAsync(int id);
-        Task<IEnumerable<Product>> SearchAsync(string query);
+        Task<IEnumerable<ProductListDto>> GetAllAsync();
+        Task<ProductDetailDto> GetByIdAsync(int id);
+        Task<IEnumerable<ProductSearchDto>> SearchAsync(string query);
     }
 }

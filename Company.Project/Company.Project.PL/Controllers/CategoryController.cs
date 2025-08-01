@@ -1,41 +1,42 @@
 ﻿using Company.Project.Application.Contracts;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Company.Project.PL.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductsController : ControllerBase
+    public class CategoryController : ControllerBase
     {
-        private readonly IProductService _productService;
+        private readonly ICategoryService _categoryService;
 
-        public ProductsController(IProductService productService)
+        public CategoryController(ICategoryService categoryService)
         {
-            _productService = productService;
+            _categoryService = categoryService;
         }
 
         [HttpGet("all")]
         public async Task<IActionResult> GetAll()
         {
-            var products = await _productService.GetAllAsync();
-            return Ok(products);
+            var categories = await _categoryService.GetAllAsync();
+
+            return Ok(categories);
         }
 
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var product = await _productService.GetByIdAsync(id);
-  
-            return Ok(product);
+            var category = await _categoryService.GetByIdAsync(id);
+
+            return Ok(category);
         }
 
         [HttpGet("search")]
         public async Task<IActionResult> Search([FromQuery] string query)
         {
-            var results = await _productService.SearchAsync(query);
+            var results = await _categoryService.SearchAsync(query);
+
             return Ok(results);
         }
     }
-
 }
+
