@@ -25,4 +25,10 @@ public class Enums
         Video = 4,
         Audio = 5
     }
+    public enum PaymentMethod
+    {
+        CreditCard,
+        PayPal,
+        Stripe
+    }
 }

@@ -10,7 +10,7 @@ namespace Company.Project.Domain.Models
         public int productId { get; set; }
         public Product product { get; set; }
 
-        [ForeignKey("")]
+        [ForeignKey("user")]
         public string userId { get; set; }
         public ApplicationUser user { get; set; }
     }

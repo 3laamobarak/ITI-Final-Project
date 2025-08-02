@@ -23,14 +23,18 @@ namespace Company.Project.Application
             services.AddScoped<IExampleClassService, ExampleClassService>();
             services.AddScoped<IExampleClassRepository, ExampleClassRepository>();
             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
-            
+
+            services.AddScoped<ICartItemService, CartItemService>();
+            services.AddScoped<ICartItemRepository, CartItemRepository>();
+
+
 
             #endregion
 
             #region Authentication JWT
-            
+
             #endregion
-            
+
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
             

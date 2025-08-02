@@ -9,6 +9,8 @@ namespace Company.Project.Infrastructure.UnitOfWork
     {
         private readonly Context _context;
         public IExampleClassRepository _exampleClassRepository;
+        public ICartItemRepository _cartItemRepository;
+
         public UnitOfWork(Context context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
@@ -19,7 +21,15 @@ namespace Company.Project.Infrastructure.UnitOfWork
             {
                 return _exampleClassRepository ??= new ExampleClassRepository(_context);
             }
-        }        
+        }
+
+        public ICartItemRepository CartItemRepository
+        {
+            get
+            {
+                return _cartItemRepository ??= new CartItemRepository(_context);
+            }
+        }
 
         public async Task Completeasync()
         {

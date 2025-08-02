@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using Company.Project.Domain.Models;
+using Company.Project.DTO.DTO.ExampleClass;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Company.Project.Application.Mapping
@@ -14,7 +15,7 @@ namespace Company.Project.Application.Mapping
         public ExampleClassProfile()
         {
             // Entity -> DTO
-            CreateMap<ExampleClass, ExampleClassDto>();
+            CreateMap<ExampleClass, CreateExampleClassDto>();
 
             // DTO -> Entity (لو هتستخدمه في create/update)
             // CreateMap<ExampleClassDto, ExampleClass>();
