@@ -4,6 +4,7 @@ using Company.Project.theDbcontext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Company.Project.theDbcontext.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20250803001328_OrderConfiguration")]
+    partial class OrderConfiguration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -104,29 +107,6 @@ namespace Company.Project.theDbcontext.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "test-user-id",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "6620c1d3-5a0b-413d-b566-f4aaba34350b",
-                            Email = "testuser@example.com",
-                            EmailConfirmed = true,
-                            FirstName = "Bassel",
-                            Gender = "Male",
-                            LastName = "Ahmed",
-                            LockoutEnabled = false,
-                            MaritalStatus = "Married",
-                            NID = "sadsadaf",
-                            NormalizedEmail = "TESTUSER@EXAMPLE.COM",
-                            NormalizedUserName = "TESTUSER",
-                            PasswordHash = "AQAAAAIAAYagAAAAEDSstol0NS8TgW/2IhsXgaxAQh84icFKhm9cETx+ole1jSCqsVPM3rbioIwpILeroA==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "ef541f2c-61a9-438b-aa50-8c9daaa5a02a",
-                            TwoFactorEnabled = false,
-                            UserName = "testuser"
-                        });
                 });
 
             modelBuilder.Entity("Company.Project.Domain.Models.Brand", b =>
@@ -157,16 +137,6 @@ namespace Company.Project.theDbcontext.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Brand");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "afasf",
-                            IsDeleted = false,
-                            Name = "Default Brand"
-                        });
                 });
 
             modelBuilder.Entity("Company.Project.Domain.Models.Category", b =>
@@ -197,16 +167,6 @@ namespace Company.Project.theDbcontext.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Category");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "afasf",
-                            IsDeleted = false,
-                            Name = "Default Category"
-                        });
                 });
 
             modelBuilder.Entity("Company.Project.Domain.Models.Chat", b =>
@@ -406,23 +366,6 @@ namespace Company.Project.theDbcontext.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("orders");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Discount = 10m,
-                            IsDeleted = false,
-                            OrderDate = new DateTime(2025, 8, 3, 14, 9, 12, 331, DateTimeKind.Utc).AddTicks(5520),
-                            OrderType = 1,
-                            ShippingAddress = "123 Test Street",
-                            ShippingCost = 15m,
-                            Status = 1,
-                            Subtotal = 200m,
-                            Tax = 20m,
-                            UserId = "test-user-id"
-                        });
                 });
 
             modelBuilder.Entity("Company.Project.Domain.Models.OrderItem", b =>
@@ -458,17 +401,6 @@ namespace Company.Project.theDbcontext.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("OrderItem");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsDeleted = false,
-                            OrderId = 1,
-                            ProductId = 1,
-                            Quantity = 2
-                        });
                 });
 
             modelBuilder.Entity("Company.Project.Domain.Models.Product", b =>
@@ -518,21 +450,6 @@ namespace Company.Project.theDbcontext.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Product");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            BrandId = 1,
-                            CategoryId = 1,
-                            CreatedAt = new DateTime(2025, 8, 3, 14, 9, 12, 331, DateTimeKind.Utc).AddTicks(5415),
-                            Description = "Seeded product",
-                            ExpiryDate = new DateTime(2026, 8, 3, 14, 9, 12, 331, DateTimeKind.Utc).AddTicks(5420),
-                            IsDeleted = false,
-                            Name = "Sample Product",
-                            Price = 49.99m,
-                            StockQuantity = 0
-                        });
                 });
 
             modelBuilder.Entity("Company.Project.Domain.Models.Refund", b =>
@@ -619,29 +536,7 @@ namespace Company.Project.theDbcontext.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("reviews");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Comment = "Excellent product!",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsDeleted = false,
-                            ProductId = 1,
-                            Rating = 4.5m,
-                            UserId = "test-user-id"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Comment = "Not bad at all.",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsDeleted = false,
-                            ProductId = 1,
-                            Rating = 3.8m,
-                            UserId = "test-user-id"
-                        });
+                    b.ToTable("Review");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

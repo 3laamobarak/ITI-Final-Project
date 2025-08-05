@@ -4,6 +4,7 @@ using Company.Project.theDbcontext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Company.Project.theDbcontext.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20250803125342_Reviews")]
+    partial class Reviews
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -110,7 +113,7 @@ namespace Company.Project.theDbcontext.Migrations
                         {
                             Id = "test-user-id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6620c1d3-5a0b-413d-b566-f4aaba34350b",
+                            ConcurrencyStamp = "33171f36-2499-44f5-b303-b5b4fdf5b753",
                             Email = "testuser@example.com",
                             EmailConfirmed = true,
                             FirstName = "Bassel",
@@ -121,9 +124,9 @@ namespace Company.Project.theDbcontext.Migrations
                             NID = "sadsadaf",
                             NormalizedEmail = "TESTUSER@EXAMPLE.COM",
                             NormalizedUserName = "TESTUSER",
-                            PasswordHash = "AQAAAAIAAYagAAAAEDSstol0NS8TgW/2IhsXgaxAQh84icFKhm9cETx+ole1jSCqsVPM3rbioIwpILeroA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEAqmgKkUeNEg5W6Uy6DAkYZ69BVFFA1e+0nOoBF1EHwpllNwPbodzsrNeHsyHHUdpg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "ef541f2c-61a9-438b-aa50-8c9daaa5a02a",
+                            SecurityStamp = "b644da55-51df-4c4a-991c-3c70063450b0",
                             TwoFactorEnabled = false,
                             UserName = "testuser"
                         });
@@ -406,23 +409,6 @@ namespace Company.Project.theDbcontext.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("orders");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Discount = 10m,
-                            IsDeleted = false,
-                            OrderDate = new DateTime(2025, 8, 3, 14, 9, 12, 331, DateTimeKind.Utc).AddTicks(5520),
-                            OrderType = 1,
-                            ShippingAddress = "123 Test Street",
-                            ShippingCost = 15m,
-                            Status = 1,
-                            Subtotal = 200m,
-                            Tax = 20m,
-                            UserId = "test-user-id"
-                        });
                 });
 
             modelBuilder.Entity("Company.Project.Domain.Models.OrderItem", b =>
@@ -458,17 +444,6 @@ namespace Company.Project.theDbcontext.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("OrderItem");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsDeleted = false,
-                            OrderId = 1,
-                            ProductId = 1,
-                            Quantity = 2
-                        });
                 });
 
             modelBuilder.Entity("Company.Project.Domain.Models.Product", b =>
@@ -525,9 +500,9 @@ namespace Company.Project.theDbcontext.Migrations
                             Id = 1,
                             BrandId = 1,
                             CategoryId = 1,
-                            CreatedAt = new DateTime(2025, 8, 3, 14, 9, 12, 331, DateTimeKind.Utc).AddTicks(5415),
+                            CreatedAt = new DateTime(2025, 8, 3, 12, 53, 41, 464, DateTimeKind.Utc).AddTicks(2682),
                             Description = "Seeded product",
-                            ExpiryDate = new DateTime(2026, 8, 3, 14, 9, 12, 331, DateTimeKind.Utc).AddTicks(5420),
+                            ExpiryDate = new DateTime(2026, 8, 3, 12, 53, 41, 464, DateTimeKind.Utc).AddTicks(2687),
                             IsDeleted = false,
                             Name = "Sample Product",
                             Price = 49.99m,

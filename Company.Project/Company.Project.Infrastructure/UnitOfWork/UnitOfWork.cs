@@ -5,10 +5,13 @@ using Company.Project.theDbcontext;
 
 namespace Company.Project.Infrastructure.UnitOfWork
 {
-    public class UnitOfWork :IUnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
         private readonly Context _context;
         public IExampleClassRepository _exampleClassRepository;
+        public IorderRepository _orderRepository;
+        public IReviewRepository _reviewRepository;
+         
         public UnitOfWork(Context context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
@@ -19,8 +22,20 @@ namespace Company.Project.Infrastructure.UnitOfWork
             {
                 return _exampleClassRepository ??= new ExampleClassRepository(_context);
             }
-        }        
+        }
 
+        public IorderRepository OrderRepository
+        {
+            get
+            {
+                return _orderRepository ??= new OrderRepository(_context);
+            }
+        }
+
+        public IReviewRepository ReviewRepository
+        {
+            get { return _reviewRepository ??= new ReviewRepository(_context); }
+        }
         public async Task Completeasync()
         {
             await _context.SaveChangesAsync();
