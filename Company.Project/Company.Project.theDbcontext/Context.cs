@@ -27,6 +27,10 @@ namespace Company.Project.theDbcontext
                     Name = "Example 2",
                 }
             );
+            //modelBuilder.Entity<Brand>().HasData(
+            //new Brand { Id = 1, Name = "Brand1" ,Description= "Description1" },
+            //new Brand { Id = 2, Name = "Brand2" ,Description = "Description2" });
+
 
 
             modelBuilder.Entity<Brand>().HasData(
@@ -168,6 +172,8 @@ namespace Company.Project.theDbcontext
         public DbSet<Product> Products { get; set; }
 
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Brand> Brands { get; set; }
+
 
 
 

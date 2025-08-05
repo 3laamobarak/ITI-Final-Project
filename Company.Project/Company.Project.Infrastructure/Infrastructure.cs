@@ -1,4 +1,5 @@
 using Company.Project.Domain.Interfaces;
+using Company.Project.Infrastructure.Repositories;
 using Company.Project.theDbcontext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -10,17 +11,14 @@ namespace Company.Project.Infrastructure
     {
         public static void Infrastructure_CS(this IServiceCollection services, IConfiguration Configuration)
         {
-            
-            services.AddScoped<IUnitOfWork, UnitOfWork.UnitOfWork>();
- 
-            
             #region Database Context
 
             services.AddDbContext<Context>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddScoped<IBrandRepository, BrandRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork.UnitOfWork>();
 
             #endregion
         }
-        
     }
 }
