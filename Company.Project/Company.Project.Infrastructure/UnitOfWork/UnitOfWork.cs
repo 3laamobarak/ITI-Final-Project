@@ -5,30 +5,47 @@ using Company.Project.theDbcontext;
 
 namespace Company.Project.Infrastructure.UnitOfWork
 {
-    public class UnitOfWork :IUnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
         private readonly Context _context;
-        public IExampleClassRepository _exampleClassRepository;
+
+        private IExampleClassRepository _exampleClassRepository;
+        private IBrandRepository _brandRepository;
+
         public UnitOfWork(Context context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
+
         public IExampleClassRepository ExampleClassRepository
         {
             get
             {
                 return _exampleClassRepository ??= new ExampleClassRepository(_context);
             }
-        }        
+        }
+
+        public IBrandRepository BrandRepository
+        {
+            get
+            {
+                return _brandRepository ??= new BrandRepository(_context);
+            }
+        }
 
         public async Task Completeasync()
         {
             await _context.SaveChangesAsync();
         }
 
+
         public void Dispose()
         {
             _context.Dispose();
         }
+        //public async Task<int> SaveChangesAsync()
+        //{
+        //    return await _context.SaveChangesAsync();
+        //}
     }
 }

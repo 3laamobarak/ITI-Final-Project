@@ -30,9 +30,13 @@ namespace Company.Project.theDbcontext
                     Name = "Example 2",
                 }
             );
+            //modelBuilder.Entity<Brand>().HasData(
+            //new Brand { Id = 1, Name = "Brand1" ,Description= "Description1" },
+            //new Brand { Id = 2, Name = "Brand2" ,Description = "Description2" });
+
 
             #endregion
-            
+
             #region Filters
             modelBuilder.Entity<ExampleClass>(entity =>
             {
@@ -64,10 +68,13 @@ namespace Company.Project.theDbcontext
         
         #region Dbsets
         public DbSet<ExampleClass> ExClass { get; set; }
-        
+
+        public DbSet<Brand> Brands { get; set; }
+
+
 
 
         #endregion
-        
+
     }
 }
