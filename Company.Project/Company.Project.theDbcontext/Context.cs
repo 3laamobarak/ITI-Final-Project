@@ -1,4 +1,6 @@
-﻿using Company.Project.Domain.Models;
+﻿using Company.Project.Domain.Enums;
+using Company.Project.Domain.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 namespace Company.Project.theDbcontext
@@ -11,6 +13,7 @@ namespace Company.Project.theDbcontext
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+          
             base.OnModelCreating(modelBuilder);
 
             #region Seeding Data
@@ -178,6 +181,11 @@ namespace Company.Project.theDbcontext
         
         #region Dbsets
         public DbSet<ExampleClass> ExClass { get; set; }
+
+        public DbSet<Order> orders { get; set; }        
+
+        public DbSet<Review> reviews    { get; set; }
+
         public DbSet<CartItem> CartItems { get; set; }
         
 

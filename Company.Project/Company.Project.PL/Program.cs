@@ -11,7 +11,9 @@ using Company.Project.theDbcontext;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using FluentValidation.AspNetCore;
+using Microsoft.OpenApi.Models;
 namespace Company.Project.PL
+
 {
     public class Program
     {
@@ -31,8 +33,34 @@ namespace Company.Project.PL
             // call the infrastructure and application methods
             builder.Services.Application_CS(builder.Configuration);
             builder.Services.Infrastructure_CS(builder.Configuration);
-            
-            
+
+            builder.Services.AddSwaggerGen(c =>
+            {
+                // other options ...
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Description = "Enter 'Bearer' followed by a space and your token",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme {
+                Reference = new OpenApiReference {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    });
+            });
+
+
             // validation
             builder.Services.AddControllers()
                 .AddFluentValidation(fv =>
@@ -48,6 +76,12 @@ namespace Company.Project.PL
                         .AllowAnyMethod()
                         .AllowAnyHeader());
             });
+            builder.Services.AddScoped<IOrderSevice, OrderService>();
+            builder.Services.AddScoped<IorderRepository, OrderRepository>();
+            builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
+            builder.Services.AddScoped<IReviewService, ReviewService>();
+
+
 
             
 
@@ -68,6 +102,8 @@ namespace Company.Project.PL
             app.MapControllers();
 
             app.Run();
+
+       
         }
     }
 }

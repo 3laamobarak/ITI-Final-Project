@@ -11,6 +11,11 @@ namespace Company.Project.Domain.Interfaces
 
         ICategoryRepository CategoryRepository { get; }
         IBrandRepository BrandRepository { get; }
+
+        IorderRepository OrderRepository { get; }
+
+        IReviewRepository ReviewRepository { get; }
+
         Task Completeasync();
         void Dispose();
         //Task<int> SaveChangesAsync();
