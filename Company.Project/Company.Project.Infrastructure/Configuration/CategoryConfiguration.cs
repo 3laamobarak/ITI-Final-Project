@@ -1,0 +1,42 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Company.Project.Domain.Models;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore;
+
+namespace Company.Project.Infrastructure.Configuration
+{
+    public class CategoryConfiguration : IEntityTypeConfiguration<Category>
+    {
+        public void Configure(EntityTypeBuilder<Category> builder)
+        {
+            // Table name
+            builder.ToTable("Categories");
+
+            // Primary Key
+            builder.HasKey(c => c.Id);
+
+            // Properties configuration
+            builder.Property(c => c.Name)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            builder.Property(c => c.Description)
+                .HasMaxLength(500);
+
+            // Relationships
+            builder.HasMany(c => c.Products)
+                .WithOne(p => p.Category)
+                .HasForeignKey(p => p.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Indexes
+            builder.HasIndex(c => c.Name)
+                .IsUnique();
+        }
+    }
+}
+   

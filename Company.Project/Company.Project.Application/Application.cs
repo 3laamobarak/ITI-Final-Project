@@ -24,14 +24,19 @@ namespace Company.Project.Application
             services.AddScoped<IExampleClassRepository, ExampleClassRepository>();
             services.AddScoped<IBrandService, BrandService>();
             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
-            
+            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<ICategoryService, CategoryService>();
+
+            // Register AutoMapper
+            services.AddAutoMapper(cfg => { }, AppDomain.CurrentDomain.GetAssemblies());
+
 
             #endregion
 
             #region Authentication JWT
-            
+
             #endregion
-            
+
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
         }

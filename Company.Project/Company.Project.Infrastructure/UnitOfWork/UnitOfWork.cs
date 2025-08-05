@@ -7,7 +7,15 @@ namespace Company.Project.Infrastructure.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {
+
         private readonly Context _context;
+
+        public IExampleClassRepository _exampleClassRepository;
+
+        public IProductRepository _productRepository;
+
+        public ICategoryRepository _categoryRepository;
+
 
         private IExampleClassRepository _exampleClassRepository;
         private IBrandRepository _brandRepository;
@@ -22,6 +30,22 @@ namespace Company.Project.Infrastructure.UnitOfWork
             get
             {
                 return _exampleClassRepository ??= new ExampleClassRepository(_context);
+            }
+        }
+
+        public IProductRepository ProductRepository
+        {
+            get
+            {
+                return _productRepository ??= new ProductRepository(_context);
+            }
+        }
+
+        public ICategoryRepository CategoryRepository
+        {
+            get
+            {
+                return _categoryRepository ??= new CategoryRepository(_context);
             }
         }
 

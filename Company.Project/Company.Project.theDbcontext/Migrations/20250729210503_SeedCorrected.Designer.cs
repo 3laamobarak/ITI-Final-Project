@@ -4,6 +4,7 @@ using Company.Project.theDbcontext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Company.Project.theDbcontext.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20250729210503_SeedCorrected")]
+    partial class SeedCorrected
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -135,8 +138,6 @@ namespace Company.Project.theDbcontext.Migrations
 
                     b.ToTable("Brand");
 
-                    b.ToTable("Brands");
-
                     b.HasData(
                         new
                         {
@@ -145,9 +146,6 @@ namespace Company.Project.theDbcontext.Migrations
                             Description = "Electronics Brand",
                             IsDeleted = false,
                             Name = "Apple"
-                            Description = "Description1",
-                            IsDeleted = false,
-                            Name = "Brand1"
                         },
                         new
                         {
@@ -164,9 +162,6 @@ namespace Company.Project.theDbcontext.Migrations
                             Description = "Health Supplements Brand",
                             IsDeleted = false,
                             Name = "California Gold Nutrition"
-                            Description = "Description2",
-                            IsDeleted = false,
-                            Name = "Brand2"
                         });
                 });
 
@@ -240,7 +235,6 @@ namespace Company.Project.theDbcontext.Migrations
                             IsDeleted = false,
                             Name = "Baby"
                         });
-                    b.ToTable("Category");
                 });
 
             modelBuilder.Entity("Company.Project.Domain.Models.Chat", b =>
@@ -591,7 +585,6 @@ namespace Company.Project.theDbcontext.Migrations
                             Price = 320.00m,
                             StockQuantity = 60
                         });
-                    b.ToTable("Product");
                 });
 
             modelBuilder.Entity("Company.Project.Domain.Models.Refund", b =>

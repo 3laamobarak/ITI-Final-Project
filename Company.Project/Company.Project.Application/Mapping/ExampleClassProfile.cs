@@ -14,10 +14,9 @@ namespace Company.Project.Application.Mapping
         public ExampleClassProfile()
         {
             // Entity -> DTO
-            CreateMap<ExampleClass, ExampleClassDto>();
+            //CreateMap<ExampleClass, ExampleClassDto>();
 
-            // DTO -> Entity (لو هتستخدمه في create/update)
-            // CreateMap<ExampleClassDto, ExampleClass>();
+
         }
     }
 }
