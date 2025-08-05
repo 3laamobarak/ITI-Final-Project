@@ -136,6 +136,16 @@ namespace Company.Project.theDbcontext
 
 
             #endregion
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(Context).Assembly);
+
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<ExampleClass>(builder =>
+            {
+                builder.HasKey(c => c.Id);
+                builder.Property(c => c.Name)
+                    .IsRequired()
+                    .HasMaxLength(100);
+            });
 
 
 
@@ -168,6 +178,8 @@ namespace Company.Project.theDbcontext
         
         #region Dbsets
         public DbSet<ExampleClass> ExClass { get; set; }
+        public DbSet<CartItem> CartItems { get; set; }
+        
 
         public DbSet<Product> Products { get; set; }
 

@@ -24,6 +24,10 @@ namespace Company.Project.Application
             services.AddScoped<IExampleClassRepository, ExampleClassRepository>();
             services.AddScoped<IBrandService, BrandService>();
             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+
+            services.AddScoped<ICartItemService, CartItemService>();
+            services.AddScoped<ICartItemRepository, CartItemRepository>();
+
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<ICategoryService, CategoryService>();
 

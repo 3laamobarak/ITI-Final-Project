@@ -9,7 +9,7 @@ namespace Company.Project.Domain.Models
         public bool IsProcessed { get; set; }
 
         // Navigation properties
-        public string OrderId { get; set; }
+        public int OrderId { get; set; }
         public Order Order { get; set; }
 
         // Additional properties can be added as needed

@@ -4,6 +4,7 @@ using Company.Project.theDbcontext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Company.Project.theDbcontext.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20250731162320_cart_item_init")]
+    partial class cart_item_init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -107,247 +110,6 @@ namespace Company.Project.theDbcontext.Migrations
                 });
 
             modelBuilder.Entity("Company.Project.Domain.Models.Brand", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Brand");
-
-                    b.ToTable("Brands");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Electronics Brand",
-                            IsDeleted = false,
-                            Name = "Apple"
-                            Description = "Description1",
-                            IsDeleted = false,
-                            Name = "Brand1"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Korean Electronics Brand",
-                            IsDeleted = false,
-                            Name = "Samsung"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Health Supplements Brand",
-                            IsDeleted = false,
-                            Name = "California Gold Nutrition"
-                            Description = "Description2",
-                            IsDeleted = false,
-                            Name = "Brand2"
-                        });
-                });
-
-            modelBuilder.Entity("Company.Project.Domain.Models.Category", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedAt = new DateTime(2025, 1, 2, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "Vitamins and multivitamins",
-                            IsDeleted = false,
-                            Name = "Vitamins"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatedAt = new DateTime(2025, 1, 2, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "Dietary and herbal supplements",
-                            IsDeleted = false,
-                            Name = "Supplements"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreatedAt = new DateTime(2025, 1, 2, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "Skincare and personal hygiene",
-                            IsDeleted = false,
-                            Name = "Personal Care"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CreatedAt = new DateTime(2025, 1, 2, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "Protein & performance nutrition",
-                            IsDeleted = false,
-                            Name = "Sports Nutrition"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CreatedAt = new DateTime(2025, 1, 2, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "Baby health and care",
-                            IsDeleted = false,
-                            Name = "Baby"
-                        });
-                    b.ToTable("Category");
-                });
-
-            modelBuilder.Entity("Company.Project.Domain.Models.Chat", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.ToTable("Chat");
-                });
-
-            modelBuilder.Entity("Company.Project.Domain.Models.ChatMember", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ChatId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ChatMessageId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ChatId");
-
-                    b.HasIndex("ChatMessageId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("ChatMember");
-                });
-
-            modelBuilder.Entity("Company.Project.Domain.Models.ChatMessage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ChatId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("MessageContent")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("MessageType")
-                        .HasColumnType("int");
-
-                    b.Property<string>("SenderId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ChatId");
-
-                    b.HasIndex("SenderId");
-
-                    b.ToTable("ChatMessage");
-                });
-
-            modelBuilder.Entity("Company.Project.Domain.Models.ExampleClass", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -563,8 +325,7 @@ namespace Company.Project.theDbcontext.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -724,74 +485,6 @@ namespace Company.Project.theDbcontext.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Products");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            BrandId = 2,
-                            CategoryId = 1,
-                            CreatedAt = new DateTime(2025, 1, 3, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "High potency vitamin C tablets",
-                            ExpiryDate = new DateTime(2027, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            IsDeleted = false,
-                            Name = "Vitamin C 1000mg",
-                            Price = 299.00m,
-                            StockQuantity = 120
-                        },
-                        new
-                        {
-                            Id = 2,
-                            BrandId = 1,
-                            CategoryId = 2,
-                            CreatedAt = new DateTime(2025, 1, 3, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "EPA/DHA fish oil softgels",
-                            ExpiryDate = new DateTime(2027, 6, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            IsDeleted = false,
-                            Name = "Omega-3 Fish Oil",
-                            Price = 450.00m,
-                            StockQuantity = 80
-                        },
-                        new
-                        {
-                            Id = 3,
-                            BrandId = 3,
-                            CategoryId = 1,
-                            CreatedAt = new DateTime(2025, 1, 3, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "Vitamin D3 softgels for bone health",
-                            ExpiryDate = new DateTime(2026, 12, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            IsDeleted = false,
-                            Name = "Vitamin D3 5000 IU",
-                            Price = 220.00m,
-                            StockQuantity = 200
-                        },
-                        new
-                        {
-                            Id = 4,
-                            BrandId = 1,
-                            CategoryId = 4,
-                            CreatedAt = new DateTime(2025, 1, 3, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "Whey protein concentrate",
-                            ExpiryDate = new DateTime(2026, 5, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            IsDeleted = false,
-                            Name = "Whey Protein 2lb",
-                            Price = 1250.00m,
-                            StockQuantity = 35
-                        },
-                        new
-                        {
-                            Id = 5,
-                            BrandId = 3,
-                            CategoryId = 3,
-                            CreatedAt = new DateTime(2025, 1, 3, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "Hydrating face serum",
-                            ExpiryDate = new DateTime(2026, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            IsDeleted = false,
-                            Name = "Hyaluronic Acid Serum",
-                            Price = 320.00m,
-                            StockQuantity = 60
-                        });
                     b.ToTable("Product");
                 });
 
@@ -816,11 +509,6 @@ namespace Company.Project.theDbcontext.Migrations
                         .HasColumnType("bit");
 
                     b.Property<int>("OrderId")
-                    b.Property<string>("OrderId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("OrderId1")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("ProcessedDate")
@@ -839,7 +527,6 @@ namespace Company.Project.theDbcontext.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("OrderId");
-                    b.HasIndex("OrderId1");
 
                     b.ToTable("Refund");
                 });
@@ -1139,7 +826,6 @@ namespace Company.Project.theDbcontext.Migrations
                     b.HasOne("Company.Project.Domain.Models.Order", "Order")
                         .WithMany("Refunds")
                         .HasForeignKey("OrderId")
-                        .HasForeignKey("OrderId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
