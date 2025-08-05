@@ -22,11 +22,17 @@ namespace Company.Project.Application
                 
             services.AddScoped<IExampleClassService, ExampleClassService>();
             services.AddScoped<IExampleClassRepository, ExampleClassRepository>();
+            services.AddScoped<IBrandService, BrandService>();
             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
 
             services.AddScoped<ICartItemService, CartItemService>();
             services.AddScoped<ICartItemRepository, CartItemRepository>();
 
+            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<ICategoryService, CategoryService>();
+
+            // Register AutoMapper
+            services.AddAutoMapper(cfg => { }, AppDomain.CurrentDomain.GetAssemblies());
 
 
             #endregion
@@ -37,7 +43,6 @@ namespace Company.Project.Application
 
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
-            
         }
         
     }

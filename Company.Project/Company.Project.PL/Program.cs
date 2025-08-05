@@ -40,7 +40,7 @@ namespace Company.Project.PL
                     fv.RegisterValidatorsFromAssemblyContaining<CreateExampleClassDto>()
                       .RegisterValidatorsFromAssemblyContaining<UpdateExampleClassDto>();
                 });
-            
+
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowAllOrigins",
@@ -48,6 +48,9 @@ namespace Company.Project.PL
                         .AllowAnyMethod()
                         .AllowAnyHeader());
             });
+
+            
+
 
             var app = builder.Build();
 
