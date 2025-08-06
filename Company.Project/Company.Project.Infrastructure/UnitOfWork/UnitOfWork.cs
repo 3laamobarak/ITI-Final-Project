@@ -17,8 +17,6 @@ namespace Company.Project.Infrastructure.UnitOfWork
 
         public ICategoryRepository _categoryRepository;
 
-
-        private IExampleClassRepository _exampleClassRepository;
         private IBrandRepository _brandRepository;
 
         public IorderRepository _orderRepository;
@@ -44,7 +42,7 @@ namespace Company.Project.Infrastructure.UnitOfWork
                 return _cartItemRepository ??= new CartItemRepository(_context);
             }
         }
-             
+
         public IProductRepository ProductRepository
         {
             get
