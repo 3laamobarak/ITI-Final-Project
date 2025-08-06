@@ -1,6 +1,5 @@
 ﻿using Company.Project.Domain.Enums;
 using Company.Project.Domain.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 namespace Company.Project.theDbcontext

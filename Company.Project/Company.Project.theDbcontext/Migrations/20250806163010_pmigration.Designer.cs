@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Company.Project.theDbcontext.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20250803140914_seeding2")]
-    partial class seeding2
+    [Migration("20250806163010_pmigration")]
+    partial class pmigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -107,29 +107,6 @@ namespace Company.Project.theDbcontext.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "test-user-id",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "6620c1d3-5a0b-413d-b566-f4aaba34350b",
-                            Email = "testuser@example.com",
-                            EmailConfirmed = true,
-                            FirstName = "Bassel",
-                            Gender = "Male",
-                            LastName = "Ahmed",
-                            LockoutEnabled = false,
-                            MaritalStatus = "Married",
-                            NID = "sadsadaf",
-                            NormalizedEmail = "TESTUSER@EXAMPLE.COM",
-                            NormalizedUserName = "TESTUSER",
-                            PasswordHash = "AQAAAAIAAYagAAAAEDSstol0NS8TgW/2IhsXgaxAQh84icFKhm9cETx+ole1jSCqsVPM3rbioIwpILeroA==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "ef541f2c-61a9-438b-aa50-8c9daaa5a02a",
-                            TwoFactorEnabled = false,
-                            UserName = "testuser"
-                        });
                 });
 
             modelBuilder.Entity("Company.Project.Domain.Models.Brand", b =>
@@ -159,17 +136,69 @@ namespace Company.Project.theDbcontext.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Brand");
+                    b.ToTable("Brands");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "afasf",
+                            Description = "Electronics Brand",
                             IsDeleted = false,
-                            Name = "Default Brand"
+                            Name = "Apple"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Korean Electronics Brand",
+                            IsDeleted = false,
+                            Name = "Samsung"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Health Supplements Brand",
+                            IsDeleted = false,
+                            Name = "California Gold Nutrition"
                         });
+                });
+
+            modelBuilder.Entity("Company.Project.Domain.Models.CartItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("productId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("quantity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("userId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("productId");
+
+                    b.HasIndex("userId");
+
+                    b.ToTable("CartItems");
                 });
 
             modelBuilder.Entity("Company.Project.Domain.Models.Category", b =>
@@ -199,16 +228,48 @@ namespace Company.Project.theDbcontext.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Category");
+                    b.ToTable("Categories");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "afasf",
+                            CreatedAt = new DateTime(2025, 1, 2, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Vitamins and multivitamins",
                             IsDeleted = false,
-                            Name = "Default Category"
+                            Name = "Vitamins"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAt = new DateTime(2025, 1, 2, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Dietary and herbal supplements",
+                            IsDeleted = false,
+                            Name = "Supplements"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedAt = new DateTime(2025, 1, 2, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Skincare and personal hygiene",
+                            IsDeleted = false,
+                            Name = "Personal Care"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CreatedAt = new DateTime(2025, 1, 2, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Protein & performance nutrition",
+                            IsDeleted = false,
+                            Name = "Sports Nutrition"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CreatedAt = new DateTime(2025, 1, 2, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Baby health and care",
+                            IsDeleted = false,
+                            Name = "Baby"
                         });
                 });
 
@@ -332,7 +393,8 @@ namespace Company.Project.theDbcontext.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -409,23 +471,6 @@ namespace Company.Project.theDbcontext.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("orders");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Discount = 10m,
-                            IsDeleted = false,
-                            OrderDate = new DateTime(2025, 8, 3, 14, 9, 12, 331, DateTimeKind.Utc).AddTicks(5520),
-                            OrderType = 1,
-                            ShippingAddress = "123 Test Street",
-                            ShippingCost = 15m,
-                            Status = 1,
-                            Subtotal = 200m,
-                            Tax = 20m,
-                            UserId = "test-user-id"
-                        });
                 });
 
             modelBuilder.Entity("Company.Project.Domain.Models.OrderItem", b =>
@@ -461,17 +506,6 @@ namespace Company.Project.theDbcontext.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("OrderItem");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsDeleted = false,
-                            OrderId = 1,
-                            ProductId = 1,
-                            Quantity = 2
-                        });
                 });
 
             modelBuilder.Entity("Company.Project.Domain.Models.Product", b =>
@@ -520,21 +554,73 @@ namespace Company.Project.theDbcontext.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Product");
+                    b.ToTable("Products");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            BrandId = 1,
+                            BrandId = 2,
                             CategoryId = 1,
-                            CreatedAt = new DateTime(2025, 8, 3, 14, 9, 12, 331, DateTimeKind.Utc).AddTicks(5415),
-                            Description = "Seeded product",
-                            ExpiryDate = new DateTime(2026, 8, 3, 14, 9, 12, 331, DateTimeKind.Utc).AddTicks(5420),
+                            CreatedAt = new DateTime(2025, 1, 3, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "High potency vitamin C tablets",
+                            ExpiryDate = new DateTime(2027, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             IsDeleted = false,
-                            Name = "Sample Product",
-                            Price = 49.99m,
-                            StockQuantity = 0
+                            Name = "Vitamin C 1000mg",
+                            Price = 299.00m,
+                            StockQuantity = 120
+                        },
+                        new
+                        {
+                            Id = 2,
+                            BrandId = 1,
+                            CategoryId = 2,
+                            CreatedAt = new DateTime(2025, 1, 3, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "EPA/DHA fish oil softgels",
+                            ExpiryDate = new DateTime(2027, 6, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            IsDeleted = false,
+                            Name = "Omega-3 Fish Oil",
+                            Price = 450.00m,
+                            StockQuantity = 80
+                        },
+                        new
+                        {
+                            Id = 3,
+                            BrandId = 3,
+                            CategoryId = 1,
+                            CreatedAt = new DateTime(2025, 1, 3, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Vitamin D3 softgels for bone health",
+                            ExpiryDate = new DateTime(2026, 12, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            IsDeleted = false,
+                            Name = "Vitamin D3 5000 IU",
+                            Price = 220.00m,
+                            StockQuantity = 200
+                        },
+                        new
+                        {
+                            Id = 4,
+                            BrandId = 1,
+                            CategoryId = 4,
+                            CreatedAt = new DateTime(2025, 1, 3, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Whey protein concentrate",
+                            ExpiryDate = new DateTime(2026, 5, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            IsDeleted = false,
+                            Name = "Whey Protein 2lb",
+                            Price = 1250.00m,
+                            StockQuantity = 35
+                        },
+                        new
+                        {
+                            Id = 5,
+                            BrandId = 3,
+                            CategoryId = 3,
+                            CreatedAt = new DateTime(2025, 1, 3, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Hydrating face serum",
+                            ExpiryDate = new DateTime(2026, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            IsDeleted = false,
+                            Name = "Hyaluronic Acid Serum",
+                            Price = 320.00m,
+                            StockQuantity = 60
                         });
                 });
 
@@ -558,11 +644,7 @@ namespace Company.Project.theDbcontext.Migrations
                     b.Property<bool>("IsProcessed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("OrderId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("OrderId1")
+                    b.Property<int>("OrderId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("ProcessedDate")
@@ -580,7 +662,7 @@ namespace Company.Project.theDbcontext.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderId1");
+                    b.HasIndex("OrderId");
 
                     b.ToTable("Refund");
                 });
@@ -623,28 +705,6 @@ namespace Company.Project.theDbcontext.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("reviews");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Comment = "Excellent product!",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsDeleted = false,
-                            ProductId = 1,
-                            Rating = 4.5m,
-                            UserId = "test-user-id"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Comment = "Not bad at all.",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsDeleted = false,
-                            ProductId = 1,
-                            Rating = 3.8m,
-                            UserId = "test-user-id"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -780,6 +840,25 @@ namespace Company.Project.theDbcontext.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Company.Project.Domain.Models.CartItem", b =>
+                {
+                    b.HasOne("Company.Project.Domain.Models.Product", "product")
+                        .WithMany()
+                        .HasForeignKey("productId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Company.Project.Domain.Models.ApplicationUser", "user")
+                        .WithMany()
+                        .HasForeignKey("userId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("product");
+
+                    b.Navigation("user");
+                });
+
             modelBuilder.Entity("Company.Project.Domain.Models.Chat", b =>
                 {
                     b.HasOne("Company.Project.Domain.Models.ApplicationUser", null)
@@ -882,7 +961,7 @@ namespace Company.Project.theDbcontext.Migrations
                 {
                     b.HasOne("Company.Project.Domain.Models.Order", "Order")
                         .WithMany("Refunds")
-                        .HasForeignKey("OrderId1")
+                        .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
