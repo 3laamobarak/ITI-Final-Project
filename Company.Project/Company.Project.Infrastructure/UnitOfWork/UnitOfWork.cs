@@ -10,7 +10,7 @@ namespace Company.Project.Infrastructure.UnitOfWork
 
         private readonly Context _context;
 
-        public IExampleClassRepository _exampleClassRepository;
+        //public IExampleClassRepository _exampleClassRepository;
         public ICartItemRepository _cartItemRepository;
 
         public IProductRepository _productRepository;
@@ -42,6 +42,7 @@ namespace Company.Project.Infrastructure.UnitOfWork
                 return _cartItemRepository ??= new CartItemRepository(_context);
             }
         }
+
         public IProductRepository ProductRepository
         {
             get
