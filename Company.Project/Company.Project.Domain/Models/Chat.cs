@@ -7,5 +7,6 @@ namespace Company.Project.Domain.Models
         
         public ICollection<ChatMember> ChatMembers { get; set; } = new List<ChatMember>();
         public ICollection<ChatMessage> ChatMessages { get; set; } = new List<ChatMessage>();
+
     }
 }
