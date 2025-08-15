@@ -4,6 +4,7 @@ using Company.Project.theDbcontext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Company.Project.theDbcontext.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20250806195151_imageurl2")]
+    partial class imageurl2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -119,7 +122,6 @@ namespace Company.Project.theDbcontext.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
@@ -127,7 +129,6 @@ namespace Company.Project.theDbcontext.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -197,7 +198,6 @@ namespace Company.Project.theDbcontext.Migrations
 
                     b.HasIndex("userId");
 
-
                     b.ToTable("CartItems");
                 });
 
@@ -214,7 +214,6 @@ namespace Company.Project.theDbcontext.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
@@ -222,14 +221,12 @@ namespace Company.Project.theDbcontext.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
 
                     b.ToTable("Categories");
 
@@ -448,7 +445,6 @@ namespace Company.Project.theDbcontext.Migrations
 
                     b.Property<string>("ShippingAddress")
                         .IsRequired()
-
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("ShippingCost")
@@ -471,7 +467,6 @@ namespace Company.Project.theDbcontext.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
-
 
                     b.HasIndex("UserId");
 
@@ -532,7 +527,8 @@ namespace Company.Project.theDbcontext.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-             .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("ExpiryDate")
                         .HasColumnType("datetime2");
 
@@ -545,7 +541,6 @@ namespace Company.Project.theDbcontext.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
@@ -560,7 +555,6 @@ namespace Company.Project.theDbcontext.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BrandId");
-
 
                     b.HasIndex("CategoryId");
 
@@ -692,7 +686,6 @@ namespace Company.Project.theDbcontext.Migrations
 
                     b.Property<string>("Comment")
                         .IsRequired()
-
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
@@ -703,7 +696,6 @@ namespace Company.Project.theDbcontext.Migrations
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
-
 
                     b.Property<decimal>("Rating")
                         .HasColumnType("decimal(18,2)");
@@ -927,7 +919,6 @@ namespace Company.Project.theDbcontext.Migrations
 
             modelBuilder.Entity("Company.Project.Domain.Models.Order", b =>
                 {
-
                     b.HasOne("Company.Project.Domain.Models.ApplicationUser", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
@@ -948,7 +939,6 @@ namespace Company.Project.theDbcontext.Migrations
                     b.HasOne("Company.Project.Domain.Models.Product", "Product")
                         .WithMany("OrderItems")
                         .HasForeignKey("ProductId")
-
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -960,7 +950,6 @@ namespace Company.Project.theDbcontext.Migrations
             modelBuilder.Entity("Company.Project.Domain.Models.Product", b =>
                 {
                     b.HasOne("Company.Project.Domain.Models.Brand", "Brand")
-
                         .WithMany("Products")
                         .HasForeignKey("BrandId")
                         .OnDelete(DeleteBehavior.Cascade)

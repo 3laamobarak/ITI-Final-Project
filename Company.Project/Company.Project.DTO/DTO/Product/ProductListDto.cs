@@ -17,5 +17,8 @@ namespace Company.Project.DTO.DTO.Product
         public int ReviewCount { get; set; }
         public string CategoryName { get; set; }
         public string BrandName { get; set; }
+
+        // add imageUrl property
+        public string ImageUrl { get; set; }
     }
 }

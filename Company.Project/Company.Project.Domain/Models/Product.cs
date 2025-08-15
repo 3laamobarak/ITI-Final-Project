@@ -10,6 +10,9 @@ namespace Company.Project.Domain.Models
         public int StockQuantity { get; set; }
         public DateTime ExpiryDate { get; set; }
 
+        // add imageUrl property
+        public string ImageUrl { get; set; }
+
         [ForeignKey("Category")]
         public int CategoryId { get; set; }
         public Category Category { get; set; }
