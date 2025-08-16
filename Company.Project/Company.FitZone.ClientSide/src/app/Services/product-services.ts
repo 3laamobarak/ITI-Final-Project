@@ -18,6 +18,7 @@
       return this.http.get<IProduct[]>(`${this.apiUrl}/Products/all`);
     }
 
+
     getProductById(id: string): Observable<IProduct> {
       return this.http.get<IProduct>(`${this.apiUrl}/Products/${id}`);
     }

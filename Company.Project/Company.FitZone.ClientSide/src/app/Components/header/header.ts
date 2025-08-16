@@ -15,16 +15,26 @@ export class Header implements OnInit {
 
   constructor(
     private categoryServices: CategoryServices,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-
     this.categoryServices.getAllCategories().subscribe((data) => {
-
       this.categories = data;
-      
       this.cd.detectChanges();
     });
   }
+
+  onSearch(value: string | null | undefined) {
+    const term = (value || '').trim();
+    if (!term) return;
+
+    // navigate to product-list with query param 'search'
+    // استخدمي المسار الفعلي عندك، هنا مثال: '/products/product-list'
+    this.router.navigate(['productsList'], {
+      queryParams: { search: term },
+    });
+  }
+
 }

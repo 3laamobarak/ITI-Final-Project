@@ -13,6 +13,7 @@ namespace Company.Project.Domain.Models
         // add imageUrl property
         public string ImageUrl { get; set; }
 
+
         //public string? Imageone { get; set; }
 
         //public string? Imagetwo { get; set; }

@@ -76,6 +76,15 @@ namespace Company.Project.PL
                         .AllowAnyMethod()
                         .AllowAnyHeader());
             });
+            builder.Services.AddScoped<IOrderSevice, OrderService>();
+            builder.Services.AddScoped<IorderRepository, OrderRepository>();
+            builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
+            builder.Services.AddScoped<IReviewService, ReviewService>();
+
+
+
+            
+
 
 
             var app = builder.Build();

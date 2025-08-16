@@ -151,6 +151,7 @@ namespace Company.Project.theDbcontext.Migrations
                             Id = 2,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Korean Electronics Brand",
+
                             IsDeleted = false,
                             Name = "Samsung"
                         },
