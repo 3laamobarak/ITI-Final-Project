@@ -119,6 +119,7 @@ namespace Company.Project.theDbcontext.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
+
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
@@ -126,6 +127,7 @@ namespace Company.Project.theDbcontext.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
+
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -149,6 +151,7 @@ namespace Company.Project.theDbcontext.Migrations
                             Id = 2,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Korean Electronics Brand",
+
                             IsDeleted = false,
                             Name = "Samsung"
                         },
@@ -195,6 +198,7 @@ namespace Company.Project.theDbcontext.Migrations
 
                     b.HasIndex("userId");
 
+
                     b.ToTable("CartItems");
                 });
 
@@ -211,6 +215,7 @@ namespace Company.Project.theDbcontext.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
+
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
@@ -218,12 +223,14 @@ namespace Company.Project.theDbcontext.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
+
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
 
                     b.ToTable("Categories");
 
@@ -442,6 +449,7 @@ namespace Company.Project.theDbcontext.Migrations
 
                     b.Property<string>("ShippingAddress")
                         .IsRequired()
+
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("ShippingCost")
@@ -464,6 +472,7 @@ namespace Company.Project.theDbcontext.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
 
                     b.HasIndex("UserId");
 
@@ -524,8 +533,7 @@ namespace Company.Project.theDbcontext.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
+             .HasColumnType("nvarchar(max)");
                     b.Property<DateTime>("ExpiryDate")
                         .HasColumnType("datetime2");
 
@@ -538,6 +546,7 @@ namespace Company.Project.theDbcontext.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
+
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
@@ -552,6 +561,7 @@ namespace Company.Project.theDbcontext.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BrandId");
+
 
                     b.HasIndex("CategoryId");
 
@@ -683,6 +693,7 @@ namespace Company.Project.theDbcontext.Migrations
 
                     b.Property<string>("Comment")
                         .IsRequired()
+
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
@@ -693,6 +704,7 @@ namespace Company.Project.theDbcontext.Migrations
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
+
 
                     b.Property<decimal>("Rating")
                         .HasColumnType("decimal(18,2)");
@@ -916,6 +928,7 @@ namespace Company.Project.theDbcontext.Migrations
 
             modelBuilder.Entity("Company.Project.Domain.Models.Order", b =>
                 {
+
                     b.HasOne("Company.Project.Domain.Models.ApplicationUser", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
@@ -936,6 +949,7 @@ namespace Company.Project.theDbcontext.Migrations
                     b.HasOne("Company.Project.Domain.Models.Product", "Product")
                         .WithMany("OrderItems")
                         .HasForeignKey("ProductId")
+
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -947,6 +961,7 @@ namespace Company.Project.theDbcontext.Migrations
             modelBuilder.Entity("Company.Project.Domain.Models.Product", b =>
                 {
                     b.HasOne("Company.Project.Domain.Models.Brand", "Brand")
+
                         .WithMany("Products")
                         .HasForeignKey("BrandId")
                         .OnDelete(DeleteBehavior.Cascade)

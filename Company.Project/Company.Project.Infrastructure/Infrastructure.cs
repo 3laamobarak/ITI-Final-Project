@@ -15,7 +15,14 @@ namespace Company.Project.Infrastructure
 
             services.AddDbContext<Context>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddScoped<IExampleClassRepository, ExampleClassRepository>();
             services.AddScoped<IBrandRepository, BrandRepository>();
+            services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+            services.AddScoped<ICartItemRepository, CartItemRepository>();
+            services.AddScoped<IorderRepository, OrderRepository>();
+            services.AddScoped<IReviewRepository, ReviewRepository>();
+
             services.AddScoped<IUnitOfWork, UnitOfWork.UnitOfWork>();
 
             #endregion

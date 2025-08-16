@@ -21,13 +21,13 @@ namespace Company.Project.Application
             #region Services
                 
             services.AddScoped<IExampleClassService, ExampleClassService>();
-            services.AddScoped<IExampleClassRepository, ExampleClassRepository>();
             services.AddScoped<IBrandService, BrandService>();
             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
-
-            services.AddScoped<ICartItemService, CartItemService>();
             services.AddScoped<ICartItemRepository, CartItemRepository>();
 
+            services.AddScoped<ICartItemService, CartItemService>();
+            services.AddScoped<IOrderSevice, OrderService>();
+            services.AddScoped<IReviewService, ReviewService>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<ICategoryService, CategoryService>();
 

@@ -86,6 +86,7 @@ namespace Company.Project.PL
             
 
 
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

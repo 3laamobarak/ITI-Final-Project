@@ -1,4 +1,5 @@
 export interface IProduct {
+
   id: number;
   name: string;
   description: string;
@@ -7,4 +8,11 @@ export interface IProduct {
   averageRating?: number;
   reviews?: number;
   brandId: number;
+  imageone?: string;
+  imagetwo?: string;
+  imagethree?: string;
+  imagefour?: string;
+  imagefive?: string;
+  averageRating?: number;
+  stockQuantity?: number;
 }

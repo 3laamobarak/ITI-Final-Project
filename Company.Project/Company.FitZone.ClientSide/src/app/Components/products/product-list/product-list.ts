@@ -253,4 +253,5 @@ export class ProductList implements OnInit, OnDestroy {
     this.search$.next('');
     this.filterByBrand(null);
   }
+
 }

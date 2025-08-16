@@ -2,13 +2,13 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ICategory } from '../../Models/icategory';
 import { CategoryServices } from '../../Services/category-services';
-import { Router } from '@angular/router';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-header',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './header.html',
-  styleUrls: ['./header.css'],
+  styleUrl: './header.css',
 })
 export class Header implements OnInit {
   categories: ICategory[] = [];
@@ -36,4 +36,5 @@ export class Header implements OnInit {
       queryParams: { search: term },
     });
   }
+
 }
