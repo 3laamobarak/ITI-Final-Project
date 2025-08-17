@@ -13,6 +13,5 @@ export interface IProduct {
   imagethree?: string;
   imagefour?: string;
   imagefive?: string;
-  averageRating?: number;
   stockQuantity?: number;
 }
