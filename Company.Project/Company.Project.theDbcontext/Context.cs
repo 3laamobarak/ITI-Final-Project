@@ -189,19 +189,13 @@ namespace Company.Project.theDbcontext
         
         #region Dbsets
         public DbSet<ExampleClass> ExClass { get; set; }
-
         public DbSet<Order> orders { get; set; }        
-
         public DbSet<Review> reviews    { get; set; }
-
         public DbSet<CartItem> CartItems { get; set; }
-        
-
         public DbSet<Product> Products { get; set; }
-
         public DbSet<Category> Categories { get; set; }
         public DbSet<Brand> Brands { get; set; }
-
+        public DbSet<OTP> OTPs { get; set; }
 
 
 

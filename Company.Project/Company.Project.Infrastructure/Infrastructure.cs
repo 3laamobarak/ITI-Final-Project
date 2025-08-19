@@ -13,8 +13,6 @@ namespace Company.Project.Infrastructure
         {
             #region Database Context
 
-            services.AddDbContext<Context>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<IExampleClassRepository, ExampleClassRepository>();
             services.AddScoped<IBrandRepository, BrandRepository>();

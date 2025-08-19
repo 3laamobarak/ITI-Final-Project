@@ -16,6 +16,7 @@ namespace Company.Project.Infrastructure.UnitOfWork
         public IProductRepository _productRepository;
 
         public ICategoryRepository _categoryRepository;
+        
 
 
         private IExampleClassRepository _exampleClassRepository;
@@ -24,10 +25,12 @@ namespace Company.Project.Infrastructure.UnitOfWork
 
         public IorderRepository _orderRepository;
         public IReviewRepository _reviewRepository;
-         
+        public IBaseRepository<OTP> OTPs { get; private set; }
+        
         public UnitOfWork(Context context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
+            OTPs = new BaseRepository<OTP>(_context);
         }
 
         public IExampleClassRepository ExampleClassRepository

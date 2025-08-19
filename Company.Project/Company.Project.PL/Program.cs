@@ -4,6 +4,7 @@ using Company.Project.Application.Services;
 using Company.Project.Domain.Interfaces;
 using Company.Project.Domain.Models;
 using Company.Project.DTO.DTO.ExampleClass;
+using Company.Project.DTO.DTO.OTPs;
 using Company.Project.Infrastructure;
 using Company.Project.Infrastructure.Repositories;
 using Company.Project.Infrastructure.UnitOfWork;
@@ -33,6 +34,9 @@ namespace Company.Project.PL
             // call the infrastructure and application methods
             builder.Services.Application_CS(builder.Configuration);
             builder.Services.Infrastructure_CS(builder.Configuration);
+
+            builder.Services.AddDbContext<Context>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             builder.Services.AddSwaggerGen(c =>
             {
@@ -80,6 +84,10 @@ namespace Company.Project.PL
             builder.Services.AddScoped<IorderRepository, OrderRepository>();
             builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
             builder.Services.AddScoped<IReviewService, ReviewService>();
+            builder.Services.Configure<EmailSettingsDTO>(builder.Configuration.GetSection("EmailSettings"));
+            builder.Services.AddScoped<IEmailService, EmailService>();
+            builder.Services.AddScoped<IOTPService, OTPService>();
+            builder.Services.AddScoped<IOTPRepository, OTPRepository>();
 
 
 

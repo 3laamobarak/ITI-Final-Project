@@ -13,7 +13,8 @@ namespace Company.Project.Domain.Models
         public string LastName { get; set; }
         public string NID { get; set; }
         public string Gender { get; set; }
-        public string? MaritalStatus { get; set; }
+        public string? MaritalStatus { get; set; }// ? for what ?
+        // mart
         
         public ICollection<Order> Orders { get; set; } = new List<Order>();
         public ICollection<ChatMessage> ChatMessages { get; set; } = new List<ChatMessage>();
