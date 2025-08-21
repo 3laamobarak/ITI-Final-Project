@@ -6,7 +6,7 @@
             public string Description { get; set; }
 
             // Navigation properties
-            public ICollection<Product> Products { get; set; } = new List<Product>();
+            public ICollection<ProductCategory> ProductCategories { get; set; } = new List<ProductCategory>();
         
         }
     }
