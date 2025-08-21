@@ -45,10 +45,6 @@ namespace Company.Project.theDbcontext.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Gender")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -58,9 +54,6 @@ namespace Company.Project.theDbcontext.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("MaritalStatus")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NID")
                         .IsRequired()
@@ -447,7 +440,6 @@ namespace Company.Project.theDbcontext.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("userId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -980,9 +972,7 @@ namespace Company.Project.theDbcontext.Migrations
                 {
                     b.HasOne("Company.Project.Domain.Models.ApplicationUser", "User")
                         .WithMany()
-                        .HasForeignKey("userId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("userId");
 
                     b.Navigation("User");
                 });

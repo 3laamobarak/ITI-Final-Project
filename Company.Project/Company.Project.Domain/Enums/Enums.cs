@@ -31,4 +31,10 @@ public class Enums
         PayPal,
         Stripe
     }
+    public enum GenderType
+    {
+        Male,
+        Female
+        
+    }
 }

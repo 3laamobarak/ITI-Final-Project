@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Company.Project.theDbcontext.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20250819191356_otp")]
-    partial class otp
+    [Migration("20250820190752_deploy")]
+    partial class deploy
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -48,10 +48,6 @@ namespace Company.Project.theDbcontext.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Gender")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -61,9 +57,6 @@ namespace Company.Project.theDbcontext.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("MaritalStatus")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NID")
                         .IsRequired()
@@ -450,7 +443,6 @@ namespace Company.Project.theDbcontext.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("userId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -983,9 +975,7 @@ namespace Company.Project.theDbcontext.Migrations
                 {
                     b.HasOne("Company.Project.Domain.Models.ApplicationUser", "User")
                         .WithMany()
-                        .HasForeignKey("userId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("userId");
 
                     b.Navigation("User");
                 });
