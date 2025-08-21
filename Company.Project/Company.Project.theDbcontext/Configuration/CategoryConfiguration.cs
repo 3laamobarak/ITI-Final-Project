@@ -28,11 +28,9 @@ namespace Company.Project.Infrastructure.Configuration
                 .HasMaxLength(500);
 
             // Relationships
-            builder.HasMany(c => c.Products)
-                .WithOne(p => p.Category)
-                .HasForeignKey(p => p.CategoryId)
-                .OnDelete(DeleteBehavior.Restrict);
-
+            builder.HasMany(c => c.ProductCategories)
+                          .WithOne(pc => pc.Category)
+                          .HasForeignKey(pc => pc.CategoryId);
             // Indexes
             builder.HasIndex(c => c.Name)
                 .IsUnique();

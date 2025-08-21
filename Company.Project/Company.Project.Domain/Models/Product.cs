@@ -24,10 +24,9 @@ namespace Company.Project.Domain.Models
 
         //public string? Imagefive { get; set; }
 
-        [ForeignKey("Category")]
-        public int CategoryId { get; set; }
-        public Category Category { get; set; }
-        
+        public ICollection<ProductCategory> ProductCategories { get; set; } = new List<ProductCategory>();
+
+
         [ForeignKey("Brand")]
         public int BrandId { get; set; }
         public Brand Brand { get; set; }

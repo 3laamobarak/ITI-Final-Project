@@ -59,7 +59,6 @@ namespace Company.Project.theDbcontext
                     Price = 299.00m,
                     StockQuantity = 120,
                     ExpiryDate = new DateTime(2027, 1, 1, 0, 0, 0, DateTimeKind.Utc),
-                    CategoryId = 1, // Vitamins
                     BrandId = 2,    // Solgar
                     CreatedAt = new DateTime(2025, 1, 3, 0, 0, 0, DateTimeKind.Utc),
                     IsDeleted = false,
@@ -73,7 +72,6 @@ namespace Company.Project.theDbcontext
                     Price = 450.00m,
                     StockQuantity = 80,
                     ExpiryDate = new DateTime(2027, 6, 1, 0, 0, 0, DateTimeKind.Utc),
-                    CategoryId = 2, // Supplements
                     BrandId = 1,    // Now Foods
                     CreatedAt = new DateTime(2025, 1, 3, 0, 0, 0, DateTimeKind.Utc),
                     IsDeleted = false,
@@ -88,7 +86,6 @@ namespace Company.Project.theDbcontext
                     Price = 220.00m,
                     StockQuantity = 200,
                     ExpiryDate = new DateTime(2026, 12, 1, 0, 0, 0, DateTimeKind.Utc),
-                    CategoryId = 1, // Vitamins
                     BrandId = 3,    // California Gold Nutrition
                     CreatedAt = new DateTime(2025, 1, 3, 0, 0, 0, DateTimeKind.Utc),
                     IsDeleted = false,
@@ -103,7 +100,6 @@ namespace Company.Project.theDbcontext
                     Price = 1250.00m,
                     StockQuantity = 35,
                     ExpiryDate = new DateTime(2026, 5, 1, 0, 0, 0, DateTimeKind.Utc),
-                    CategoryId = 4, // Sports Nutrition
                     BrandId = 1,    // Now Foods
                     CreatedAt = new DateTime(2025, 1, 3, 0, 0, 0, DateTimeKind.Utc),
                     IsDeleted = false,
@@ -118,7 +114,6 @@ namespace Company.Project.theDbcontext
                     Price = 320.00m,
                     StockQuantity = 60,
                     ExpiryDate = new DateTime(2026, 8, 1, 0, 0, 0, DateTimeKind.Utc),
-                    CategoryId = 3, // Personal Care
                     BrandId = 3,    // California Gold Nutrition
                     CreatedAt = new DateTime(2025, 1, 3, 0, 0, 0, DateTimeKind.Utc),
                     IsDeleted = false,
@@ -126,6 +121,15 @@ namespace Company.Project.theDbcontext
                      
                 }
             );
+      
+            
+            modelBuilder.Entity<ProductCategory>().HasData(
+    new ProductCategory { ProductId = 1, CategoryId = 1 }, 
+    new ProductCategory { ProductId = 1, CategoryId = 2 },
+    new ProductCategory { ProductId = 2, CategoryId = 1 }, 
+    new ProductCategory { ProductId = 2, CategoryId = 3 }  
+);
+
 
 
             #endregion
@@ -194,6 +198,8 @@ namespace Company.Project.theDbcontext
         public DbSet<CartItem> CartItems { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
+
+        public DbSet<ProductCategory> productCategories { get; set; }
         public DbSet<Brand> Brands { get; set; }
         public DbSet<OTP> OTPs { get; set; }
 
