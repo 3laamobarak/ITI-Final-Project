@@ -38,11 +38,9 @@ namespace Company.Project.Infrastructure.Configuration
                 .IsRequired();
 
             // Relationships
-            builder.HasOne(p => p.Category)
-                .WithMany()
-                .HasForeignKey(p => p.CategoryId)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Restrict);
+            builder.HasMany(p => p.ProductCategories)
+               .WithOne(pc => pc.Product)
+               .HasForeignKey(pc => pc.ProductId);
 
             builder.HasOne(p => p.Brand)
                 .WithMany()
