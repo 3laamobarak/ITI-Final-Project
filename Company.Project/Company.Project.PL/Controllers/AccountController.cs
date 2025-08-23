@@ -38,11 +38,12 @@ namespace Company.Project.PL.Controllers
                 {
                     return BadRequest("User with this email already exists.");
                 }
-                var isOtpValid = await _otpService.ValidateOTPAsync(userDto.Email, userDto.OtpCode);
-                if (!isOtpValid)
-                {
-                    return BadRequest("Invalid OTP code.");
-                }
+                //var isOtpValid = await _otpService.ValidateOTPAsync(userDto.Email, userDto.OtpCode);
+                //if (!isOtpValid)
+                //{
+                //    return BadRequest("Invalid OTP code.");
+                //}
+                var sendOtp = await _otpService.GenerateAndSendOTPAsync(userDto.Email);
                 var user = new ApplicationUser
                 {
                     UserName = userDto.UserName,
