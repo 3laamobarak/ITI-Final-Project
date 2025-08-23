@@ -48,7 +48,11 @@ namespace Company.Project.Application.Services
             {
                 return false; // OTP not found, used, or expired
             }
-
+            if (otpEntity.Code != otp)
+            {
+                return false; // OTP does not match
+            }
+            
             otpEntity.IsUsed = true;
             await _otpRepository.UpdateAsync(otpEntity);
             return true;
