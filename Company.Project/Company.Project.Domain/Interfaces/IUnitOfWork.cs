@@ -1,4 +1,4 @@
-﻿ using Company.Project.Domain.Models;
+﻿    using Company.Project.Domain.Models;
 
 namespace Company.Project.Domain.Interfaces
 {
@@ -15,6 +15,7 @@ namespace Company.Project.Domain.Interfaces
         IorderRepository OrderRepository { get; }
 
         IReviewRepository ReviewRepository { get; }
+        IPaymentRepository PaymentRepository { get; }
 
         Task Completeasync();
         void Dispose();

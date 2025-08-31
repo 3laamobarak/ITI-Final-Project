@@ -417,6 +417,42 @@ namespace Company.Project.theDbcontext.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Company.Project.Domain.Models.NutritionFact", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Amount")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DailyValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Nutrient")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("NutritionFact");
+                });
+
             modelBuilder.Entity("Company.Project.Domain.Models.OTP", b =>
                 {
                     b.Property<int>("Id")
@@ -543,6 +579,56 @@ namespace Company.Project.theDbcontext.Migrations
                     b.ToTable("OrderItem");
                 });
 
+            modelBuilder.Entity("Company.Project.Domain.Models.Payment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSuccessful")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("PaymentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PaymentIntentId")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("PaymentMethod")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Payments", (string)null);
+                });
+
             modelBuilder.Entity("Company.Project.Domain.Models.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -565,6 +651,9 @@ namespace Company.Project.theDbcontext.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<string>("Disclaimer")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("ExpiryDate")
                         .HasColumnType("datetime2");
 
@@ -580,14 +669,26 @@ namespace Company.Project.theDbcontext.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("Overview")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("QuantitySold")
+                        .HasColumnType("int");
 
                     b.Property<int>("StockQuantity")
                         .HasColumnType("int");
 
+                    b.Property<string>("SuggestedUse")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Warnings")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -609,6 +710,7 @@ namespace Company.Project.theDbcontext.Migrations
                             IsDeleted = false,
                             Name = "Vitamin C 1000mg",
                             Price = 299.00m,
+                            QuantitySold = 0,
                             StockQuantity = 120
                         },
                         new
@@ -622,6 +724,7 @@ namespace Company.Project.theDbcontext.Migrations
                             IsDeleted = false,
                             Name = "Omega-3 Fish Oil",
                             Price = 450.00m,
+                            QuantitySold = 0,
                             StockQuantity = 80
                         },
                         new
@@ -635,6 +738,7 @@ namespace Company.Project.theDbcontext.Migrations
                             IsDeleted = false,
                             Name = "Vitamin D3 5000 IU",
                             Price = 220.00m,
+                            QuantitySold = 0,
                             StockQuantity = 200
                         },
                         new
@@ -648,6 +752,7 @@ namespace Company.Project.theDbcontext.Migrations
                             IsDeleted = false,
                             Name = "Whey Protein 2lb",
                             Price = 1250.00m,
+                            QuantitySold = 0,
                             StockQuantity = 35
                         },
                         new
@@ -661,6 +766,7 @@ namespace Company.Project.theDbcontext.Migrations
                             IsDeleted = false,
                             Name = "Hyaluronic Acid Serum",
                             Price = 320.00m,
+                            QuantitySold = 0,
                             StockQuantity = 60
                         });
                 });
@@ -990,6 +1096,17 @@ namespace Company.Project.theDbcontext.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Company.Project.Domain.Models.NutritionFact", b =>
+                {
+                    b.HasOne("Company.Project.Domain.Models.Product", "Product")
+                        .WithMany("NutritionFacts")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("Company.Project.Domain.Models.OTP", b =>
                 {
                     b.HasOne("Company.Project.Domain.Models.ApplicationUser", "User")
@@ -1031,6 +1148,25 @@ namespace Company.Project.theDbcontext.Migrations
                     b.Navigation("Order");
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Company.Project.Domain.Models.Payment", b =>
+                {
+                    b.HasOne("Company.Project.Domain.Models.Order", "Order")
+                        .WithMany("Payments")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Company.Project.Domain.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Company.Project.Domain.Models.Product", b =>
@@ -1187,11 +1323,15 @@ namespace Company.Project.theDbcontext.Migrations
                 {
                     b.Navigation("OrderItems");
 
+                    b.Navigation("Payments");
+
                     b.Navigation("Refunds");
                 });
 
             modelBuilder.Entity("Company.Project.Domain.Models.Product", b =>
                 {
+                    b.Navigation("NutritionFacts");
+
                     b.Navigation("OrderItems");
 
                     b.Navigation("ProductCategories");

@@ -34,7 +34,8 @@ namespace Company.Project.Application
             // Register AutoMapper
             services.AddAutoMapper(cfg => { }, AppDomain.CurrentDomain.GetAssemblies());
 
-
+            services.AddScoped<IPaymentService, StripePaymentService>();
+            services.AddScoped<IPaymentRepository, PaymentRepository>();
             #endregion
 
             #region Authentication JWT
