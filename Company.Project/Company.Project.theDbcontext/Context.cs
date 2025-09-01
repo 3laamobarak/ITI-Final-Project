@@ -200,6 +200,7 @@ namespace Company.Project.theDbcontext
         public DbSet<Category> Categories { get; set; }
         public DbSet<Payment> Payments { get; set; }
 
+
         public DbSet<ProductCategory> productCategories { get; set; }
         public DbSet<Brand> Brands { get; set; }
         public DbSet<OTP> OTPs { get; set; }
