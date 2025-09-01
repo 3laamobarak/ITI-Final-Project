@@ -16,6 +16,7 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Stripe;
 namespace Company.Project.PL
 
 {
@@ -24,9 +25,9 @@ namespace Company.Project.PL
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            
-            // Add services to the container.
 
+            // Add services to the container.
+            StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -118,7 +119,7 @@ namespace Company.Project.PL
             builder.Services.AddScoped<IOrderSevice, OrderService>();
             builder.Services.AddScoped<IorderRepository, OrderRepository>();
             builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
-            builder.Services.AddScoped<IReviewService, ReviewService>();
+            builder.Services.AddScoped<IReviewService, Company.Project.Application.Services.ReviewService>();
             builder.Services.AddScoped<IEmailService, EmailService>();
             builder.Services.AddScoped<IOTPService, OTPService>();
             builder.Services.AddScoped<IOTPRepository, OTPRepository>();

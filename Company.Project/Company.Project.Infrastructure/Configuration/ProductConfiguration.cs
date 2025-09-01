@@ -39,6 +39,7 @@ namespace Company.Project.Infrastructure.Configuration
 
             // Relationships
             builder.HasMany(p => p.ProductCategories)
+
             .WithOne(pc => pc.Product)
             .HasForeignKey(pc => pc.ProductId);
 

@@ -89,7 +89,11 @@ namespace Company.Project.Infrastructure.UnitOfWork
             await _context.SaveChangesAsync();
         }
 
-
+        private IPaymentRepository _paymentRepository;
+        public IPaymentRepository PaymentRepository
+        {
+            get { return _paymentRepository ??= new PaymentRepository(_context); }
+        }
         public void Dispose()
         {
             _context.Dispose();

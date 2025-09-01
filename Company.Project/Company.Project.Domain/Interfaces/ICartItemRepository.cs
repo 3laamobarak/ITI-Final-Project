@@ -10,10 +10,6 @@ namespace Company.Project.Domain.Interfaces
 {
     public interface ICartItemRepository : IBaseRepository<CartItem>
     {
-        Task<CartItem> FirstOrDefaultAsync(Expression<Func<CartItem, bool>> predicate);
-        Task<IEnumerable<CartItem>> GetByExpressionAsync(Expression<Func<CartItem, bool>> predicate, string? includeProperties = null);
-
-        // Custom methods
         Task<IEnumerable<CartItem>> GetUserCartAsync(string userId);
         Task<CartItem?> GetUserCartItemAsync(string userId, int productId);
     }

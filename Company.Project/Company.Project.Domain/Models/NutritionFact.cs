@@ -10,6 +10,7 @@ namespace Company.Project.Domain.Models
 {
     public string? Nutrient { get; set; }    // Vitamin C"
     public string? Amount { get; set; }     // "90 mg"
+
     public string? DailyValue { get; set; }    // "100%"
 
     public int ProductId { get; set; }

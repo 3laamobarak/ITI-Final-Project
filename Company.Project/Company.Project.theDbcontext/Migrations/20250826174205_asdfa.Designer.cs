@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Company.Project.theDbcontext.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20250820190752_deploy")]
-    partial class deploy
+    [Migration("20250826174205_asdfa")]
+    partial class asdfa
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -420,6 +420,42 @@ namespace Company.Project.theDbcontext.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Company.Project.Domain.Models.NutritionFact", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Amount")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DailyValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Nutrient")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("NutritionFact");
+                });
+
             modelBuilder.Entity("Company.Project.Domain.Models.OTP", b =>
                 {
                     b.Property<int>("Id")
@@ -546,6 +582,56 @@ namespace Company.Project.theDbcontext.Migrations
                     b.ToTable("OrderItem");
                 });
 
+            modelBuilder.Entity("Company.Project.Domain.Models.Payment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSuccessful")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("PaymentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PaymentIntentId")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("PaymentMethod")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Payments", (string)null);
+                });
+
             modelBuilder.Entity("Company.Project.Domain.Models.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -560,12 +646,6 @@ namespace Company.Project.theDbcontext.Migrations
                     b.Property<int?>("BrandId1")
                         .HasColumnType("int");
 
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CategoryId1")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -573,6 +653,9 @@ namespace Company.Project.theDbcontext.Migrations
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Disclaimer")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("ExpiryDate")
                         .HasColumnType("datetime2");
@@ -589,24 +672,32 @@ namespace Company.Project.theDbcontext.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("Overview")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("QuantitySold")
+                        .HasColumnType("int");
 
                     b.Property<int>("StockQuantity")
                         .HasColumnType("int");
 
+                    b.Property<string>("SuggestedUse")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Warnings")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BrandId");
 
                     b.HasIndex("BrandId1");
-
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("CategoryId1");
 
                     b.ToTable("Products", (string)null);
 
@@ -615,7 +706,6 @@ namespace Company.Project.theDbcontext.Migrations
                         {
                             Id = 1,
                             BrandId = 2,
-                            CategoryId = 1,
                             CreatedAt = new DateTime(2025, 1, 3, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "High potency vitamin C tablets",
                             ExpiryDate = new DateTime(2027, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -623,13 +713,13 @@ namespace Company.Project.theDbcontext.Migrations
                             IsDeleted = false,
                             Name = "Vitamin C 1000mg",
                             Price = 299.00m,
+                            QuantitySold = 0,
                             StockQuantity = 120
                         },
                         new
                         {
                             Id = 2,
                             BrandId = 1,
-                            CategoryId = 2,
                             CreatedAt = new DateTime(2025, 1, 3, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "EPA/DHA fish oil softgels",
                             ExpiryDate = new DateTime(2027, 6, 1, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -637,13 +727,13 @@ namespace Company.Project.theDbcontext.Migrations
                             IsDeleted = false,
                             Name = "Omega-3 Fish Oil",
                             Price = 450.00m,
+                            QuantitySold = 0,
                             StockQuantity = 80
                         },
                         new
                         {
                             Id = 3,
                             BrandId = 3,
-                            CategoryId = 1,
                             CreatedAt = new DateTime(2025, 1, 3, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Vitamin D3 softgels for bone health",
                             ExpiryDate = new DateTime(2026, 12, 1, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -651,13 +741,13 @@ namespace Company.Project.theDbcontext.Migrations
                             IsDeleted = false,
                             Name = "Vitamin D3 5000 IU",
                             Price = 220.00m,
+                            QuantitySold = 0,
                             StockQuantity = 200
                         },
                         new
                         {
                             Id = 4,
                             BrandId = 1,
-                            CategoryId = 4,
                             CreatedAt = new DateTime(2025, 1, 3, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Whey protein concentrate",
                             ExpiryDate = new DateTime(2026, 5, 1, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -665,13 +755,13 @@ namespace Company.Project.theDbcontext.Migrations
                             IsDeleted = false,
                             Name = "Whey Protein 2lb",
                             Price = 1250.00m,
+                            QuantitySold = 0,
                             StockQuantity = 35
                         },
                         new
                         {
                             Id = 5,
                             BrandId = 3,
-                            CategoryId = 3,
                             CreatedAt = new DateTime(2025, 1, 3, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Hydrating face serum",
                             ExpiryDate = new DateTime(2026, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
@@ -679,7 +769,45 @@ namespace Company.Project.theDbcontext.Migrations
                             IsDeleted = false,
                             Name = "Hyaluronic Acid Serum",
                             Price = 320.00m,
+                            QuantitySold = 0,
                             StockQuantity = 60
+                        });
+                });
+
+            modelBuilder.Entity("Company.Project.Domain.Models.ProductCategory", b =>
+                {
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductId", "CategoryId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("ProductCategories", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            ProductId = 1,
+                            CategoryId = 1
+                        },
+                        new
+                        {
+                            ProductId = 1,
+                            CategoryId = 2
+                        },
+                        new
+                        {
+                            ProductId = 2,
+                            CategoryId = 1
+                        },
+                        new
+                        {
+                            ProductId = 2,
+                            CategoryId = 3
                         });
                 });
 
@@ -971,6 +1099,17 @@ namespace Company.Project.theDbcontext.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Company.Project.Domain.Models.NutritionFact", b =>
+                {
+                    b.HasOne("Company.Project.Domain.Models.Product", "Product")
+                        .WithMany("NutritionFacts")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("Company.Project.Domain.Models.OTP", b =>
                 {
                     b.HasOne("Company.Project.Domain.Models.ApplicationUser", "User")
@@ -1014,6 +1153,25 @@ namespace Company.Project.theDbcontext.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("Company.Project.Domain.Models.Payment", b =>
+                {
+                    b.HasOne("Company.Project.Domain.Models.Order", "Order")
+                        .WithMany("Payments")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Company.Project.Domain.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Company.Project.Domain.Models.Product", b =>
                 {
                     b.HasOne("Company.Project.Domain.Models.Brand", "Brand")
@@ -1026,19 +1184,26 @@ namespace Company.Project.theDbcontext.Migrations
                         .WithMany("Products")
                         .HasForeignKey("BrandId1");
 
+                    b.Navigation("Brand");
+                });
+
+            modelBuilder.Entity("Company.Project.Domain.Models.ProductCategory", b =>
+                {
                     b.HasOne("Company.Project.Domain.Models.Category", "Category")
-                        .WithMany()
+                        .WithMany("ProductCategories")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Company.Project.Domain.Models.Category", null)
-                        .WithMany("Products")
-                        .HasForeignKey("CategoryId1");
-
-                    b.Navigation("Brand");
+                    b.HasOne("Company.Project.Domain.Models.Product", "Product")
+                        .WithMany("ProductCategories")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Category");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Company.Project.Domain.Models.Refund", b =>
@@ -1142,7 +1307,7 @@ namespace Company.Project.theDbcontext.Migrations
 
             modelBuilder.Entity("Company.Project.Domain.Models.Category", b =>
                 {
-                    b.Navigation("Products");
+                    b.Navigation("ProductCategories");
                 });
 
             modelBuilder.Entity("Company.Project.Domain.Models.Chat", b =>
@@ -1161,12 +1326,18 @@ namespace Company.Project.theDbcontext.Migrations
                 {
                     b.Navigation("OrderItems");
 
+                    b.Navigation("Payments");
+
                     b.Navigation("Refunds");
                 });
 
             modelBuilder.Entity("Company.Project.Domain.Models.Product", b =>
                 {
+                    b.Navigation("NutritionFacts");
+
                     b.Navigation("OrderItems");
+
+                    b.Navigation("ProductCategories");
 
                     b.Navigation("Reviews");
                 });
