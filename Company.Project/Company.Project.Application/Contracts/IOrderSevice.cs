@@ -13,5 +13,9 @@ namespace Company.Project.Application.Contracts
         Task<int> PlaceOrderAsync(CreateOrderDto dto, string userId);
         Task<List<OrderDetailsDto>> GetOrdersForUserAsync(string userId);
         Task<OrderDetailsDto?> GetOrderByIdAsync(int id, string userId);
+        Task CancelOrderAsync(int orderId, string userId);
+        Task DeleteOrderAsync(int orderId, string userId);
+        Task UpdateOrderStatusAsync(int orderId, string status);
+        
     }
  }

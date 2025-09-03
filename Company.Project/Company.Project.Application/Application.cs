@@ -22,20 +22,23 @@ namespace Company.Project.Application
                 
             services.AddScoped<IExampleClassService, ExampleClassService>();
             services.AddScoped<IBrandService, BrandService>();
-            services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
-            services.AddScoped<ICartItemRepository, CartItemRepository>();
-
             services.AddScoped<ICartItemService, CartItemService>();
+            services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IOrderSevice, OrderService>();
             services.AddScoped<IReviewService, ReviewService>();
+            services.AddScoped<INutritionFactService, NutritionFactService>();
+            //services.AddScoped<IOrderItemService, OrderItemService>();
+            services.AddScoped<IProductCategoryService, ProductCategoryService>();
             services.AddScoped<IProductService, ProductService>();
-            services.AddScoped<ICategoryService, CategoryService>();
-
+            services.AddScoped<IRefundService, RefundService>();
+            services.AddScoped<IReviewService, ReviewService>();
+            services.AddScoped<IOTPService, OTPService>();
+            services.AddScoped<IPaymentService, StripePaymentService>();
+            services.AddScoped<IEmailService, EmailService>();
+            
             // Register AutoMapper
             services.AddAutoMapper(cfg => { }, AppDomain.CurrentDomain.GetAssemblies());
-
-            services.AddScoped<IPaymentService, StripePaymentService>();
-            services.AddScoped<IPaymentRepository, PaymentRepository>();
+            
             #endregion
 
             #region Authentication JWT

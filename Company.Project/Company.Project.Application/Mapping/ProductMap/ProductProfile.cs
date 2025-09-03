@@ -11,6 +11,9 @@ namespace Company.Project.Application.Mapping.ProductMap
             CreateMap<Product, ProductListDto>().ReverseMap();
             CreateMap<Product, ProductSearchDto>().ReverseMap();
             CreateMap<Product, ProductDetailDto>().ReverseMap();
+            CreateMap<Product, CreateProductDto>().ReverseMap();
+            CreateMap<Product, UpdateProductDto>().ReverseMap();
+            
 
         }
     }

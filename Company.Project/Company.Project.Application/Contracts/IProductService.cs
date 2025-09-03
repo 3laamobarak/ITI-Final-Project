@@ -13,5 +13,8 @@ namespace Company.Project.Application.Contracts
         Task<IEnumerable<ProductListDto>> GetAllAsync();
         Task<ProductDetailDto> GetByIdAsync(int id);
         Task<IEnumerable<ProductSearchDto>> SearchAsync(string query);
+        Task<ProductDetailDto> CreateAsync(CreateProductDto createDto);
+        Task<ProductDetailDto> UpdateAsync(UpdateProductDto updateDto);
+        Task DeleteAsync(int id);
     }
 }

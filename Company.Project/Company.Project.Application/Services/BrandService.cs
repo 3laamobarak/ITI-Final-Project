@@ -60,32 +60,36 @@ namespace Company.Project.Application.Services
                 Description= b.Description
             });
         }
+        public async Task<Brand> CreateAsync(CreateBrandDto createDto)
+        {
+            var brand = new Brand
+            {
+                Name = createDto.Name,
+                Description = createDto.Description
+            };
+            await _unitOfWork.BrandRepository.AddAsync(brand);
+            await _unitOfWork.Completeasync();
+            return brand;
+        }
+        public async Task<Brand> UpdateAsync(UpdateBrandDto updateDto)
+        {
+            var brand = await _unitOfWork.BrandRepository.GetByIdAsync(updateDto.Id);
+            if (brand == null) return null;
 
-        //public async Task<Brand> CreateAsync(CreateBrandDto createDto)
-        //{
-        //    var brand = new Brand { Name = createDto.Name };
-        //    await _unitOfWork.BrandRepository.AddAsync(brand);
-        //    await _unitOfWork.Completeasync();
-        //    return brand;
-        //}
+            brand.Name = updateDto.Name;
+            brand.Description = updateDto.Description;
 
-        //public async Task<Brand> UpdateAsync(UpdateBrandDto updateDto)
-        //{
-        //    var brand = await _unitOfWork.BrandRepository.GetByIdAsync(updateDto.Id);
-        //    if (brand == null) throw new KeyNotFoundException();
-        //    brand.Name = updateDto.Name;
-        //    await _unitOfWork.BrandRepository.UpdateAsync(brand);
-        //    await _unitOfWork.Completeasync();
-        //    return brand;
-        //}
-
-        //public async Task DeleteAsync(int id)
-        //{
-        //    var brand = await _unitOfWork.BrandRepository.GetByIdAsync(id);
-        //    if (brand == null) throw new KeyNotFoundException();
-        //    await _unitOfWork.BrandRepository.DeleteAsync(brand);
-        //    await _unitOfWork.Completeasync();
-        //}
-
+            await _unitOfWork.BrandRepository.UpdateAsync(brand);
+            await _unitOfWork.Completeasync();
+            return brand;
+        }
+        public async Task DeleteAsync(int id)
+        {
+            var brand = await _unitOfWork.BrandRepository.GetByIdAsync(id);
+            if (brand == null) throw new Exception("Brand not found");
+            
+            await _unitOfWork.BrandRepository.DeleteAsync(brand);
+            await _unitOfWork.Completeasync();
+        }
     }
 }

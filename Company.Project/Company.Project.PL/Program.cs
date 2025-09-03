@@ -47,10 +47,7 @@ namespace Company.Project.PL
             // call the infrastructure and application methods
             builder.Services.Application_CS(builder.Configuration);
             builder.Services.Infrastructure_CS(builder.Configuration);
-
-            builder.Services.AddDbContext<Context>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
+            
             builder.Services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -106,7 +103,6 @@ namespace Company.Project.PL
             
             #endregion
             
-            
             // validation
             builder.Services.AddControllers()
                 .AddFluentValidation(fv =>
@@ -114,18 +110,7 @@ namespace Company.Project.PL
                     fv.RegisterValidatorsFromAssemblyContaining<CreateExampleClassDto>()
                       .RegisterValidatorsFromAssemblyContaining<UpdateExampleClassDto>();
                 });
-
             
-            builder.Services.AddScoped<IOrderSevice, OrderService>();
-            builder.Services.AddScoped<IorderRepository, OrderRepository>();
-            builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
-            builder.Services.AddScoped<IReviewService, Company.Project.Application.Services.ReviewService>();
-            builder.Services.AddScoped<IEmailService, EmailService>();
-            builder.Services.AddScoped<IOTPService, OTPService>();
-            builder.Services.AddScoped<IOTPRepository, OTPRepository>();
-
-            
-
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

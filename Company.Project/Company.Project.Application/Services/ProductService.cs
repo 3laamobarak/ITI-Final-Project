@@ -70,6 +70,37 @@ namespace Company.Project.Application.Services
 
             return _mapper.Map<IEnumerable<ProductSearchDto>>(products);
         }
-    }
 
+        public async Task<ProductDetailDto> CreateAsync(CreateProductDto createDto)
+        {
+            var product = _mapper.Map<Product>(createDto);
+            await _unitOfWork.ProductRepository.AddAsync(product);
+            await _unitOfWork.Completeasync();
+            return await Task.FromResult(_mapper.Map<ProductDetailDto>(product));
+        }
+        public async Task<ProductDetailDto> UpdateAsync(UpdateProductDto updateDto)
+        {
+            var existingProduct = _unitOfWork.ProductRepository.GetByIdAsync(updateDto.Id).Result;
+            if (existingProduct == null)
+            {
+                throw new KeyNotFoundException($"Product with ID {updateDto.Id} not found.");
+            }
+            _mapper.Map(updateDto, existingProduct);
+            await _unitOfWork.ProductRepository.UpdateAsync(existingProduct);
+            await _unitOfWork.Completeasync();
+            return await Task.FromResult(_mapper.Map<ProductDetailDto>(existingProduct));
+        }
+        public async Task DeleteAsync(int id)
+        {
+            var existingProduct = _unitOfWork.ProductRepository.GetByIdAsync(id).Result;
+            if (existingProduct == null)
+            {
+                throw new KeyNotFoundException($"Product with ID {id} not found.");
+            }
+            await _unitOfWork.ProductRepository.DeleteAsync(existingProduct);
+            await _unitOfWork.Completeasync();
+            await Task.CompletedTask;
+            return;
+        }
+    }
 }

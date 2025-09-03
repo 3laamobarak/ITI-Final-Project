@@ -16,7 +16,10 @@ namespace Company.Project.Domain.Interfaces
 
         IReviewRepository ReviewRepository { get; }
         IPaymentRepository PaymentRepository { get; }
-
+        INutritionFactRepository NutritionFactRepository { get; }
+        IOrderItemRepository OrderItemRepository { get; }
+        IProductCategoryRepository ProductCategoryRepository { get; }
+        IRefundRepository RefundRepository { get; }
         Task Completeasync();
         void Dispose();
         //Task<int> SaveChangesAsync();
