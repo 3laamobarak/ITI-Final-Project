@@ -7,7 +7,7 @@ namespace Company.Project.Domain.Models
     {
         public decimal Amount { get; set; }
         public DateTime PaymentDate { get; set; } = DateTime.Now;
-        public PaymentMethod PaymentMethod { get; set; } // "CreditCard", "PayPal", etc.
+        public PaymentMethod PaymentMethod { get; set; }
         public bool IsSuccessful { get; set; }
 
         [ForeignKey("Order")]
@@ -17,6 +17,9 @@ namespace Company.Project.Domain.Models
         [ForeignKey("User")]
         public string UserId { get; set; }
         public ApplicationUser User { get; set; }
+
+        public string PaymentIntentId { get; set; } // <--- ??? ??
+
     }
 
 }

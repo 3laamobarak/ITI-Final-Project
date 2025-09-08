@@ -1,4 +1,4 @@
-﻿ using Company.Project.Domain.Models;
+﻿    using Company.Project.Domain.Models;
 
 namespace Company.Project.Domain.Interfaces
 {
@@ -20,6 +20,11 @@ namespace Company.Project.Domain.Interfaces
         IChatBotMessageRepository ChatBotMessagesRepository { get; }
 
 
+        IPaymentRepository PaymentRepository { get; }
+        INutritionFactRepository NutritionFactRepository { get; }
+        IOrderItemRepository OrderItemRepository { get; }
+        IProductCategoryRepository ProductCategoryRepository { get; }
+        IRefundRepository RefundRepository { get; }
         Task Completeasync();
         void Dispose();
         //Task<int> SaveChangesAsync();

@@ -58,5 +58,45 @@ namespace Company.Project.Application.Services
             await _unitOfWork.ReviewRepository.SaveChangesAsync();
             return true;
         }
+
+        public async Task<bool> UpdateReviewAsync(int reviewId, ReviewDto dto, string userId)
+        {
+            var review =  _unitOfWork.ReviewRepository.GetByIdAsync(reviewId).Result;
+            if (review == null || review.UserId != userId)
+            {
+                await Task.FromResult(false);
+                return false;
+            }
+            review.Comment = dto.Comment;
+            review.Rating = dto.Rating;
+            await _unitOfWork.ReviewRepository.UpdateAsync(review);
+            await _unitOfWork.Completeasync();
+            await Task.FromResult(true);
+            return true; 
+        }
+        public Task<IEnumerable<ReviewResponseDto>> GetAllReviewsAsync(int skip, int take)
+        {
+            var reviews =  _unitOfWork.ReviewRepository.GetAllAsync().Result.Skip(skip).Take(take);
+            return Task.FromResult(reviews.Select(r => new ReviewResponseDto
+            {
+                Id = r.Id,
+                Comment = r.Comment,
+                Rating = r.Rating,
+                UserName = r.User.UserName
+            }));
+        }
+        public Task<ReviewResponseDto?> GetReviewByIdAsync(int reviewId)
+        {
+            var review =  _unitOfWork.ReviewRepository.GetByIdAsync(reviewId).Result;
+            if (review == null)
+                return Task.FromResult<ReviewResponseDto?>(null);
+            return Task.FromResult<ReviewResponseDto?>(new ReviewResponseDto
+            {
+                Id = review.Id,
+                Comment = review.Comment,
+                Rating = review.Rating,
+                UserName = review.User.UserName
+            });
+        }
     }
 }

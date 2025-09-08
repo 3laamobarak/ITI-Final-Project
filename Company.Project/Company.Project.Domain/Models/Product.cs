@@ -12,7 +12,8 @@ namespace Company.Project.Domain.Models
         public string? SuggestedUse { get; set; }
         public string? Warnings { get; set; } 
         public string? Disclaimer { get; set; } 
-        public int QuantitySold { get; set; } 
+
+        public int QuantitySold { get; set; }
         public DateTime ExpiryDate { get; set; }
 
         // add imageUrl property

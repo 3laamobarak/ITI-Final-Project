@@ -25,9 +25,9 @@ namespace Company.Project.PL
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            
-            // Add services to the container.
 
+            // Add services to the container.
+            StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -47,10 +47,7 @@ namespace Company.Project.PL
             // call the infrastructure and application methods
             builder.Services.Application_CS(builder.Configuration);
             builder.Services.Infrastructure_CS(builder.Configuration);
-
-            builder.Services.AddDbContext<Context>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
+            
             builder.Services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -105,7 +102,6 @@ namespace Company.Project.PL
             });
             
             #endregion
-            
             
             // validation
             builder.Services.AddControllers()

@@ -29,9 +29,9 @@ namespace Company.Project.Infrastructure.Configuration
 
             // Relationships
             builder.HasMany(c => c.ProductCategories)
-                   .WithOne(pc => pc.Category)
-                   .HasForeignKey(pc => pc.CategoryId);
 
+                         .WithOne(pc => pc.Category)
+                         .HasForeignKey(pc => pc.CategoryId);
 
             // Indexes
             builder.HasIndex(c => c.Name)

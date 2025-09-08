@@ -8,16 +8,9 @@ namespace Company.Project.Infrastructure.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {
-
         private readonly Context _context;
-        private readonly UserManager<ApplicationUser> _userManager;
-
-
-        //public IExampleClassRepository _exampleClassRepository;
+        private IBrandRepository _brandRepository;
         public ICartItemRepository _cartItemRepository;
-
-        public IProductRepository _productRepository;
-
         public ICategoryRepository _categoryRepository;
 
         public IUserRepository _userRepository;
@@ -25,80 +18,85 @@ namespace Company.Project.Infrastructure.UnitOfWork
 
 
         private IExampleClassRepository _exampleClassRepository;
-
-        private IBrandRepository _brandRepository;
-
+        public IProductRepository _productRepository;
         public IorderRepository _orderRepository;
         public IReviewRepository _reviewRepository;
         private IChatBotMessageRepository _chatBotMessagesRepository;
 
         public IBaseRepository<OTP> OTPs { get; private set; }
-        
+        private INutritionFactRepository _nutritionFactRepository;
+        private IOrderItemRepository _orderItemRepository;
+        private IProductCategoryRepository _productCategoryRepository;
+        private IRefundRepository _refundRepository;
+        public IReviewRepository _reviewRepository;
         public UnitOfWork(Context context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             OTPs = new BaseRepository<OTP>(_context);
+            // _brandRepository = new BrandRepository<Brand>(_context);
+            // _cartItemRepository = new CartItemRepository<CartItem>(_context);
+            // _categoryRepository = new CategoryRepository<Category>(_context);
+            // _exampleClassRepository = new ExampleClassRepository<ExampleClass>(_context);
+            // _nutritionFactRepository = new NutritionFactRepository<NutritionFact>(_context);
+            // _orderItemRepository = new OrderItemRepository<OrderItem>(_context);
+            // _productCategoryRepository = new ProductCategoryRepository<ProductCategory>(_context);
+            // _refundRepository = new RefundRepository<Refund>(_context);
+            // _productRepository = new ProductRepository<Product>(_context);
+            // _orderRepository = new OrderRepository<Order>(_context);
+            // _reviewRepository = new ReviewRepository<Review>(_context);
+            // _refundRepository = new RefundRepository<Refund>(_context);
         }
 
         public IExampleClassRepository ExampleClassRepository
         {
             get
-            {
-                return _exampleClassRepository ??= new ExampleClassRepository(_context);
-            }
+            { return _exampleClassRepository ??= new ExampleClassRepository(_context); }
         }
-
         public ICartItemRepository CartItemRepository
         {
             get
-            {
-                return _cartItemRepository ??= new CartItemRepository(_context);
-            }
+            { return _cartItemRepository ??= new CartItemRepository(_context); }
         }
-
-        
         public IProductRepository ProductRepository
         {
             get
-            {
-                return _productRepository ??= new ProductRepository(_context);
-            }
+            { return _productRepository ??= new ProductRepository(_context); }
         }
-
         public ICategoryRepository CategoryRepository
         {
             get
-            {
-                return _categoryRepository ??= new CategoryRepository(_context);
-            }
+            { return _categoryRepository ??= new CategoryRepository(_context); }
         }
-
         public IBrandRepository BrandRepository
         {
             get
-            {
-                return _brandRepository ??= new BrandRepository(_context);
-            }
+            { return _brandRepository ??= new BrandRepository(_context); }
         }
-
         public IorderRepository OrderRepository
         {
             get
-            {
-                return _orderRepository ??= new OrderRepository(_context);
-            }
+            { return _orderRepository ??= new OrderRepository(_context); }
         }
-         public IUserRepository UserRepository
+        public IReviewRepository ReviewRepository
         {
-            get
-            {
-                return _userRepository ??= new UserRepository(_context,_userManager);
-            }
+            get { return _reviewRepository ??= new ReviewRepository(_context); }
+        }
+        public INutritionFactRepository NutritionFactRepository
+        {
+            get { return _nutritionFactRepository ??= new NutritionFactRepository(_context); }
+        }
+        public IOrderItemRepository OrderItemRepository
+        {
+            get { return _orderItemRepository ??= new OrderItemRepository(_context); }
+        }
+        public IProductCategoryRepository ProductCategoryRepository
+        {
+            get { return _productCategoryRepository ??= new ProductCategoryRepository(_context); }
         }
 
         public IReviewRepository ReviewRepository
         {
-            get { return _reviewRepository ??= new ReviewRepository(_context); }
+            get { return _refundRepository ??= new RefundRepository(_context); }
         }
 
 
@@ -114,15 +112,14 @@ namespace Company.Project.Infrastructure.UnitOfWork
             await _context.SaveChangesAsync();
         }
 
-
-
+        private IPaymentRepository _paymentRepository;
+        public IPaymentRepository PaymentRepository
+        {
+            get { return _paymentRepository ??= new PaymentRepository(_context); }
+        }
         public void Dispose()
         {
             _context.Dispose();
         }
-        //public async Task<int> SaveChangesAsync()
-        //{
-        //    return await _context.SaveChangesAsync();
-        //}
     }
 }

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Company.Project.Infrastructure.Repositories
 {
-    public class OrderRepository :BaseRepository<Order>, IorderRepository
+    public class OrderRepository : BaseRepository<Order>, IorderRepository
     {
         private readonly Context _context;
         public OrderRepository(Context context) : base(context)
@@ -28,6 +28,7 @@ namespace Company.Project.Infrastructure.Repositories
             return await _context.orders
                 .Where(o => o.UserId == userId)
                 .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Product) 
                 .ToListAsync();
         }
 
@@ -35,8 +36,8 @@ namespace Company.Project.Infrastructure.Repositories
         {
             return await _context.orders
                 .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Product) 
                 .FirstOrDefaultAsync(o => o.Id == id && o.UserId == userId);
         }
-
     }
 }

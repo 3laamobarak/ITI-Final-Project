@@ -12,15 +12,17 @@ namespace Company.Project.Application.Contracts
     public interface ICategoryService
     {
         // get all 
+        // get all 
+        // get all 
         Task<IEnumerable<CategoryListDto>> GetAllAsync();
-
-        // get by id
-        Task<CategoryDetailDto> GetByIdAsync(int id);
-
-        // search
-        Task<IEnumerable<CategorySearchDto>> SearchAsync(string query);
 
         // Get all products for a specific category
         Task<IEnumerable<Product>> GetallCateogryProducts(int categoryId);
+        Task<CategoryDetailDto> CreateAsync(CreateCategoryDto createDto);
+        Task<CategoryDetailDto> UpdateAsync(UpdateCategoryDto updateDto);
+        Task DeleteAsync(int id);
+        
+        Task<IEnumerable<Product>> GetallCateogryProducts(int categoryId);
+
     }
 }

@@ -148,6 +148,34 @@ namespace Company.Project.theDbcontext
                 {
                     entity.HasQueryFilter(c => !c.IsDeleted);
                 });
+            modelBuilder.Entity<Brand>(entity =>
+                {
+                    entity.HasQueryFilter(c => !c.IsDeleted);
+                });
+            modelBuilder.Entity<Order>(entity =>
+                {
+                    entity.HasQueryFilter(c => !c.IsDeleted);
+                });
+            modelBuilder.Entity<Review>(entity =>
+                {
+                    entity.HasQueryFilter(c => !c.IsDeleted);
+                });
+            modelBuilder.Entity<CartItem>(entity =>
+                {
+                    entity.HasQueryFilter(c => !c.IsDeleted);
+                });
+            modelBuilder.Entity<Payment>(entity =>
+                {
+                    entity.HasQueryFilter(c => !c.IsDeleted);
+                });
+            // modelBuilder.Entity<Refund>(entity =>
+            //     {
+            //         entity.HasQueryFilter(c => !c.IsDeleted);
+            //     });
+            // modelBuilder.Entity<NutritionFact>(entity =>
+            //     {
+            //         entity.HasQueryFilter(c => !c.IsDeleted);
+            //     });
 
 
             #endregion
@@ -198,7 +226,9 @@ namespace Company.Project.theDbcontext
         public DbSet<CartItem> CartItems { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
-
+        public DbSet<Payment> Payments { get; set; }
+        // public DbSet<Refund> Refunds { get; set; }
+        // public DbSet<NutritionFact> NutritionFacts { get; set; }
         public DbSet<ProductCategory> productCategories { get; set; }
         public DbSet<Brand> Brands { get; set; }
         public DbSet<OTP> OTPs { get; set; }

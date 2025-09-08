@@ -24,5 +24,6 @@ namespace Company.Project.Domain.Models
 
         public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
         public ICollection<Refund> Refunds { get; set; } = new List<Refund>();
+        public ICollection<Payment> Payments { get; set; } = new List<Payment>();
     }
 }
