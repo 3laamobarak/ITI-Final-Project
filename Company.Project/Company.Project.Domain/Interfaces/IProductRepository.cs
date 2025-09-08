@@ -10,5 +10,6 @@ namespace Company.Project.Domain.Interfaces
     public interface IProductRepository : IBaseRepository<Product>
     {
         Task<IEnumerable<Product>> SearchAsync(string query);
+        Task<IEnumerable<Product>> GetProductsByCategoryIdAsync(int categoryId);
     }
 }

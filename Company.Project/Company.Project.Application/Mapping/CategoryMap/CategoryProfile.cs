@@ -1,11 +1,10 @@
-﻿
-using Company.Project.Domain.Models;
-using Company.Project.DTO.DTO.Category;
+﻿using Company.Project.DTO.DTO.Category;
 using AutoMapper;
+using Company.Project.Domain.Models;
 
 namespace Company.Project.Application.Mapping.CategoryMap
 {
-  public  class CategoryProfile : Profile
+    public  class CategoryProfile : Profile
     {
         public CategoryProfile()
         {

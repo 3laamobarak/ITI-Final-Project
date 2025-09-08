@@ -70,6 +70,8 @@ namespace Company.Project.Application.Services
 
             return _mapper.Map<IEnumerable<ProductSearchDto>>(products);
         }
+
+      
     }
 
 }

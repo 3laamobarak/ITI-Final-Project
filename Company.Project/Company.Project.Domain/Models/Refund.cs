@@ -13,6 +13,6 @@ namespace Company.Project.Domain.Models
         public Order Order { get; set; }
 
         // Additional properties can be added as needed
-        
+
     }
 }

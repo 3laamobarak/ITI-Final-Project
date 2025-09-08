@@ -7,7 +7,7 @@ using Company.Project.Domain.Models;
 
 namespace Company.Project.Domain.Interfaces
 {
-   public interface ICategoryRepository : IBaseRepository<Category>
+    public interface ICategoryRepository : IBaseRepository<Category>
     {
         Task<IEnumerable<Category>> SearchAsync(string query);
     }   

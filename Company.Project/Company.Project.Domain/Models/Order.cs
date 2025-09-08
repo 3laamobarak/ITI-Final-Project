@@ -17,11 +17,11 @@ namespace Company.Project.Domain.Models
         {
             get { return Subtotal + Tax + ShippingCost - Discount; }
         }
-        
+
         [ForeignKey("User")]
         public string UserId { get; set; }
         public ApplicationUser User { get; set; }
-        
+
         public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
         public ICollection<Refund> Refunds { get; set; } = new List<Refund>();
     }

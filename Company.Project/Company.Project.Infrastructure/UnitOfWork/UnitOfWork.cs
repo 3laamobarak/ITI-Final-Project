@@ -2,6 +2,7 @@
 using Company.Project.Domain.Models;
 using Company.Project.Infrastructure.Repositories;
 using Company.Project.theDbcontext;
+using Microsoft.AspNetCore.Identity;
 
 namespace Company.Project.Infrastructure.UnitOfWork
 {
@@ -9,6 +10,8 @@ namespace Company.Project.Infrastructure.UnitOfWork
     {
 
         private readonly Context _context;
+        private readonly UserManager<ApplicationUser> _userManager;
+
 
         //public IExampleClassRepository _exampleClassRepository;
         public ICartItemRepository _cartItemRepository;
@@ -16,6 +19,8 @@ namespace Company.Project.Infrastructure.UnitOfWork
         public IProductRepository _productRepository;
 
         public ICategoryRepository _categoryRepository;
+
+        public IUserRepository _userRepository;
         
 
 
@@ -25,6 +30,8 @@ namespace Company.Project.Infrastructure.UnitOfWork
 
         public IorderRepository _orderRepository;
         public IReviewRepository _reviewRepository;
+        private IChatBotMessageRepository _chatBotMessagesRepository;
+
         public IBaseRepository<OTP> OTPs { get; private set; }
         
         public UnitOfWork(Context context)
@@ -48,6 +55,8 @@ namespace Company.Project.Infrastructure.UnitOfWork
                 return _cartItemRepository ??= new CartItemRepository(_context);
             }
         }
+
+        
         public IProductRepository ProductRepository
         {
             get
@@ -79,15 +88,32 @@ namespace Company.Project.Infrastructure.UnitOfWork
                 return _orderRepository ??= new OrderRepository(_context);
             }
         }
+         public IUserRepository UserRepository
+        {
+            get
+            {
+                return _userRepository ??= new UserRepository(_context,_userManager);
+            }
+        }
 
         public IReviewRepository ReviewRepository
         {
             get { return _reviewRepository ??= new ReviewRepository(_context); }
         }
+
+
+
+        public IChatBotMessageRepository ChatBotMessagesRepository
+        {
+            get { return _chatBotMessagesRepository ??= new ChatBotMessageRepository(_context); }
+        }
+
+
         public async Task Completeasync()
         {
             await _context.SaveChangesAsync();
         }
+
 
 
         public void Dispose()

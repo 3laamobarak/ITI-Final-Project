@@ -1,11 +1,11 @@
-﻿using Company.Project.Domain.Models;
-using Company.Project.DTO.DTO.Order;
+﻿using Company.Project.DTO.DTO.Order;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Company.Project.Application.Contracts;
+using Company.Project.Domain.Models;
 
 namespace Company.Project.PL.Controllers
 {

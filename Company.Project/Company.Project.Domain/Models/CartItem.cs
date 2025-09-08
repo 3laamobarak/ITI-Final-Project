@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Company.Project.Domain.Models
 {
-    public class CartItem :BaseEntity
+    public class CartItem : BaseEntity
     {
         public int quantity { get; set; }
 

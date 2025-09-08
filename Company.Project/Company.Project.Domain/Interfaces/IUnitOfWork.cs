@@ -14,7 +14,11 @@ namespace Company.Project.Domain.Interfaces
 
         IorderRepository OrderRepository { get; }
 
+        IUserRepository UserRepository { get; }
+
         IReviewRepository ReviewRepository { get; }
+        IChatBotMessageRepository ChatBotMessagesRepository { get; }
+
 
         Task Completeasync();
         void Dispose();

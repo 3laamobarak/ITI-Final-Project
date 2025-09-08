@@ -203,6 +203,8 @@ namespace Company.Project.theDbcontext
         public DbSet<Brand> Brands { get; set; }
         public DbSet<OTP> OTPs { get; set; }
 
+        public DbSet<ChatBotMessages> ChatBotMessages { get; set; }
+
 
 
         #endregion

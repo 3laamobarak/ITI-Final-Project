@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Company.Project.Application.Contracts;
 using Company.Project.Domain.Interfaces;
+using Company.Project.Domain.Models;
 using Company.Project.DTO.DTO.Category;
 
 namespace Company.Project.Application.Services
@@ -34,7 +35,19 @@ namespace Company.Project.Application.Services
             return _mapper.Map<IEnumerable<CategoryListDto>>(categories);
         }
 
-        // get by id
+        public async Task<IEnumerable<Product>> GetallCateogryProducts(int categoryId)
+        {
+            // First check if the category exists
+            var category = await _unitOfWork.CategoryRepository.GetByIdAsync(categoryId);
+            if (category == null)
+            {
+                throw new KeyNotFoundException($"Category with ID {categoryId} not found.");
+            }
+            
+            var products = await _unitOfWork.ProductRepository.GetProductsByCategoryIdAsync(categoryId);
+            return products;
+        }
+
         public async Task<CategoryDetailDto> GetByIdAsync(int id)
         {
             var category = await _unitOfWork.CategoryRepository.GetByIdAsync(id);

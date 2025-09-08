@@ -1,6 +1,6 @@
 namespace Company.Project.Domain.Models
 {
-    public class Brand :BaseEntity
+    public class Brand : BaseEntity
     {
         public string Name { get; set; }
         public string Description { get; set; }

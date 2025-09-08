@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Company.Project.Domain.Interfaces;
-using Company.Project.Domain.Models;
 using Company.Project.theDbcontext;
+using Company.Project.Domain.Models;
 
 namespace Company.Project.Infrastructure.Repositories
 {
-   public class CategoryRepository : BaseRepository<Category>, ICategoryRepository
+    public class CategoryRepository : BaseRepository<Category>, ICategoryRepository
     {
         private readonly Context _context;
         public CategoryRepository(Context context) : base(context)
