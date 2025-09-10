@@ -1,49 +1,218 @@
-﻿<!DOCTYPE html>
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Company.Project.MVC</title>
+
+    <!-- Bootstrap + FontAwesome -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Company.Project.MVC.styles.css" asp-append-version="true" />
+
+    <style>
+        body {
+            min-height: 100vh;
+            display: flex;
+            font-family: "Segoe UI", Roboto, sans-serif;
+            background: #f8fafc;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: #fff;
+            border-right: 1px solid #e6e6e6;
+            box-shadow: 2px 0 6px rgba(0,0,0,0.05);
+            flex-shrink: 0;
+            transition: all 0.3s;
+            overflow-y: auto;
+        }
+
+            .sidebar h4 {
+                padding: 1.2rem;
+                margin: 0;
+                font-size: 1.2rem;
+                font-weight: bold;
+                color: #2a7c46;
+                border-bottom: 1px solid #e6e6e6;
+            }
+
+            .sidebar .nav-link {
+                color: #333;
+                padding: 10px 20px;
+                border-radius: 8px;
+                margin: 4px 10px;
+                font-weight: 500;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+                .sidebar .nav-link:hover {
+                    background: #e9f5ee;
+                    color: #2a7c46;
+                }
+
+            .sidebar .submenu {
+                padding-left: 1.5rem;
+                display: none;
+            }
+
+                .sidebar .submenu.show {
+                    display: block;
+                }
+
+                .sidebar .submenu .nav-link {
+                    font-size: 0.9rem;
+                    color: #666;
+                    padding: 8px 20px;
+                }
+
+                    .sidebar .submenu .nav-link:hover {
+                        background: #f0fdf4;
+                        color: #2a7c46;
+                    }
+
+        /* Content */
+        .content-wrapper {
+            flex: 1;
+            padding: 1.5rem;
+        }
+
+            .content-wrapper main {
+                background: #fff;
+                border-radius: 12px;
+                padding: 1.5rem;
+                box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+            }
+
+        footer {
+            margin-top: 1rem;
+            text-align: center;
+            color: #888;
+        }
+
+        /* Icons rotate when submenu open */
+        .rotate {
+            transform: rotate(-90deg);
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Company.Project.MVC</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <h4>Admin Panel</h4>
+        <ul class="nav flex-column">
+            <!-- Dashboard -->
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="Dashboard" asp-action="Index">
+                    <span><i class="fa fa-home me-2 text-success"></i> Dashboard</span>
+                </a>
+            </li>
+
+            <!-- Products -->
+            <li class="nav-item">
+                <a href="javascript:void(0)" class="nav-link toggle-sub">
+                    <span><i class="fa fa-box me-2 text-success"></i> Products</span>
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                <ul class="submenu nav flex-column">
+                    <li><a class="nav-link" asp-controller="Products" asp-action="Index">All Products</a></li>
+                    <li><a class="nav-link" asp-controller="Products" asp-action="Create">Add Product</a></li>
+                </ul>
+            </li>
+
+            <!-- Categories -->
+            <li class="nav-item">
+                <a href="javascript:void(0)" class="nav-link toggle-sub">
+                    <span><i class="fa fa-list me-2 text-success"></i> Categories</span>
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                <ul class="submenu nav flex-column">
+                    <li><a class="nav-link" asp-controller="Categories" asp-action="Index">All Categories</a></li>
+                    <li><a class="nav-link" asp-controller="Categories" asp-action="Create">Add Category</a></li>
+                </ul>
+            </li>
+
+            <!-- Brands -->
+            <li class="nav-item">
+                <a href="javascript:void(0)" class="nav-link toggle-sub">
+                    <span><i class="fa fa-tags me-2 text-success"></i> Brands</span>
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                <ul class="submenu nav flex-column">
+                    <li><a class="nav-link" asp-controller="Brands" asp-action="Index">All Brands</a></li>
+                    <li><a class="nav-link" asp-controller="Brands" asp-action="Create">Add Brand</a></li>
+                </ul>
+            </li>
+
+            <!-- Users -->
+            <li class="nav-item">
+                <a href="javascript:void(0)" class="nav-link toggle-sub">
+                    <span><i class="fa fa-users me-2 text-success"></i> Users</span>
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                <ul class="submenu nav flex-column">
+                    <li><a class="nav-link" asp-controller="Users" asp-action="Index">All Users</a></li>
+                    <li><a class="nav-link" asp-controller="Users" asp-action="Create">Add User</a></li>
+                    <li><a class="nav-link" asp-controller="Roles" asp-action="Index">Roles & Permissions</a></li>
+                </ul>
+            </li>
+
+            <!-- Account -->
+            <li class="nav-item">
+                <a href="javascript:void(0)" class="nav-link toggle-sub">
+                    <span><i class="fa fa-user-circle me-2 text-success"></i> Account</span>
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                <ul class="submenu nav flex-column">
+                    <li><a class="nav-link" asp-controller="Account" asp-action="Profile">Profile</a></li>
+                    <li><a class="nav-link" asp-controller="Account" asp-action="ChangePassword">Change Password</a></li>
+                </ul>
+            </li>
+
+            <!-- Settings -->
+            <li class="nav-item">
+                <a href="javascript:void(0)" class="nav-link toggle-sub">
+                    <span><i class="fa fa-cog me-2 text-success"></i> Settings</span>
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                <ul class="submenu nav flex-column">
+                    <li><a class="nav-link" asp-controller="Settings" asp-action="General">General Settings</a></li>
+                    <li><a class="nav-link" asp-controller="Settings" asp-action="Logs">System Logs</a></li>
+                    <li><a class="nav-link" asp-controller="Settings" asp-action="Notifications">Notifications</a></li>
+                </ul>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- Content -->
+    <div class="content-wrapper">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
+        <footer class="border-top pt-3">
+            &copy; 2025 - Company.Project.MVC
+        </footer>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - Company.Project.MVC - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
+    <!-- Scripts -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        // Toggle submenu
+        document.querySelectorAll('.toggle-sub').forEach(link => {
+            link.addEventListener('click', function () {
+                let submenu = this.nextElementSibling;
+                submenu.classList.toggle('show');
+                this.querySelector('.fa-angle-left').classList.toggle('rotate');
+            });
+        });
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
