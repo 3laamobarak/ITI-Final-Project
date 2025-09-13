@@ -1,26 +1,83 @@
-﻿using Company.Project.Application.Services;
+﻿using Company.Project.theDbcontext;
+using Company.Project.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
-namespace Company.Project.MVC.Controllers
+public class ProductController : Controller
 {
-    public class ProductController : Controller
+    private readonly Context _context;
+    public ProductController(Context context)
     {
-        private readonly ProductService _productService;
-        private readonly CategoryService _categoryService;
-        private readonly BrandService _brandService;
+        _context = context;
+    }
 
-        public ProductController(ProductService productService , CategoryService categoryService , BrandService brandService)
+    // GET: /Product/Index
+    public async Task<IActionResult> Index()
+    {
+        var products = await _context.Products
+            .Include(p => p.Brand) // احتياطيًا لو محتاجة اسم البراند
+            .Select(p => new Company.Project.DTO.DTO.Product.ProductListDto
+            {
+                Id = p.Id,
+                Name = p.Name,
+                Price = p.Price,
+                Description = p.Description,
+                StockQuantity = p.StockQuantity,
+                AverageRating = p.AverageRating,
+                ReviewCount = p.ReviewCount,
+                BrandName = p.Brand != null ? p.Brand.Name : null,
+                ImageUrl = p.ImageUrl
+            })
+            .ToListAsync();
+
+        return View(products);
+    }
+
+    // GET: /Product/Add
+    [HttpGet]
+    public IActionResult Add()
+    {
+        PopulateBrands();
+        return View(new ProductCreateVm());
+    }
+
+    // POST: /Product/Add
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Add(ProductCreateVm vm)
+    {
+        if (!ModelState.IsValid)
         {
-            _productService = productService;
-            _categoryService = categoryService;
-            _brandService = brandService;
+            PopulateBrands();
+            return View(vm);
         }
 
-        public async Task<IActionResult> GetAll()
+        var product = new Product
         {
-            var prods = _productService.GetAllAsync();
+            Name = vm.Name,
+            Description = vm.Description,
+            Price = vm.Price,
+            StockQuantity = vm.StockQuantity,
+            BrandId = vm.BrandId,
+            ImageUrl = vm.ImageUrl
+            // CreatedAt/UpdatedAt handled by Context.SaveChangesAsync override if implemented
+        };
 
-            return View(prods);
-        }
+        _context.Products.Add(product);
+        await _context.SaveChangesAsync();
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    private void PopulateBrands()
+    {
+        var brands = _context.Brands
+            .OrderBy(b => b.Name)
+            .Select(b => new { b.Id, b.Name })
+            .ToList();
+
+        ViewBag.Brands = new SelectList(brands, "Id", "Name");
     }
 }
