@@ -1,4 +1,5 @@
 ﻿using Company.Project.Application.Contracts;
+using Company.Project.Application.Services;
 using Company.Project.DTO.DTO.Category;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,53 +12,68 @@ namespace Company.Project.MVC.Controllers
         {
             _CategoryService = CategoryService;
         }
-        public IActionResult GetAll(int skip = 0, int take = 20)
+       
+        // GET ALL
+        public async Task<IActionResult> GetAll(int skip = 0, int take = 20)
         {
-            var result = _CategoryService.GetAllAsync();          
-            return View(result);
+            var result = await _CategoryService.GetAllAsync();
+
+            return View("GetAll",result);
         }
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var result = _CategoryService.GetByIdAsync(id);
-            return View(result);
+            var category = await _CategoryService.GetByIdAsync(id);
+
+
+            return View("Details", category); 
         }
         public IActionResult Create()
         {
             return View();
         }
+
+        // CREATE POST
         [HttpPost]
-        public IActionResult Create(CreateCategoryDto Category)
+        public async Task<IActionResult> Create(CreateCategoryDto Category)
         {
             if (ModelState.IsValid)
             {
-                _CategoryService.CreateAsync(Category);
+                await _CategoryService.CreateAsync(Category);
+
                 return RedirectToAction("GetAll");
             }
-            return View(Category);
+            return View("Create",Category);
         }
-        public IActionResult Edit(int id)
+        // EDIT GET
+        public async Task<IActionResult> Edit(int id)
         {
-            var Category = _CategoryService.GetByIdAsync(id);
-            if (Category == null)
+            var category = await _CategoryService.GetByIdAsync(id);
+            if (category == null)
             {
                 return NotFound();
             }
-            return View(Category);
+            return View("Edit",category);
         }
+
+        // EDIT POST
         [HttpPost]
-        public IActionResult Edit(UpdateCategoryDto Category)
+        public async Task<IActionResult> Edit(UpdateCategoryDto Category)
         {
-            if (Category.Name != null && Category.Description != null)
+            if (ModelState.IsValid)
             {
-                _CategoryService.UpdateAsync(Category);
+                await _CategoryService.UpdateAsync(Category);
+
                 return RedirectToAction("GetAll");
             }
 
             return View(Category);
         }
-        public IActionResult Delete(int id)
+
+        // DELETE
+        public async Task<IActionResult> Delete(int id)
         {
-            _CategoryService.DeleteAsync(id);
+            await _CategoryService.DeleteAsync(id);
+
             return RedirectToAction("GetAll");
         }
     }

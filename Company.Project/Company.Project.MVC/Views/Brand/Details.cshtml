@@ -1,0 +1,67 @@
+﻿@model Company.Project.DTO.DTO.BrandDTOs.BrandWithProductsDto
+
+@{
+    ViewData["Title"] = "Brand Details";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-lg border-0 rounded-3 mb-4">
+        <div class="card-header bg-primary text-white text-center">
+            <h2>@Model.Name</h2>
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3 fw-bold">Brand Name</dt>
+                <dd class="col-sm-9">@Model.Name</dd>
+
+                <dt class="col-sm-3 fw-bold">Description</dt>
+                <dd class="col-sm-9">
+                    @(!string.IsNullOrEmpty(Model.Description) ? Model.Description : "No description available")
+                </dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0 rounded-3">
+        <div class="card-header bg-dark text-white">
+            <h4>Products for this Brand</h4>
+        </div>
+        <div class="card-body">
+            @if (Model.Products != null && Model.Products.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover align-middle">
+                        <thead class="table-dark text-center">
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var product in Model.Products)
+                            {
+                                <tr>
+                                    <td class="text-center">@product.Id</td>
+                                    <td>@product.Name</td>
+                                    <td>@product.Price.ToString("C")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <p class="text-muted text-center">
+                    <i class="bi bi-info-circle"></i> No products available for this brand.
+                </p>
+            }
+        </div>
+        <div class="card-footer text-center">
+            <a asp-action="GetAll" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Back to List
+            </a>
+        </div>
+    </div>
+</div>
