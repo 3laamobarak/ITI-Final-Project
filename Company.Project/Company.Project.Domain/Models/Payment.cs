@@ -19,6 +19,9 @@ namespace Company.Project.Domain.Models
         public ApplicationUser User { get; set; }
 
         public string PaymentIntentId { get; set; } // <--- ??? ??
+        public decimal RefundedAmount { get; set; } = 0;
+
+        public ICollection<Refund> Refunds { get; set; }
 
     }
 

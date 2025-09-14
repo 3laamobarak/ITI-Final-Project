@@ -1,7 +1,9 @@
-﻿using Company.Project.Application.Contracts;
+﻿using System.Linq.Expressions;
+using Company.Project.Application.Contracts;
 using Company.Project.Domain.Interfaces;
 using Company.Project.Domain.Models;
 using Company.Project.DTO.DTO.Refund;
+using static Company.Project.Domain.Enums.Enums;
 
 namespace Company.Project.Application.Services
 {
@@ -12,20 +14,35 @@ namespace Company.Project.Application.Services
         {
             _unitOfWork = unitOfWork;
         }
-        
-        public Task<IEnumerable<Refund>> GetAllAsync(int skip, int take)
+        public async Task<IEnumerable<RefundDto>> GetAllAsync()
         {
-            var refunds = _unitOfWork.RefundRepository.GetAllAsync(skip, take);
-            return refunds;
+            var refunds = await _unitOfWork.RefundRepository.GetAllAsync(new Expression<Func<Refund, object>>[]
+            {
+        r => r.Payment,
+        r => r.Payment.User 
+            });
+
+            return refunds.Select(r => new RefundDto
+            {
+                Id = r.Id,
+                Amount = r.Amount,
+                Reason = r.Reason,
+                RequestDate = r.RequestDate,
+                Status = (int)r.Status,
+                IsDeleted = r.IsDeleted,
+                PaymentId = r.PaymentId,
+                UserName = r.Payment.User?.UserName,
+                FullName = r.Payment.User != null ? $"{r.Payment.User.FirstName} {r.Payment.User.LastName}" : null
+            }).ToList();
         }
 
-        public Task<Refund> GetByIdAsync(int id)
+
+        public async Task<Refund> GetByIdAsync(int id)
         {
-            var refund = _unitOfWork.RefundRepository.GetByIdAsync(id);
+            var refund = await _unitOfWork.RefundRepository.GetByIdAsync(id);
             if (refund == null)
-            {
                 throw new KeyNotFoundException($"Refund with ID {id} not found.");
-            }
+
             return refund;
         }
 
@@ -36,32 +53,27 @@ namespace Company.Project.Application.Services
                 Reason = createDto.Reason,
                 Amount = createDto.Amount,
                 RequestDate = DateTime.UtcNow,
-                IsProcessed = false,
-                OrderId = createDto.OrderId
+                Status = RefundStatus.Pending,
+                OrderId = createDto.OrderId,
+                PaymentId = createDto.PaymentId
             };
             await _unitOfWork.RefundRepository.AddAsync(refund);
             await _unitOfWork.RefundRepository.SaveChangesAsync();
             await Task.FromResult(refund);
             return refund;
         }
-
         public async Task<Refund> UpdateAsync(UpdateRefundDto updateDto)
         {
-            var refund = _unitOfWork.RefundRepository.GetByIdAsync(updateDto.Id).Result;
+            var refund = await _unitOfWork.RefundRepository.GetByIdAsync(updateDto.Id);
             if (refund == null)
-            {
                 throw new KeyNotFoundException($"Refund with ID {updateDto.Id} not found.");
-            }
-            refund.Reason = updateDto.Reason ?? refund.Reason;
-            refund.Amount = updateDto.Amount;
-            refund.IsProcessed = updateDto.IsProcessed;
-            if (updateDto.IsProcessed == true && refund.ProcessedDate == null)
-            {
-                refund.ProcessedDate = DateTime.UtcNow;
-            }
+
+            refund.Status = updateDto.Status;
+            refund.ProcessedDate = updateDto.ProcessedDate ?? DateTime.UtcNow;
+
             await _unitOfWork.RefundRepository.UpdateAsync(refund);
             await _unitOfWork.RefundRepository.SaveChangesAsync();
-            await Task.FromResult(refund);
+
             return refund;
         }
 

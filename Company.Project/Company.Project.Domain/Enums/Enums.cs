@@ -37,4 +37,11 @@ public class Enums
         Female
         
     }
+    public enum RefundStatus
+    {
+        Pending,
+        Approved,
+        Rejected,
+        Completed
+    }
 }

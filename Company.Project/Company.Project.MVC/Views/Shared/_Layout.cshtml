@@ -187,6 +187,25 @@
                     <li><a class="nav-link" asp-controller="Settings" asp-action="Notifications">Notifications</a></li>
                 </ul>
             </li>
+            <li class="nav-item">
+                <a href="javascript:void(0)" class="nav-link toggle-sub">
+                    <span><i class="fa fa-credit-card me-2 text-success"></i> Payments</span>
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                <ul class="submenu nav flex-column">
+                    <li><a class="nav-link" asp-controller="Payment" asp-action="Index">All Payments</a></li>
+                </ul>
+            </li>
+
+            <li class="nav-item">
+                <a href="javascript:void(0)" class="nav-link toggle-sub">
+                    <span><i class="fa fa-undo me-2 text-success"></i> Refunds</span>
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                <ul class="submenu nav flex-column">
+                    <li><a class="nav-link" asp-controller="Refund" asp-action="Index">All Refunds</a></li>
+                </ul>
+            </li>
         </ul>
     </aside>
 

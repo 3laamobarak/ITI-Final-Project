@@ -1,3 +1,10 @@
+using Company.Project.Application.Contracts;
+using Company.Project.Application.Services;
+using Company.Project.Domain.Interfaces;
+using Company.Project.Infrastructure.UnitOfWork;
+using Company.Project.theDbcontext;
+using Microsoft.EntityFrameworkCore;
+
 namespace Company.Project.MVC
 {
     public class Program
@@ -8,7 +15,21 @@ namespace Company.Project.MVC
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddDistributedMemoryCache(); 
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+            builder.Services.AddHttpClient();
+            builder.Services.AddHttpContextAccessor();
+            builder.Services.AddDbContext<Context>(options =>
+               options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+            builder.Services.AddScoped<IPaymentService, StripePaymentService>();
+            builder.Services.AddScoped<IRefundService, RefundService>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -19,7 +40,7 @@ namespace Company.Project.MVC
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseSession();
             app.UseAuthorization();
 
             app.MapControllerRoute(
