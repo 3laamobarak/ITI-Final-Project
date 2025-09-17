@@ -1,0 +1,71 @@
+﻿@model Company.Project.DTO.DTO.Category.CategoryDetailDto
+
+@{
+    ViewData["Title"] = "Category Details";
+}
+
+<div class="container my-5">
+
+    <!-- تفاصيل الكاتيجوري -->
+    <div class="card shadow-lg border-0 rounded-4 mb-4">
+        <div class="card-header bg-gradient bg-primary text-white text-center py-3">
+            <h2 class="fw-bold mb-0">@Model.Name</h2>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-4 fw-bold">Category Name:</div>
+                <div class="col-md-8">@Model.Name</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-4 fw-bold">Description:</div>
+                <div class="col-md-8">
+                    @(!string.IsNullOrEmpty(Model.Description) ? Model.Description : "No description available")
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- المنتجات -->
+    <div class="card shadow-sm border-0 rounded-4">
+        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center py-3">
+            <h4 class="mb-0">Products in this Category</h4>
+      
+        </div>
+        <div class="card-body">
+            @if (Model.Products != null && Model.Products.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table align-middle table-bordered table-hover">
+                        <thead class="table-dark text-center">
+                            <tr>
+                                <th style="width:50%">Name</th>
+                                <th style="width:50%">Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var product in Model.Products)
+                            {
+                                <tr>
+                                    <td>@product.Name</td>
+                                    <td class="text-success fw-bold">@product.Price.ToString("C")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info text-center mb-0">
+                    <i class="bi bi-info-circle"></i> No products available in this category.
+                </div>
+            }
+        </div>
+        <div class="card-footer text-center">
+            <a asp-action="GetAll" class="btn btn-secondary px-4">
+                <i class="bi bi-arrow-left"></i> Back to List
+            </a>
+        </div>
+    </div>
+
+</div>

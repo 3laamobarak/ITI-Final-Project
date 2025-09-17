@@ -4,6 +4,22 @@ using Company.Project.Domain.Interfaces;
 using Company.Project.Infrastructure.UnitOfWork;
 using Company.Project.theDbcontext;
 using Microsoft.EntityFrameworkCore;
+using Company.Project.Application;
+using Company.Project.Domain.Models;
+using Company.Project.DTO.DTO.OTPs;
+using Company.Project.Infrastructure;
+using Company.Project.theDbcontext;
+using Microsoft.AspNetCore.Identity;
+using Company.Project.Application.Contracts;
+using Company.Project.Application.Services;
+using Company.Project.Domain.Interfaces;
+using Company.Project.Infrastructure.Repositories;
+using Company.Project.Infrastructure.UnitOfWork;
+using Company.Project.theDbcontext;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using AutoMapper;
+    
 
 namespace Company.Project.MVC
 {
@@ -13,8 +29,33 @@ namespace Company.Project.MVC
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+
+            // Add DbContext
+            builder.Services.AddDbContext<Context>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            // Add repositories
+            builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+            builder.Services.AddScoped<IBrandRepository, BrandRepository>();
+
+            // Add UnitOfWork
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            // Add services
+            builder.Services.AddScoped<ICategoryService, CategoryService>();
+            builder.Services.AddScoped<IBrandService, BrandService>();
+
+            // AutoMapper
+            builder.Services.AddAutoMapper(cfg =>
+            {
+                cfg.AddProfile<Company.Project.Application.Mapping.CategoryMap.CategoryProfile>();
+            });
+
+
+
+            // Add controllers
             builder.Services.AddControllersWithViews();
+
             builder.Services.AddDistributedMemoryCache(); 
             builder.Services.AddSession(options =>
             {
@@ -26,21 +67,43 @@ namespace Company.Project.MVC
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddDbContext<Context>(options =>
                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            // allow CORS
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAllOrigins",
+                    builder => builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader());
+            });
+            // bind email 
+            builder.Services.Configure<EmailSettingsDTO>(builder.Configuration.GetSection("EmailSettings"));
+            
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<Context>().AddDefaultTokenProviders();
+
+            // call the infrastructure and application methods
+            builder.Services.Application_CS(builder.Configuration);
+            builder.Services.Infrastructure_CS(builder.Configuration);
 
             builder.Services.AddScoped<IPaymentService, StripePaymentService>();
             builder.Services.AddScoped<IRefundService, RefundService>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             var app = builder.Build();
 
+        
+
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            
+            
             app.UseStaticFiles();
 
             app.UseRouting();
-            app.UseSession();
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(
