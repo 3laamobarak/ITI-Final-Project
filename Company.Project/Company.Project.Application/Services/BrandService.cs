@@ -3,11 +3,6 @@ using Company.Project.Domain.Interfaces;
 using Company.Project.Domain.Models;
 using Company.Project.DTO.DTO.BrandDTO;
 using Company.Project.DTO.DTO.BrandDTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Company.Project.Application.Services
 {
@@ -41,6 +36,7 @@ namespace Company.Project.Application.Services
             {
                 Id = brand.Id,
                 Name = brand.Name,
+                Description = brand.Description,
                 Products = brand.Products.Select(p => new ProductDto
                 {
                     Id = p.Id,
