@@ -3,7 +3,11 @@ using Company.Project.Domain.Models;
 using Company.Project.Application.Contracts;
 using Company.Project.DTO.DTO.Payment;
 using Company.Project.Domain.Interfaces;
+using StripeRefundService = Stripe.RefundService;
+using DomainRefund = Company.Project.Domain.Models.Refund;
+using StripeRefund = Stripe.Refund;
 using static Company.Project.Domain.Enums.Enums;
+using System.Linq.Expressions;
 
 public class StripePaymentService : IPaymentService
 {
@@ -83,36 +87,103 @@ public class StripePaymentService : IPaymentService
 
     public async Task<bool> ConfirmPaymentAsync(string paymentIntentId)
     {
-        try
+        var service = new PaymentIntentService();
+        var intent = await service.GetAsync(paymentIntentId);
+
+        var payment = await _unitOfWork.PaymentRepository.GetByPaymentIntentIdAsync(paymentIntentId);
+        if (payment == null) throw new Exception("Payment not found");
+
+        if (intent.Status == "succeeded")
         {
-            var service = new PaymentIntentService();
-            var intent = await service.GetAsync(paymentIntentId);
-
-            if (intent.Status == "succeeded")
-            {
-                var payment = await _unitOfWork.PaymentRepository
-                    .GetByPaymentIntentIdAsync(paymentIntentId);
-
-                if (payment != null)
-                {
-                    payment.IsSuccessful = true;
-                    await _unitOfWork.PaymentRepository.UpdateAsync(payment);
-                    await _unitOfWork.Completeasync();
-                }
-                return true;
-            }
-
+            payment.IsSuccessful = true;
+            await _unitOfWork.PaymentRepository.UpdateAsync(payment);
+            await _unitOfWork.Completeasync();
+            return true;
+        }
+        else
+        {
+            payment.IsSuccessful = false;
+            await _unitOfWork.PaymentRepository.UpdateAsync(payment);
+            await _unitOfWork.Completeasync();
             return false;
         }
-        catch (StripeException ex)
+    }
+
+    public async Task<List<PaymentDto>> GetAllPaymentsAsync()
+    {
+        var payments = await _unitOfWork.PaymentRepository.GetAllAsync(new Expression<Func<Payment, object>>[]
+       {
+    p => p.User,p => p.Order
+       });
+
+        return payments.Select(p => new PaymentDto
         {
-            Console.WriteLine($"Stripe Error: {ex.Message}");
-            throw new Exception("Failed to confirm payment.", ex);
-        }
-        catch (Exception ex)
+            Id = p.Id,
+            Amount = p.Amount,
+            PaymentDate = p.PaymentDate,
+            PaymentMethod = p.PaymentMethod.ToString(),
+            IsSuccessful = p.IsSuccessful,
+            OrderId = p.OrderId,
+            UserId = p.UserId,
+            PaymentIntentId = p.PaymentIntentId,
+            RefundedAmount = p.RefundedAmount,
+            UserName = p.User?.UserName,
+            FullName = p.User != null ? $"{p.User.FirstName} {p.User.LastName}" : null,
+            ShippingAddress = p.Order?.ShippingAddress
+        }).ToList();
+    }
+
+    public async Task<bool> RefundPaymentAsync(int paymentId, decimal amount)
+    {
+        var payment = await _unitOfWork.PaymentRepository.GetByIdAsync(paymentId);
+        if (payment == null)
+            throw new Exception("Payment not found.");
+        if (!payment.IsSuccessful)
+            throw new Exception("Cannot refund an unsuccessful payment.");
+        if (string.IsNullOrEmpty(payment.PaymentIntentId))
+            throw new Exception("PaymentIntentId is missing for this payment.");
+
+        var refundOptions = new RefundCreateOptions
         {
-            Console.WriteLine($"General Error: {ex.Message}");
-            throw;
+            PaymentIntent = payment.PaymentIntentId,
+            Amount = (long)(amount * 100)
+        };
+
+        var refundService = new StripeRefundService();
+        StripeRefund stripeRefund;
+        try
+        {
+            stripeRefund = await refundService.CreateAsync(refundOptions);
         }
+        catch (StripeException sEx)
+        {
+            throw new Exception($"Stripe refund failed: {sEx.Message}");
+        }
+
+        if (stripeRefund == null)
+            return false;
+
+        if (string.Equals(stripeRefund.Status, "succeeded", StringComparison.OrdinalIgnoreCase)
+            || string.Equals(stripeRefund.Status, "pending", StringComparison.OrdinalIgnoreCase))
+        {
+            var refundEntity = new DomainRefund
+            {
+                OrderId = payment.OrderId,
+                PaymentId = payment.Id,   
+                Amount = amount,
+                Reason = "Refund via Stripe",
+                RequestDate = DateTime.UtcNow,
+                ProcessedDate = DateTime.UtcNow,
+                Status = RefundStatus.Completed
+            };
+
+            await _unitOfWork.RefundRepository.AddAsync(refundEntity);
+            payment.RefundedAmount = payment.RefundedAmount + amount;
+            await _unitOfWork.PaymentRepository.UpdateAsync(payment);
+            await _unitOfWork.Completeasync();
+            return true;
+        }
+
+        return false;
     }
 }

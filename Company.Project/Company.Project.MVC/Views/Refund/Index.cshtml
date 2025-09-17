@@ -1,0 +1,109 @@
+﻿@model IEnumerable<Company.Project.DTO.DTO.Refund.RefundDto>
+
+@{
+    ViewData["Title"] = "Refunds Management";
+}
+
+<div class="container">
+    <h2>Refunds Management</h2>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="mb-3">
+        <form method="get" asp-action="Index" class="d-inline">
+            <select name="filter" onchange="this.form.submit()" class="form-select w-auto d-inline">
+                <option value="all" selected="@("all" == Context.Request.Query["filter"])">All</option>
+                <option value="active" selected="@("active" == Context.Request.Query["filter"])">Active</option>
+                <option value="deleted" selected="@("deleted" == Context.Request.Query["filter"])">Deleted</option>
+            </select>
+        </form>
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>User Name</th>
+                <th>Full Name</th>
+                <th>Amount</th>
+                <th>Reason</th>
+                <th>Request Date</th>
+                <th>Status</th>
+                <th>Is Deleted</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var refund in Model)
+            {
+                <tr>
+                    <td>@refund.UserName</td>
+                    <td>@refund.FullName</td>
+                    <td>@refund.Amount.ToString("C")</td>
+                    <td>@refund.Reason</td>
+                    <td>@refund.RequestDate.ToString("yyyy-MM-dd")</td>
+                    <td>
+                        @{
+                            var badgeClass = refund.Status switch
+                            {
+                                0 => "warning",
+                                1 => "success",
+                                2 => "danger",
+                                3 => "info",
+                                _ => "secondary"
+                            };
+                            var statusText = refund.Status switch
+                            {
+                                0 => "Pending",
+                                1 => "Approved",
+                                2 => "Rejected",
+                                3 => "Completed",
+                                _ => "Unknown"
+                            };
+                        }
+                        <span class="badge bg-@badgeClass">@statusText</span>
+                    </td>
+                    <td>
+                        <span class="badge bg-@(refund.IsDeleted ? "danger" : "success")">
+                            @(refund.IsDeleted ? "Yes" : "No")
+                        </span>
+                    </td>
+                    <td>
+                        @if (!refund.IsDeleted)
+                        {
+                            <form asp-action="Delete" method="post" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@refund.Id" />
+                                <button type="submit" class="btn btn-danger btn-sm"
+                                        onclick="return confirm('Are you sure you want to delete this refund?')">
+                                    Delete
+                                </button>
+                            </form>
+                        }
+                        @if (refund.Status == 0 && !refund.IsDeleted)
+                        {
+                            <form asp-action="RefundPayment" method="post" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@refund.Id" />
+                                <button type="submit" class="btn btn-primary btn-sm">Refund</button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using Company.Project.Application.Contracts;
 using Company.Project.DTO.DTO.Payment;
+using Company.Project.DTO.DTO.Refund;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -57,7 +58,6 @@ namespace Company.Project.PL.Controllers
                 var isSuccess = await _paymentService.ConfirmPaymentAsync(paymentIntentId);
                 if (isSuccess)
                 {
-                    // يمكن إضافة تحديث حالة Order هنا إذا أردت
                 }
                 return Ok(new { success = isSuccess });
             }
@@ -67,5 +67,46 @@ namespace Company.Project.PL.Controllers
                 return StatusCode(500, "Failed to confirm payment.");
             }
         }
+        [HttpGet("all")]
+        public async Task<IActionResult> GetAllPayments()
+        {
+            try
+            {
+                var payments = await _paymentService.GetAllPaymentsAsync(); 
+                return Ok(payments);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to fetch payments");
+                return StatusCode(500, "Failed to fetch payments");
+            }
+        }
+
+        [HttpPost("refund")]
+        public async Task<IActionResult> RefundPayment([FromBody] RefundPaymentDto dto)
+        {
+            if (dto == null || dto.PaymentId <= 0 || dto.Amount <= 0)
+                return BadRequest("Invalid refund data.");
+
+            try
+            {
+                if (_paymentService is StripePaymentService stripeService)
+                {
+                    var success = await stripeService.RefundPaymentAsync(dto.PaymentId, dto.Amount);
+                    if (success)
+                        return Ok(new { Message = "Refund successful" });
+                    return BadRequest("Refund failed");
+                }
+                else
+                {
+                    return BadRequest("Refund not supported in this payment service");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Refund failed: {ex.Message}");
+            }
+        }
+
     }
 }

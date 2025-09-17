@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Company.Project.theDbcontext.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20250822162635_ProductDetails")]
-    partial class ProductDetails
+    [Migration("20250913175123_edit refund")]
+    partial class editrefund
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -582,6 +582,59 @@ namespace Company.Project.theDbcontext.Migrations
                     b.ToTable("OrderItem");
                 });
 
+            modelBuilder.Entity("Company.Project.Domain.Models.Payment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSuccessful")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("PaymentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PaymentIntentId")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("PaymentMethod")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("RefundedAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Payments", (string)null);
+                });
+
             modelBuilder.Entity("Company.Project.Domain.Models.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -778,10 +831,10 @@ namespace Company.Project.theDbcontext.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsProcessed")
-                        .HasColumnType("bit");
-
                     b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PaymentId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("ProcessedDate")
@@ -794,12 +847,17 @@ namespace Company.Project.theDbcontext.Migrations
                     b.Property<DateTime>("RequestDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
                     b.HasIndex("OrderId");
+
+                    b.HasIndex("PaymentId");
 
                     b.ToTable("Refund");
                 });
@@ -1103,6 +1161,25 @@ namespace Company.Project.theDbcontext.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("Company.Project.Domain.Models.Payment", b =>
+                {
+                    b.HasOne("Company.Project.Domain.Models.Order", "Order")
+                        .WithMany("Payments")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Company.Project.Domain.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Company.Project.Domain.Models.Product", b =>
                 {
                     b.HasOne("Company.Project.Domain.Models.Brand", "Brand")
@@ -1145,7 +1222,15 @@ namespace Company.Project.theDbcontext.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Company.Project.Domain.Models.Payment", "Payment")
+                        .WithMany("Refunds")
+                        .HasForeignKey("PaymentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Order");
+
+                    b.Navigation("Payment");
                 });
 
             modelBuilder.Entity("Company.Project.Domain.Models.Review", b =>
@@ -1257,6 +1342,13 @@ namespace Company.Project.theDbcontext.Migrations
                 {
                     b.Navigation("OrderItems");
 
+                    b.Navigation("Payments");
+
+                    b.Navigation("Refunds");
+                });
+
+            modelBuilder.Entity("Company.Project.Domain.Models.Payment", b =>
+                {
                     b.Navigation("Refunds");
                 });
 
