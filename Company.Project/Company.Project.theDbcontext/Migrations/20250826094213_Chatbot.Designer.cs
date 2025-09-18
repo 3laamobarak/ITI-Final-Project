@@ -4,6 +4,7 @@ using Company.Project.theDbcontext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Company.Project.theDbcontext.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20250826094213_Chatbot")]
+    partial class Chatbot
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -128,7 +131,7 @@ namespace Company.Project.theDbcontext.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Brands", (string)null);
+                    b.ToTable("Brands");
 
                     b.HasData(
                         new
@@ -302,7 +305,49 @@ namespace Company.Project.theDbcontext.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.ToTable("Chat", (string)null);
+                    b.ToTable("Chat");
+                });
+
+            modelBuilder.Entity("Company.Project.Domain.Models.ChatBotMessages", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("ChatId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Sender")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChatId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ChatBotMessages");
                 });
 
             modelBuilder.Entity("Company.Project.Domain.Models.ChatMember", b =>
@@ -316,9 +361,6 @@ namespace Company.Project.theDbcontext.Migrations
                     b.Property<int>("ChatId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ChatMessageId")
-                        .HasColumnType("int");
-
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -327,51 +369,9 @@ namespace Company.Project.theDbcontext.Migrations
 
                     b.HasIndex("ChatId");
 
-                    b.HasIndex("ChatMessageId");
-
                     b.HasIndex("UserId");
 
-                    b.ToTable("ChatMember", (string)null);
-                });
-
-            modelBuilder.Entity("Company.Project.Domain.Models.ChatMessage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ChatId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("MessageContent")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("MessageType")
-                        .HasColumnType("int");
-
-                    b.Property<string>("SenderId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ChatId");
-
-                    b.HasIndex("SenderId");
-
-                    b.ToTable("ChatMessage", (string)null);
+                    b.ToTable("ChatMember");
                 });
 
             modelBuilder.Entity("Company.Project.Domain.Models.ExampleClass", b =>
@@ -398,7 +398,7 @@ namespace Company.Project.theDbcontext.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ExClass", (string)null);
+                    b.ToTable("ExClass");
 
                     b.HasData(
                         new
@@ -450,7 +450,7 @@ namespace Company.Project.theDbcontext.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("NutritionFact", (string)null);
+                    b.ToTable("NutritionFact");
                 });
 
             modelBuilder.Entity("Company.Project.Domain.Models.OTP", b =>
@@ -482,7 +482,7 @@ namespace Company.Project.theDbcontext.Migrations
 
                     b.HasIndex("userId");
 
-                    b.ToTable("OTPs", (string)null);
+                    b.ToTable("OTPs");
                 });
 
             modelBuilder.Entity("Company.Project.Domain.Models.Order", b =>
@@ -576,57 +576,7 @@ namespace Company.Project.theDbcontext.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderItem", (string)null);
-                });
-
-            modelBuilder.Entity("Company.Project.Domain.Models.Payment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsSuccessful")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("PaymentDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("PaymentIntentId")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<int>("PaymentMethod")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Payments", (string)null);
+                    b.ToTable("OrderItem");
                 });
 
             modelBuilder.Entity("Company.Project.Domain.Models.Product", b =>
@@ -848,7 +798,7 @@ namespace Company.Project.theDbcontext.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("Refund", (string)null);
+                    b.ToTable("Refund");
                 });
 
             modelBuilder.Entity("Company.Project.Domain.Models.Review", b =>
@@ -892,7 +842,7 @@ namespace Company.Project.theDbcontext.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("reviews", (string)null);
+                    b.ToTable("reviews");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -1054,6 +1004,21 @@ namespace Company.Project.theDbcontext.Migrations
                         .HasForeignKey("ApplicationUserId");
                 });
 
+            modelBuilder.Entity("Company.Project.Domain.Models.ChatBotMessages", b =>
+                {
+                    b.HasOne("Company.Project.Domain.Models.Chat", null)
+                        .WithMany("ChatMessages")
+                        .HasForeignKey("ChatId");
+
+                    b.HasOne("Company.Project.Domain.Models.ApplicationUser", "User")
+                        .WithMany("ChatMessages")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Company.Project.Domain.Models.ChatMember", b =>
                 {
                     b.HasOne("Company.Project.Domain.Models.Chat", "Chat")
@@ -1062,32 +1027,9 @@ namespace Company.Project.theDbcontext.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Company.Project.Domain.Models.ChatMessage", null)
-                        .WithMany("ChatMembers")
-                        .HasForeignKey("ChatMessageId");
-
                     b.HasOne("Company.Project.Domain.Models.ApplicationUser", "User")
                         .WithMany("ChatMembers")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Chat");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Company.Project.Domain.Models.ChatMessage", b =>
-                {
-                    b.HasOne("Company.Project.Domain.Models.Chat", "Chat")
-                        .WithMany("ChatMessages")
-                        .HasForeignKey("ChatId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Company.Project.Domain.Models.ApplicationUser", "User")
-                        .WithMany("ChatMessages")
-                        .HasForeignKey("SenderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1148,25 +1090,6 @@ namespace Company.Project.theDbcontext.Migrations
                     b.Navigation("Order");
 
                     b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("Company.Project.Domain.Models.Payment", b =>
-                {
-                    b.HasOne("Company.Project.Domain.Models.Order", "Order")
-                        .WithMany("Payments")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Company.Project.Domain.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Order");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Company.Project.Domain.Models.Product", b =>
@@ -1314,16 +1237,9 @@ namespace Company.Project.theDbcontext.Migrations
                     b.Navigation("ChatMessages");
                 });
 
-            modelBuilder.Entity("Company.Project.Domain.Models.ChatMessage", b =>
-                {
-                    b.Navigation("ChatMembers");
-                });
-
             modelBuilder.Entity("Company.Project.Domain.Models.Order", b =>
                 {
                     b.Navigation("OrderItems");
-
-                    b.Navigation("Payments");
 
                     b.Navigation("Refunds");
                 });

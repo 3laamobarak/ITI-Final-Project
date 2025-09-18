@@ -9,6 +9,8 @@ namespace Company.Project.Infrastructure.UnitOfWork
     public class UnitOfWork : IUnitOfWork
     {
         private readonly Context _context;
+        private readonly UserManager<ApplicationUser> _userManager;
+
         private IBrandRepository _brandRepository;
         public ICartItemRepository _cartItemRepository;
         public ICategoryRepository _categoryRepository;
@@ -28,7 +30,6 @@ namespace Company.Project.Infrastructure.UnitOfWork
         private IOrderItemRepository _orderItemRepository;
         private IProductCategoryRepository _productCategoryRepository;
         private IRefundRepository _refundRepository;
-        public IReviewRepository _reviewRepository;
         public UnitOfWork(Context context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
@@ -94,11 +95,16 @@ namespace Company.Project.Infrastructure.UnitOfWork
             get { return _productCategoryRepository ??= new ProductCategoryRepository(_context); }
         }
 
-        public IReviewRepository ReviewRepository
+        public IUserRepository UserRepository
+        {
+            get { return _userRepository ??= new UserRepository(_context, _userManager); }
+        }
+
+
+        public IRefundRepository RefundRepository
         {
             get { return _refundRepository ??= new RefundRepository(_context); }
         }
-
 
 
         public IChatBotMessageRepository ChatBotMessagesRepository
@@ -117,6 +123,9 @@ namespace Company.Project.Infrastructure.UnitOfWork
         {
             get { return _paymentRepository ??= new PaymentRepository(_context); }
         }
+
+
+
         public void Dispose()
         {
             _context.Dispose();

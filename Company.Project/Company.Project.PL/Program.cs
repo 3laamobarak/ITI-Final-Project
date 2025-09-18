@@ -15,8 +15,9 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Company.Project.Domain.Models;
 using System.Net.Http.Headers;
+using Stripe;
+using Company.Project.Domain.Models;
 namespace Company.Project.PL
 
 {
@@ -115,7 +116,7 @@ namespace Company.Project.PL
             builder.Services.AddScoped<IOrderSevice, OrderService>();
             builder.Services.AddScoped<IorderRepository, OrderRepository>();
             builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
-            builder.Services.AddScoped<IReviewService, ReviewService>();
+            builder.Services.AddScoped<IReviewService, Company.Project.Application.Services.ReviewService>();
             builder.Services.AddScoped<IEmailService, EmailService>();
             builder.Services.AddScoped<IOTPService, OTPService>();
             builder.Services.AddScoped<IOTPRepository, OTPRepository>();

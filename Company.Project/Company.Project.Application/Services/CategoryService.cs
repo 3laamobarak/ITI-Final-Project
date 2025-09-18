@@ -35,19 +35,7 @@ namespace Company.Project.Application.Services
             return _mapper.Map<IEnumerable<CategoryListDto>>(categories);
         }
 
-        public async Task<IEnumerable<Product>> GetallCateogryProducts(int categoryId)
-        {
-            // First check if the category exists
-            var category = await _unitOfWork.CategoryRepository.GetByIdAsync(categoryId);
-            if (category == null)
-            {
-                throw new KeyNotFoundException($"Category with ID {categoryId} not found.");
-            }
-            
-            var products = await _unitOfWork.ProductRepository.GetProductsByCategoryIdAsync(categoryId);
-            return products;
-        }
-
+        // get by id
         public async Task<CategoryDetailDto> GetByIdAsync(int id)
         {
             var category = await _unitOfWork.CategoryRepository.GetByIdAsync(id);
@@ -96,6 +84,19 @@ namespace Company.Project.Application.Services
 
             return _mapper.Map<CategoryDetailDto>(existingCategory);
         }
+        public async Task<IEnumerable<Product>> GetallCateogryProducts(int categoryId)
+        {
+            // First check if the category exists
+            var category = await _unitOfWork.CategoryRepository.GetByIdAsync(categoryId);
+            if (category == null)
+            {
+                throw new KeyNotFoundException($"Category with ID {categoryId} not found.");
+            }
+
+            var products = await _unitOfWork.ProductRepository.GetProductsByCategoryIdAsync(categoryId);
+            return products;
+        }
+
         public async Task DeleteAsync(int id)
         {
             var existingCategory = await _unitOfWork.CategoryRepository.GetByIdAsync(id);
