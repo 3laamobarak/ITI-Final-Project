@@ -1,0 +1,77 @@
+﻿@model Company.Project.MVC.Models.AssignRoleViewModel
+
+@{
+    ViewData["Title"] = "Assign Role";
+}
+
+<h1>Assign Role</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="AssignRole" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="UserName" class="control-label">Select User</label>
+                <select asp-for="UserName" class="form-control">
+                    <option value="">-- Select User --</option>
+                    @foreach (var user in ViewBag.Users)
+                    {
+                        <option value="@user.Value">@user.Text</option>
+                    }
+                </select>
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="RoleName" class="control-label">Select Role</label>
+                <select asp-for="RoleName" class="form-control">
+                    <option value="">-- Select Role --</option>
+                    @foreach (var role in ViewBag.Roles)
+                    {
+                        <option value="@role.Value">@role.Text</option>
+                    }
+                </select>
+                <span asp-validation-for="RoleName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mt-3">
+                <input type="submit" value="Assign Role" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<hr />
+
+<h2>Users and Their Roles</h2>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>User</th>
+            <th>Roles</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var userRole in ViewBag.UserRoles)
+        {
+            <tr>
+                <td>@userRole.UserName</td>
+                <td>@string.Join(", ", userRole.Roles)</td>
+                <td>
+                    <a asp-action="RemoveRole" asp-route-username="@userRole.UserName" class="btn btn-warning">Edit</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="mt-3">
+    <a asp-action="AssignRole" class="btn btn-secondary">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
