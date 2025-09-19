@@ -42,5 +42,11 @@ public class Enums
         User,
         Bot
     }
-
+    public enum RefundStatus
+    {
+        Pending,
+        Approved,
+        Rejected,
+        Completed
+    }
 }

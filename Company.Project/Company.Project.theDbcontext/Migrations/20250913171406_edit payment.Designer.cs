@@ -4,6 +4,7 @@ using Company.Project.theDbcontext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Company.Project.theDbcontext.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20250913171406_edit payment")]
+    partial class editpayment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -128,7 +131,7 @@ namespace Company.Project.theDbcontext.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Brands", (string)null);
+                    b.ToTable("Brands");
 
                     b.HasData(
                         new
@@ -302,7 +305,7 @@ namespace Company.Project.theDbcontext.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.ToTable("Chat", (string)null);
+                    b.ToTable("Chat");
                 });
 
             modelBuilder.Entity("Company.Project.Domain.Models.ChatMember", b =>
@@ -331,7 +334,7 @@ namespace Company.Project.theDbcontext.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ChatMember", (string)null);
+                    b.ToTable("ChatMember");
                 });
 
             modelBuilder.Entity("Company.Project.Domain.Models.ChatMessage", b =>
@@ -371,7 +374,7 @@ namespace Company.Project.theDbcontext.Migrations
 
                     b.HasIndex("SenderId");
 
-                    b.ToTable("ChatMessage", (string)null);
+                    b.ToTable("ChatMessage");
                 });
 
             modelBuilder.Entity("Company.Project.Domain.Models.ExampleClass", b =>
@@ -398,7 +401,7 @@ namespace Company.Project.theDbcontext.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ExClass", (string)null);
+                    b.ToTable("ExClass");
 
                     b.HasData(
                         new
@@ -450,7 +453,7 @@ namespace Company.Project.theDbcontext.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("NutritionFact", (string)null);
+                    b.ToTable("NutritionFact");
                 });
 
             modelBuilder.Entity("Company.Project.Domain.Models.OTP", b =>
@@ -482,7 +485,7 @@ namespace Company.Project.theDbcontext.Migrations
 
                     b.HasIndex("userId");
 
-                    b.ToTable("OTPs", (string)null);
+                    b.ToTable("OTPs");
                 });
 
             modelBuilder.Entity("Company.Project.Domain.Models.Order", b =>
@@ -576,7 +579,7 @@ namespace Company.Project.theDbcontext.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderItem", (string)null);
+                    b.ToTable("OrderItem");
                 });
 
             modelBuilder.Entity("Company.Project.Domain.Models.Payment", b =>
@@ -831,7 +834,7 @@ namespace Company.Project.theDbcontext.Migrations
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PaymentId")
+                    b.Property<int?>("PaymentId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("ProcessedDate")
@@ -854,10 +857,9 @@ namespace Company.Project.theDbcontext.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("Refund", (string)null);
-  //                  b.HasIndex("PaymentId");
+                    b.HasIndex("PaymentId");
 
-//                    b.ToTable("Refund");
+                    b.ToTable("Refund");
                 });
 
             modelBuilder.Entity("Company.Project.Domain.Models.Review", b =>
@@ -901,7 +903,7 @@ namespace Company.Project.theDbcontext.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("reviews", (string)null);
+                    b.ToTable("reviews");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -1220,15 +1222,11 @@ namespace Company.Project.theDbcontext.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Company.Project.Domain.Models.Payment", "Payment")
+                    b.HasOne("Company.Project.Domain.Models.Payment", null)
                         .WithMany("Refunds")
-                        .HasForeignKey("PaymentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PaymentId");
 
                     b.Navigation("Order");
-
-                    b.Navigation("Payment");
                 });
 
             modelBuilder.Entity("Company.Project.Domain.Models.Review", b =>

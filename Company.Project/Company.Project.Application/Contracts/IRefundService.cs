@@ -5,7 +5,7 @@ namespace Company.Project.Application.Contracts
 {
     public interface IRefundService
     {
-        Task<IEnumerable<Refund>> GetAllAsync(int skip, int take);
+        Task<IEnumerable<RefundDto>> GetAllAsync();
         Task<Refund> GetByIdAsync(int id);
         Task<Refund> CreateAsync(CreateRefundDto createDto);
         Task<Refund> UpdateAsync(UpdateRefundDto updateDto);

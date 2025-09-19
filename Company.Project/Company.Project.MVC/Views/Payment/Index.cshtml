@@ -1,0 +1,55 @@
+﻿@model IEnumerable<Company.Project.DTO.DTO.Payment.PaymentDto>
+
+<h2>Payments Management</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Governorate / Country</th>
+            <th>Street</th>
+            <th>ZIP</th>
+            <th>User Name</th>
+            <th>Full Name</th>
+            <th>Amount</th>
+            <th>Refunded</th>
+            <th>Date</th>
+            <th>Method</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var p in Model)
+        {
+            var addressParts = p.ShippingAddress.Split(',');
+            var name = addressParts.Length > 0 ? addressParts[0].Trim() : "";
+            var governorate = addressParts.Length > 1 ? addressParts[1].Trim() : "";
+            var country = addressParts.Length > 2 ? addressParts[2].Trim() : "";
+            var street = addressParts.Length > 3 ? addressParts[3].Trim() : "";
+            var zip = addressParts.Length > 4 ? addressParts[4].Trim() : "";
+
+            <tr>
+                <td>@name</td>
+                <td>@governorate @((!string.IsNullOrEmpty(country) ? "/" + country : ""))</td>
+                <td>@street</td>
+                <td>@zip</td>
+                <td>@p.UserName</td>
+                <td>@p.FullName</td>
+                <td>@p.Amount.ToString("C")</td>
+                <td>@p.RefundedAmount.ToString("C")</td>
+                <td>@p.PaymentDate.ToString("yyyy-MM-dd")</td>
+                <td>@p.PaymentMethod</td>
+                <td>
+                    @if (p.IsSuccessful)
+                    {
+                        <span class="badge bg-success">Success</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">Failed</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

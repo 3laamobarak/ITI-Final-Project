@@ -1,0 +1,66 @@
+﻿@model IEnumerable<Company.Project.DTO.DTO.BrandDTO.BrandDto>
+
+@{
+    ViewData["Title"] = "All Brands";
+}
+
+<div class="container-fluid mt-4">
+    <h2 class="mb-4 text-center text-primary">All Brands</h2>
+
+    <div class="d-flex justify-content-between mb-3">
+        <a asp-action="Create" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Create New Brand
+        </a>
+    </div>
+
+
+    <div class="card shadow-lg rounded-3">
+        <div class="card-body">
+            @if (Model != null && Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-hover w-100 align-middle text-center">
+                        <thead class="table-dark">
+                            <tr>
+                                <th style="width:80px;">ID</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th style="width:250px;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var brand in Model)
+                            {
+                                <tr>
+                                    <td>@brand.Id</td>
+                                    <td class="fw-semibold">@brand.Name</td>
+                                    <td>@(string.IsNullOrEmpty(brand.Description) ? "—" : brand.Description)</td>
+                                    <td>
+                                        <div class="d-flex justify-content-center flex-wrap gap-2">
+                                            <a asp-action="GetById" asp-route-id="@brand.Id" class="btn btn-sm btn-info text-white">
+                                                <i class="bi bi-eye"></i> Details
+                                            </a>
+                                            <a asp-action="Edit" asp-route-id="@brand.Id" class="btn btn-sm btn-warning">
+                                                <i class="bi bi-pencil"></i> Edit
+                                            </a>
+                                            <a asp-action="Delete" asp-route-id="@brand.Id" class="btn btn-sm btn-danger">
+                                                <i class="bi bi-trash"></i> Delete
+                                            </a>
+                                           
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info text-center mb-0">
+                    <i class="bi bi-info-circle"></i> No brands found.
+                </div>
+            }
+        </div>
+    </div>
+</div>

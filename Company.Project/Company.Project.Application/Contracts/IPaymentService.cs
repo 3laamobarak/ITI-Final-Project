@@ -11,5 +11,7 @@ namespace Company.Project.Application.Contracts
     {
         Task<string> CreatePaymentIntentAsync(CreatePaymentDto dto, string userId);
         Task<bool> ConfirmPaymentAsync(string paymentIntentId);
+        Task<List<PaymentDto>> GetAllPaymentsAsync();
+        Task<bool> RefundPaymentAsync(int paymentId, decimal amount);
     }
 }

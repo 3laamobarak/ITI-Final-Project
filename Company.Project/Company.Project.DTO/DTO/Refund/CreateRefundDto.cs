@@ -4,7 +4,8 @@
     {
         public string Reason { get; set; }
         public decimal Amount { get; set; }
-        public DateTime RequestDate { get; set; }
         public int OrderId { get; set; }
+        public int PaymentId { get; set; }
+
     }
 }
