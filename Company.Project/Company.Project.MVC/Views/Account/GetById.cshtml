@@ -1,0 +1,38 @@
+﻿@model Company.Project.Domain.Models.ApplicationUser
+
+@{
+    ViewData["Title"] = "User Details";
+}
+
+<h1>User Details</h1>
+
+<form>
+    <div class="form-group">
+        <label asp-for="Id" class="control-label"></label>
+        <input asp-for="Id" class="form-control" readonly />
+    </div>
+    <div class="form-group">
+        <label asp-for="UserName" class="control-label"></label>
+        <input asp-for="UserName" class="form-control" readonly />
+    </div>
+    <div class="form-group">
+        <label asp-for="Email" class="control-label"></label>
+        <input asp-for="Email" class="form-control" readonly />
+    </div>
+    <div class="form-group">
+        <label asp-for="FirstName" class="control-label"></label>
+        <input asp-for="FirstName" class="form-control" readonly />
+    </div>
+    <div class="form-group">
+        <label asp-for="LastName" class="control-label"></label>
+        <input asp-for="LastName" class="form-control" readonly />
+    </div>
+    <div class="form-group">
+        <label asp-for="NID" class="control-label"></label>
+        <input asp-for="NID" class="form-control" readonly />
+    </div>
+    <div>
+        @* <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a> *@
+        <a asp-action="GetAll" class="btn btn-secondary">Back to List</a>
+    </div>
+</form>

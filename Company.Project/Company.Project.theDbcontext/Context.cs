@@ -1,5 +1,6 @@
 ﻿using Company.Project.Domain.Enums;
 using Company.Project.Domain.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 namespace Company.Project.theDbcontext
@@ -189,6 +190,7 @@ namespace Company.Project.theDbcontext
                     .IsRequired()
                     .HasMaxLength(100);
             });
+            // modelBuilder.Entity<IdentityRoleClaim<string>>().ToTable("CustomRoleClaims");
 
 
 

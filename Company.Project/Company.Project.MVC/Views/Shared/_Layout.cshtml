@@ -109,7 +109,7 @@
         <ul class="nav flex-column">
             <!-- Dashboard -->
             <li class="nav-item">
-                <a class="nav-link" asp-controller="Dashboard" asp-action="Index">
+                <a class="nav-link" asp-controller="Home" asp-action="Index">
                     <span><i class="fa fa-home me-2 text-success"></i> Dashboard</span>
                 </a>
             </li>
@@ -157,9 +157,10 @@
                     <i class="fa fa-angle-left"></i>
                 </a>
                 <ul class="submenu nav flex-column">
-                    <li><a class="nav-link" asp-controller="Users" asp-action="Index">All Users</a></li>
-                    <li><a class="nav-link" asp-controller="Users" asp-action="Create">Add User</a></li>
-                    <li><a class="nav-link" asp-controller="Roles" asp-action="Index">Roles & Permissions</a></li>
+                    <li><a class="nav-link" asp-controller="Account" asp-action="GetAll">All Users</a></li>
+                    <li><a class="nav-link" asp-controller="Account" asp-action="AddRole">Add Roles </a></li>
+                    <li><a class="nav-link" asp-controller="Account" asp-action="AssignRole">Assign Role To User</a></li>
+                    <li><a class="nav-link" asp-controller="Account" asp-action="RemoveRole">Remove Role From User</a></li>
                 </ul>
             </li>
 
@@ -206,17 +207,33 @@
                     <li><a class="nav-link" asp-controller="Refund" asp-action="Index">All Refunds</a></li>
                 </ul>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="Account" asp-action="Logout">
+                    <span><i class="fa fa-sign-out-alt me-2 text-danger"></i> Logout</span>
+                </a>
+            </li>
         </ul>
     </aside>
-
+    <center>Hello 
+    @if (User.Identity.IsAuthenticated)
+    {
+        @User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value
+        
+    }
+    else
+    {
+        <h4>guest</h4>
+    }
+    </center>
+    
     <!-- Content -->
     <div class="content-wrapper">
-        <main role="main" class="pb-3">
+        @* <main role="main" class="pb-3"> *@
             @RenderBody()
-        </main>
-        <footer class="border-top pt-3">
-            &copy; 2025 - Company.Project.MVC
-        </footer>
+        @* </main> *@
+        @* <footer class="border-top pt-3"> *@
+        @*     &copy; 2025 - Company.Project.MVC *@
+        @* </footer> *@
     </div>
 
     <!-- Scripts -->
