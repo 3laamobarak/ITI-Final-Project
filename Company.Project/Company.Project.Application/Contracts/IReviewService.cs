@@ -15,5 +15,6 @@ namespace Company.Project.Application.Contracts
         Task<bool> UpdateReviewAsync(int reviewId, ReviewDto dto, string userId);
         Task<IEnumerable<ReviewResponseDto>> GetAllReviewsAsync(int skip, int take);
         Task<ReviewResponseDto?> GetReviewByIdAsync(int reviewId);
+        Task<IEnumerable<ReviewResponseDto>> GetUserReviewsAsync(string userId);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Company.Project.Application.Contracts;
+using Company.Project.Domain.Models;
 using Company.Project.DTO.DTO.Category;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,6 +22,22 @@ namespace Company.Project.PL.Controllers
             var categories = await _categoryService.GetAllAsync();
 
             return Ok(categories);
+        }
+
+
+
+        [HttpGet("{id}/products")]
+        public async Task<ActionResult<IEnumerable<Product>>> GetCategoryProducts(int id)
+        {
+            try
+            {
+                var products = await _categoryService.GetallCateogryProducts(id);
+                return Ok(products);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
 
         [HttpGet("{id:int}")]

@@ -14,7 +14,12 @@ namespace Company.Project.Domain.Interfaces
 
         IorderRepository OrderRepository { get; }
 
+        IUserRepository UserRepository { get; }
+
         IReviewRepository ReviewRepository { get; }
+        IChatBotMessageRepository ChatBotMessagesRepository { get; }
+
+
         IPaymentRepository PaymentRepository { get; }
         INutritionFactRepository NutritionFactRepository { get; }
         IOrderItemRepository OrderItemRepository { get; }

@@ -13,8 +13,8 @@ namespace Company.Project.Domain.Models
 
     public string? DailyValue { get; set; }    // "100%"
 
-    public int ProductId { get; set; }
-    public Product Product { get; set; } = null!;
-}
+        public int ProductId { get; set; }
+        public Product Product { get; set; } = null!;
+    }
 
 }

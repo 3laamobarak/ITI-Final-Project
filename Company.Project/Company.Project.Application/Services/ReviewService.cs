@@ -30,12 +30,21 @@ namespace Company.Project.Application.Services
                 Id = r.Id,
                 Comment = r.Comment,
                 Rating = r.Rating,
-                UserName = r.User.UserName
+                UserName = r.User.UserName,
+                UserId = r.UserId,
+                CreatedAt = r.CreatedAt
             });
         }
 
         public async Task AddReviewAsync(int productId, ReviewDto dto, string userId)
         {
+            // Check if user already has a review for this product
+            var existingReview = await _unitOfWork.ReviewRepository.GetUserReviewForProductAsync(productId, userId);
+            if (existingReview != null)
+            {
+                throw new InvalidOperationException("User has already reviewed this product. Only one review per product is allowed.");
+            }
+
             var review = new Review
             {
                 ProductId = productId,
@@ -54,8 +63,7 @@ namespace Company.Project.Application.Services
             if (review == null || review.UserId != userId)
                 return false;
 
-            _unitOfWork.ReviewRepository.DeleteAsync(review);
-            await _unitOfWork.ReviewRepository.SaveChangesAsync();
+            await _unitOfWork.ReviewRepository.DeleteAsync(review);
             return true;
         }
 
@@ -96,6 +104,22 @@ namespace Company.Project.Application.Services
                 Comment = review.Comment,
                 Rating = review.Rating,
                 UserName = review.User.UserName
+            });
+        }
+
+        public async Task<IEnumerable<ReviewResponseDto>> GetUserReviewsAsync(string userId)
+        {
+            var reviews = await _unitOfWork.ReviewRepository.GetUserReviewsAsync(userId);
+            return reviews.Select(r => new ReviewResponseDto
+            {
+                Id = r.Id,
+                Comment = r.Comment,
+                Rating = r.Rating,
+                UserName = r.User.UserName,
+                UserId = r.UserId,
+                CreatedAt = r.CreatedAt,
+                ProductId = r.ProductId,
+                ProductName = r.Product?.Name
             });
         }
     }

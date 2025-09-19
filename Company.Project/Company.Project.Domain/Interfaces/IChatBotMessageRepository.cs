@@ -7,9 +7,9 @@ using Company.Project.Domain.Models;
 
 namespace Company.Project.Domain.Interfaces
 {
-    public interface IProductRepository : IBaseRepository<Product>
+    public interface IChatBotMessageRepository : IBaseRepository<ChatBotMessages>
     {
-        Task<IEnumerable<Product>> SearchAsync(string query);
-        Task<IEnumerable<Product>> GetProductsByCategoryIdAsync(int categoryId);
+        Task<IEnumerable<ChatBotMessages>> GetUserMessagesAsync(string userId);
     }
+
 }

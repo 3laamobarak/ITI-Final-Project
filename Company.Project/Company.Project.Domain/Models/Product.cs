@@ -8,7 +8,7 @@ namespace Company.Project.Domain.Models
         public decimal Price { get; set; }
         public string Description { get; set; }
         public int StockQuantity { get; set; }
-        public string? Overview { get; set; }  
+        public string? Overview { get; set; }
         public string? SuggestedUse { get; set; }
         public string? Warnings { get; set; } 
         public string? Disclaimer { get; set; } 
@@ -36,7 +36,7 @@ namespace Company.Project.Domain.Models
         [ForeignKey("Brand")]
         public int BrandId { get; set; }
         public Brand Brand { get; set; }
-        
+
         public decimal AverageRating
         {
             get
@@ -53,6 +53,6 @@ namespace Company.Project.Domain.Models
 
         public ICollection<Review> Reviews { get; set; } = new List<Review>();
         public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
-        
+
     }
 }

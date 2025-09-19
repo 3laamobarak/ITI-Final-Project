@@ -15,8 +15,10 @@ namespace Company.Project.Domain.Models
         public Order Order { get; set; }
 
         // Additional properties can be added as needed
-        public int PaymentId { get; set; }
-        public Payment Payment { get; set; }
+
+        //public int PaymentId { get; set; }
+        //public Payment Payment { get; set; }
+
 
     }
 }

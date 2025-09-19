@@ -50,5 +50,27 @@ namespace Company.Project.PL.Controllers
                 return Unauthorized("You can only delete your own reviews.");
             return NoContent();
         }
+
+        // GET /api/reviews/user-reviews
+        [Authorize]
+        [HttpGet("user-reviews")]
+        public async Task<IActionResult> GetUserReviews()
+        {
+            var userId = _userManager.GetUserId(User);
+            var reviews = await _reviewService.GetUserReviewsAsync(userId);
+            return Ok(reviews);
+        }
+
+        // PUT /api/reviews/{id}
+        [Authorize]
+        [HttpPut("reviews/{id}")]
+        public async Task<IActionResult> UpdateReview(int id, [FromBody] ReviewDto dto)
+        {
+            var userId = _userManager.GetUserId(User);
+            var success = await _reviewService.UpdateReviewAsync(id, dto, userId);
+            if (!success)
+                return Unauthorized("You can only update your own reviews.");
+            return Ok();
+        }
     }
 }
