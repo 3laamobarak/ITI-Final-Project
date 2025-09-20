@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using Company.Project.Domain.Models;
 using Company.Project.MVC.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -22,7 +23,7 @@ namespace Company.Project.MVC.Controllers
             SignInManager = _signInManager;
             RoleManager = roleManager;
         }
-        
+        [Authorize("admin")]
         public async Task <IActionResult> GetAll()
         {
             var users =UserManager.Users.Select(u=>new UserViewModel
@@ -40,6 +41,7 @@ namespace Company.Project.MVC.Controllers
             };
             return View(users);
         }
+        [Authorize("admin")]
         public async Task <IActionResult> GetById(string id)
         {
             var user = await UserManager.FindByIdAsync(id);
@@ -49,6 +51,7 @@ namespace Company.Project.MVC.Controllers
             }
             return View(user);
         }
+        [Authorize("admin")]
         public async Task<IActionResult> Delete(string id)
         {
             var user = await UserManager.FindByIdAsync(id);
@@ -76,7 +79,6 @@ namespace Company.Project.MVC.Controllers
             }
             return RedirectToAction("Error", "Home");
         }
-
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel newAccount)
         {
@@ -128,7 +130,6 @@ namespace Company.Project.MVC.Controllers
             }
             return RedirectToAction("Error", "Home");
         }
-
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel loginUser, string returnUrl = "/Home/Index")
         {
@@ -173,13 +174,14 @@ namespace Company.Project.MVC.Controllers
             await SignInManager.SignOutAsync();
             return RedirectToAction("Login", "Account");
         }
-
+        [Authorize("admin")]
         public IActionResult AddRole()
         {
             ViewBag.Roles = RoleManager.Roles.ToList();
             return View();
         }
-        [HttpPost]
+        [Authorize("admin")]
+        [HttpPost]    
         public async Task<IActionResult> SaveRole(RoleViewModel roleViewModel)
         {
             if (ModelState.IsValid)
@@ -200,6 +202,7 @@ namespace Company.Project.MVC.Controllers
             }
             return View("AddRole", roleViewModel);
         }
+//        [Authorize("admin")]
         public IActionResult AssignRole()
         {
             var users = UserManager.Users.ToList();
@@ -229,6 +232,7 @@ namespace Company.Project.MVC.Controllers
             return View();
         }
         [HttpPost]
+    //    [Authorize("admin")]
         public async Task<IActionResult> AssignRole(AssignRoleViewModel assignRole)
         {
             if (ModelState.IsValid)
@@ -270,6 +274,7 @@ namespace Company.Project.MVC.Controllers
 
             return AssignRole(); // Re-populate ViewBag and return the view
         }
+        [Authorize("admin")]
         public IActionResult RemoveRole(string username)
         {
             var user = UserManager.Users.FirstOrDefault(u => u.UserName == username);
@@ -291,6 +296,7 @@ namespace Company.Project.MVC.Controllers
 
             return View(new AssignRoleViewModel { UserName = user.UserName });
         }
+        [Authorize("admin")]
         [HttpPost]
         public async Task<IActionResult> RemoveRole(AssignRoleViewModel assignRole)
         {
@@ -356,6 +362,7 @@ namespace Company.Project.MVC.Controllers
 
             return View(assignRole);
         }
+        [Authorize]
         public async Task<IActionResult> Profile()
         {
             var user = await UserManager.FindByNameAsync(User.Identity.Name);
@@ -365,9 +372,11 @@ namespace Company.Project.MVC.Controllers
             }
             return View(user);
         }
+        [Authorize]
         public async Task<IActionResult> SaveProfile(ApplicationUser editedUser)
         {
-            var user = await UserManager.FindByIdAsync(editedUser.Id);
+            // var user = await UserManager.FindByIdAsync(editedUser.Id);   
+            var user = await UserManager.FindByNameAsync(editedUser.UserName);
             if (user == null)
             {
                 return NotFound();
@@ -390,11 +399,13 @@ namespace Company.Project.MVC.Controllers
             }
             return View("Profile", user);
         }
+        [Authorize]
         public IActionResult ChangePassword()
         {
             return View();
         }
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel changePassword)
         {
             if (ModelState.IsValid)
@@ -418,6 +429,7 @@ namespace Company.Project.MVC.Controllers
             }
             return View("ChangePassword", changePassword);
         }
+        [Authorize]
         public async Task<IActionResult> DeleteRole(string roleName)
         {
             var role = await RoleManager.FindByNameAsync(roleName);

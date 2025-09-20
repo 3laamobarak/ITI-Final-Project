@@ -1,7 +1,7 @@
 ﻿using Company.Project.Application.Contracts;
 using Company.Project.DTO.DTO.ChatMessage;
-using Company.Project.theDbcontext;
 using Microsoft.AspNetCore.SignalR;
+
 namespace Company.Project.PL.Hub
 {
     public class ChatHub : Microsoft.AspNetCore.SignalR.Hub
@@ -22,10 +22,8 @@ namespace Company.Project.PL.Hub
                 Content = messageContent,
                 IsFromAdmin = false
             };
-            
-            await _messageService.SendMessageAsync(chatMessageDto);
 
-            // Send the message to all clients in the "Admins" group.
+            await _messageService.SendMessageAsync(chatMessageDto);
             await Clients.Group("admins").SendAsync("ReceiveMessage", userId, messageContent);
         }
 
@@ -38,18 +36,14 @@ namespace Company.Project.PL.Hub
                 Content = messageContent,
                 IsFromAdmin = true
             };
-            
-            await _messageService.SendMessageAsync(chatMessageDto);
 
-            // Send the reply to the specific user.
+            await _messageService.SendMessageAsync(chatMessageDto);
             await Clients.User(targetUserId).SendAsync("ReceiveMessage", adminId, messageContent);
         }
 
         public override async Task OnConnectedAsync()
         {
-            // For a production app, you would use a proper authentication mechanism to identify the admin.
-            // For this example, we assume a simple user identifier.
-            if (Context.UserIdentifier == "adminUserId") // Replace with your logic for identifying an admin
+            if (Context.UserIdentifier == "adminUserId")
             {
                 await Groups.AddToGroupAsync(Context.ConnectionId, "Admins");
             }
