@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Company.Project.Domain.Models
 {
-    public class BaseEntity 
+    public class BaseEntity
     {
         [Key]
         public int Id { get; set; }

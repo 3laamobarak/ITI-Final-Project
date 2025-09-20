@@ -8,5 +8,9 @@ namespace Company.Project.MVC.Controllers
         {
             return View();
         }
+        public IActionResult Error()
+        {
+            return View();
+        }
     }
 }

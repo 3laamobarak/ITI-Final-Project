@@ -1,5 +1,6 @@
 ﻿using Company.Project.Domain.Enums;
 using Company.Project.Domain.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 namespace Company.Project.theDbcontext
@@ -14,6 +15,12 @@ namespace Company.Project.theDbcontext
         {
           
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Refund>()
+                .HasOne(r => r.Payment)
+                .WithMany(p => p.Refunds)
+                .HasForeignKey(r => r.PaymentId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             #region Seeding Data
 
@@ -189,6 +196,7 @@ namespace Company.Project.theDbcontext
                     .IsRequired()
                     .HasMaxLength(100);
             });
+            // modelBuilder.Entity<IdentityRoleClaim<string>>().ToTable("CustomRoleClaims");
 
 
 
@@ -232,7 +240,12 @@ namespace Company.Project.theDbcontext
         public DbSet<ProductCategory> productCategories { get; set; }
         public DbSet<Brand> Brands { get; set; }
         public DbSet<OTP> OTPs { get; set; }
-        
+
+        public DbSet<ChatBotMessages> ChatBotMessages { get; set; }
+        public DbSet<ChatMessage> ChatMessages { get; set; }
+
+
+
         #endregion
 
     }

@@ -30,7 +30,7 @@ namespace Company.Project.Application.Services
                 RequestDate = r.RequestDate,
                 Status = (int)r.Status,
                 IsDeleted = r.IsDeleted,
-                PaymentId = r.PaymentId,
+                PaymentId = (int)r.PaymentId,
                 UserName = r.Payment.User?.UserName,
                 FullName = r.Payment.User != null ? $"{r.Payment.User.FirstName} {r.Payment.User.LastName}" : null
             }).ToList();

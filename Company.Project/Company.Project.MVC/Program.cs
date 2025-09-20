@@ -61,7 +61,7 @@ namespace Company.Project.MVC
             // Add controllers
             builder.Services.AddControllersWithViews();
 
-            builder.Services.AddDistributedMemoryCache(); 
+            builder.Services.AddDistributedMemoryCache();
             builder.Services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
@@ -71,7 +71,7 @@ namespace Company.Project.MVC
             builder.Services.AddHttpClient();
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddDbContext<Context>(options =>
-               options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
             // allow CORS
             builder.Services.AddCors(options =>
             {
@@ -82,8 +82,9 @@ namespace Company.Project.MVC
             });
             // bind email 
             builder.Services.Configure<EmailSettingsDTO>(builder.Configuration.GetSection("EmailSettings"));
-            
-            builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<Context>().AddDefaultTokenProviders();
+
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<Context>()
+                .AddDefaultTokenProviders();
 
             // call the infrastructure and application methods
             builder.Services.Application_CS(builder.Configuration);
@@ -92,6 +93,12 @@ namespace Company.Project.MVC
             builder.Services.AddScoped<IPaymentService, StripePaymentService>();
             builder.Services.AddScoped<IRefundService, RefundService>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            builder.Services.AddAuthorization(options =>
+            {
+                options.AddPolicy("admin", policy => policy.RequireRole("admin"));
+            });
+
             var app = builder.Build();
 
         
@@ -102,7 +109,7 @@ namespace Company.Project.MVC
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            
+            app.UseHttpsRedirection();
             
             app.UseStaticFiles();
 

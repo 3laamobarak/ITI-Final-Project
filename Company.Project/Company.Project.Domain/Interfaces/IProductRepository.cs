@@ -13,5 +13,6 @@ namespace Company.Project.Domain.Interfaces
 
         Task<IEnumerable<Product>> GetAllWithIncludesAsync();
 
+        Task<IEnumerable<Product>> GetProductsByCategoryIdAsync(int categoryId);
     }
 }

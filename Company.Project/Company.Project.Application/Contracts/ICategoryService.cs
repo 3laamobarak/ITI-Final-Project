@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Company.Project.Domain.Models;
 using Company.Project.DTO.DTO.Category;
 using Company.Project.DTO.DTO.Product;
 
@@ -16,6 +17,8 @@ namespace Company.Project.Application.Contracts
         Task<CategoryDetailDto> CreateAsync(CreateCategoryDto createDto);
         Task<CategoryDetailDto> UpdateAsync(UpdateCategoryDto updateDto);
         Task DeleteAsync(int id);
-        
+        Task<IEnumerable<Product>> GetallCateogryProducts(int categoryId);
+
+
     }
 }

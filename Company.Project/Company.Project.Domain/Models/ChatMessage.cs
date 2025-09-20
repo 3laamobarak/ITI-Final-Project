@@ -5,20 +5,11 @@ namespace Company.Project.Domain.Models
 {
     public class ChatMessage : BaseEntity
     {
-
-        public string MessageContent { get; set; }
-        public MessageType MessageType { get; set; }
-
-        [ForeignKey("User")]
         public string SenderId { get; set; }
-        public ApplicationUser User { get; set; }
-        
-        [ForeignKey("Chat")]
-        public int ChatId { get; set; }
-        public Chat Chat { get; set; }
-        
-        public ICollection<ChatMember> ChatMembers { get; set; } = new List<ChatMember>();
-        
-        
+        public string ReceiverId { get; set; }
+        public string Content { get; set; }
+        public DateTime Timestamp { get; set; }
+        public bool IsFromAdmin { get; set; }
+        public bool IsRead { get; set; }= false;
     }
 }

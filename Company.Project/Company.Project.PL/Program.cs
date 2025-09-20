@@ -3,7 +3,6 @@ using Company.Project.Application;
 using Company.Project.Application.Contracts;
 using Company.Project.Application.Services;
 using Company.Project.Domain.Interfaces;
-using Company.Project.Domain.Models;
 using Company.Project.DTO.DTO.ExampleClass;
 using Company.Project.DTO.DTO.OTPs;
 using Company.Project.Infrastructure;
@@ -16,7 +15,12 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Net.Http.Headers;
 using Stripe;
+using Company.Project.Domain.Models;
+using Company.Project.DTO.DTO.Auth;
+using Company.Project.PL.Hub;
+
 namespace Company.Project.PL
 
 {
@@ -29,8 +33,12 @@ namespace Company.Project.PL
             // Add services to the container.
             StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
             builder.Services.AddControllers();
+            //use signalR
+            builder.Services.AddSignalR();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
+            //jwt configuration
+            builder.Services.Configure<JWT>(builder.Configuration.GetSection("JWT"));
             // allow CORS
             builder.Services.AddCors(options =>
             {
@@ -60,9 +68,9 @@ namespace Company.Project.PL
                 options.TokenValidationParameters = new TokenValidationParameters()
                 {
                     ValidateIssuer = true,
-                    ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                    ValidIssuer = builder.Configuration["JWT:Issuer"],
                     ValidateAudience = true,
-                    ValidAudience = builder.Configuration["Jwt:Audience"],
+                    ValidAudience = builder.Configuration["JWT:Audience"],
                     IssuerSigningKey = new SymmetricSecurityKey(
                         Encoding.UTF8.GetBytes(builder.Configuration["JWT:SecritKey"]))
                 };
@@ -110,7 +118,31 @@ namespace Company.Project.PL
                     fv.RegisterValidatorsFromAssemblyContaining<CreateExampleClassDto>()
                       .RegisterValidatorsFromAssemblyContaining<UpdateExampleClassDto>();
                 });
+
+//            builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddScoped<IOrderSevice, OrderService>();
+            builder.Services.AddScoped<IorderRepository, OrderRepository>();
+            builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
+            builder.Services.AddScoped<IReviewService, Company.Project.Application.Services.ReviewService>();
+            builder.Services.AddScoped<IEmailService, EmailService>();
+            builder.Services.AddScoped<IOTPService, OTPService>();
+            builder.Services.AddScoped<IOTPRepository, OTPRepository>();
+            builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<IChatBotMessageRepository, ChatBotMessageRepository>();
+            builder.Services.AddHttpClient<IChatBotMessageService, ChatBotMessageService>(client =>
+            {
+                client.BaseAddress = new Uri("https://openrouter.ai/api/v1/"); // ? OpenRouter base URL
+                client.DefaultRequestHeaders.Authorization =
+                    new AuthenticationHeaderValue("Bearer", "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"); // ? Your OpenRouter token
+            });
+            builder.Services.AddScoped<IMessageService, MessageService>();
+            builder.Services.AddScoped<IMessageRepository, MessageRepository>();
             
+
+
+
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -120,9 +152,11 @@ namespace Company.Project.PL
                 app.UseSwaggerUI();
             }
             app.UseCors("AllowAllOrigins");
+            app.UseHttpsRedirection();
 
             app.UseAuthentication();
             app.UseAuthorization();
+            app.MapHub<ChatHub>("/chathub");
             
             app.MapControllers();
 

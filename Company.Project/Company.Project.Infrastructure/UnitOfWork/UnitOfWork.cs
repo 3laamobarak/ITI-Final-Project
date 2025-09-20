@@ -2,24 +2,34 @@
 using Company.Project.Domain.Models;
 using Company.Project.Infrastructure.Repositories;
 using Company.Project.theDbcontext;
+using Microsoft.AspNetCore.Identity;
 
 namespace Company.Project.Infrastructure.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {
         private readonly Context _context;
+        private readonly UserManager<ApplicationUser> _userManager;
+
         private IBrandRepository _brandRepository;
         public ICartItemRepository _cartItemRepository;
         public ICategoryRepository _categoryRepository;
+
+        public IUserRepository _userRepository;
+        
+
+
         private IExampleClassRepository _exampleClassRepository;
         public IProductRepository _productRepository;
         public IorderRepository _orderRepository;
+        public IReviewRepository _reviewRepository;
+        private IChatBotMessageRepository _chatBotMessagesRepository;
+
         public IBaseRepository<OTP> OTPs { get; private set; }
         private INutritionFactRepository _nutritionFactRepository;
         private IOrderItemRepository _orderItemRepository;
         private IProductCategoryRepository _productCategoryRepository;
         private IRefundRepository _refundRepository;
-        public IReviewRepository _reviewRepository;
         public UnitOfWork(Context context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
@@ -84,10 +94,25 @@ namespace Company.Project.Infrastructure.UnitOfWork
         {
             get { return _productCategoryRepository ??= new ProductCategoryRepository(_context); }
         }
+
+        public IUserRepository UserRepository
+        {
+            get { return _userRepository ??= new UserRepository(_context, _userManager); }
+        }
+
+
         public IRefundRepository RefundRepository
         {
             get { return _refundRepository ??= new RefundRepository(_context); }
         }
+
+
+        public IChatBotMessageRepository ChatBotMessagesRepository
+        {
+            get { return _chatBotMessagesRepository ??= new ChatBotMessageRepository(_context); }
+        }
+
+
         public async Task Completeasync()
         {
             await _context.SaveChangesAsync();
@@ -98,6 +123,9 @@ namespace Company.Project.Infrastructure.UnitOfWork
         {
             get { return _paymentRepository ??= new PaymentRepository(_context); }
         }
+
+
+
         public void Dispose()
         {
             _context.Dispose();

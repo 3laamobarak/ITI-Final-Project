@@ -37,6 +37,11 @@ public class Enums
         Female
         
     }
+    public enum MessageSender
+    {
+        User,
+        Bot
+    }
     public enum RefundStatus
     {
         Pending,

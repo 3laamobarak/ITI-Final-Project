@@ -169,7 +169,7 @@ public class StripePaymentService : IPaymentService
             var refundEntity = new DomainRefund
             {
                 OrderId = payment.OrderId,
-                PaymentId = payment.Id,   
+                //PaymentId = payment.Id,   
                 Amount = amount,
                 Reason = "Refund via Stripe",
                 RequestDate = DateTime.UtcNow,
