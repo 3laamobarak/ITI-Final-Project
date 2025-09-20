@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Company.Project.theDbcontext.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20250919130355_finalmig")]
-    partial class finalmig
+    [Migration("20250920150012_first")]
+    partial class first
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -308,6 +308,48 @@ namespace Company.Project.theDbcontext.Migrations
                     b.ToTable("Chat");
                 });
 
+            modelBuilder.Entity("Company.Project.Domain.Models.ChatBotMessages", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("ChatId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Sender")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChatId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ChatBotMessages");
+                });
+
             modelBuilder.Entity("Company.Project.Domain.Models.ChatMember", b =>
                 {
                     b.Property<int>("Id")
@@ -319,9 +361,6 @@ namespace Company.Project.theDbcontext.Migrations
                     b.Property<int>("ChatId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ChatMessageId")
-                        .HasColumnType("int");
-
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -329,8 +368,6 @@ namespace Company.Project.theDbcontext.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ChatId");
-
-                    b.HasIndex("ChatMessageId");
 
                     b.HasIndex("UserId");
 
@@ -345,8 +382,9 @@ namespace Company.Project.theDbcontext.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ChatId")
-                        .HasColumnType("int");
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -354,27 +392,29 @@ namespace Company.Project.theDbcontext.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<string>("MessageContent")
+                    b.Property<bool>("IsFromAdmin")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ReceiverId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("MessageType")
-                        .HasColumnType("int");
-
                     b.Property<string>("SenderId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ChatId");
-
-                    b.HasIndex("SenderId");
-
-                    b.ToTable("ChatMessage");
+                    b.ToTable("ChatMessages");
                 });
 
             modelBuilder.Entity("Company.Project.Domain.Models.ExampleClass", b =>
@@ -834,7 +874,7 @@ namespace Company.Project.theDbcontext.Migrations
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PaymentId")
+                    b.Property<int?>("PaymentId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("ProcessedDate")
@@ -1065,6 +1105,21 @@ namespace Company.Project.theDbcontext.Migrations
                         .HasForeignKey("ApplicationUserId");
                 });
 
+            modelBuilder.Entity("Company.Project.Domain.Models.ChatBotMessages", b =>
+                {
+                    b.HasOne("Company.Project.Domain.Models.Chat", null)
+                        .WithMany("ChatMessages")
+                        .HasForeignKey("ChatId");
+
+                    b.HasOne("Company.Project.Domain.Models.ApplicationUser", "User")
+                        .WithMany("ChatMessages")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Company.Project.Domain.Models.ChatMember", b =>
                 {
                     b.HasOne("Company.Project.Domain.Models.Chat", "Chat")
@@ -1073,32 +1128,9 @@ namespace Company.Project.theDbcontext.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Company.Project.Domain.Models.ChatMessage", null)
-                        .WithMany("ChatMembers")
-                        .HasForeignKey("ChatMessageId");
-
                     b.HasOne("Company.Project.Domain.Models.ApplicationUser", "User")
                         .WithMany("ChatMembers")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Chat");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Company.Project.Domain.Models.ChatMessage", b =>
-                {
-                    b.HasOne("Company.Project.Domain.Models.Chat", "Chat")
-                        .WithMany("ChatMessages")
-                        .HasForeignKey("ChatId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Company.Project.Domain.Models.ApplicationUser", "User")
-                        .WithMany("ChatMessages")
-                        .HasForeignKey("SenderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1225,8 +1257,7 @@ namespace Company.Project.theDbcontext.Migrations
                     b.HasOne("Company.Project.Domain.Models.Payment", "Payment")
                         .WithMany("Refunds")
                         .HasForeignKey("PaymentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Order");
 
@@ -1331,11 +1362,6 @@ namespace Company.Project.theDbcontext.Migrations
                     b.Navigation("ChatMembers");
 
                     b.Navigation("ChatMessages");
-                });
-
-            modelBuilder.Entity("Company.Project.Domain.Models.ChatMessage", b =>
-                {
-                    b.Navigation("ChatMembers");
                 });
 
             modelBuilder.Entity("Company.Project.Domain.Models.Order", b =>

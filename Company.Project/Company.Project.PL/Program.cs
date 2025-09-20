@@ -18,6 +18,9 @@ using Microsoft.OpenApi.Models;
 using System.Net.Http.Headers;
 using Stripe;
 using Company.Project.Domain.Models;
+using Company.Project.DTO.DTO.Auth;
+using Company.Project.PL.Hub;
+
 namespace Company.Project.PL
 
 {
@@ -30,8 +33,12 @@ namespace Company.Project.PL
             // Add services to the container.
             StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
             builder.Services.AddControllers();
+            //use signalR
+            builder.Services.AddSignalR();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
+            //jwt configuration
+            builder.Services.Configure<JWT>(builder.Configuration.GetSection("JWT"));
             // allow CORS
             builder.Services.AddCors(options =>
             {
@@ -112,7 +119,7 @@ namespace Company.Project.PL
                       .RegisterValidatorsFromAssemblyContaining<UpdateExampleClassDto>();
                 });
 
-            
+//            builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IOrderSevice, OrderService>();
             builder.Services.AddScoped<IorderRepository, OrderRepository>();
             builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
@@ -129,6 +136,9 @@ namespace Company.Project.PL
                 client.DefaultRequestHeaders.Authorization =
                     new AuthenticationHeaderValue("Bearer", "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"); // ? Your OpenRouter token
             });
+            builder.Services.AddScoped<IMessageService, MessageService>();
+            builder.Services.AddScoped<IMessageRepository, MessageRepository>();
+            
 
 
 
@@ -142,9 +152,11 @@ namespace Company.Project.PL
                 app.UseSwaggerUI();
             }
             app.UseCors("AllowAllOrigins");
+            app.UseHttpsRedirection();
 
             app.UseAuthentication();
             app.UseAuthorization();
+            app.MapHub<ChatHub>("/chathub");
             
             app.MapControllers();
 

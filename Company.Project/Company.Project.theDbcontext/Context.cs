@@ -16,6 +16,12 @@ namespace Company.Project.theDbcontext
           
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<Refund>()
+                .HasOne(r => r.Payment)
+                .WithMany(p => p.Refunds)
+                .HasForeignKey(r => r.PaymentId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             #region Seeding Data
 
             modelBuilder.Entity<ExampleClass>().HasData(
@@ -236,6 +242,7 @@ namespace Company.Project.theDbcontext
         public DbSet<OTP> OTPs { get; set; }
 
         public DbSet<ChatBotMessages> ChatBotMessages { get; set; }
+        public DbSet<ChatMessage> ChatMessages { get; set; }
 
 
 

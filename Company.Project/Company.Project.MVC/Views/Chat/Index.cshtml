@@ -1,0 +1,204 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Chat Dashboard</title>
+<style>
+body {
+font-family: Arial, sans-serif;
+background-color: #f4f4f4;
+margin: 0;
+padding: 20px;
+}
+
+    .chat-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        display: flex;
+        height: 80vh;
+    }
+
+    .user-list {
+        width: 30%;
+        border-right: 1px solid #eee;
+        overflow-y: auto;
+        padding: 15px;
+        background-color: #f9f9f9;
+    }
+
+    .chat-box {
+        width: 70%;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+    }
+
+    .messages {
+        flex-grow: 1;
+        padding: 15px;
+        overflow-y: auto;
+    }
+
+    .message-input {
+        padding: 15px;
+        border-top: 1px solid #eee;
+        display: flex;
+        background-color: #f9f9f9;
+    }
+
+    .message-input input {
+        flex-grow: 1;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        margin-right: 10px;
+    }
+
+    .message-input button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .user-item {
+        padding: 10px;
+        cursor: pointer;
+        border-bottom: 1px solid #ddd;
+        font-weight: bold;
+    }
+    .user-item.active {
+        background-color: #e0f0ff;
+    }
+
+    .message {
+        margin-bottom: 10px;
+        padding: 10px;
+        border-radius: 8px;
+        word-wrap: break-word;
+    }
+
+    .message.admin {
+        background-color: #d1e7dd;
+        text-align: right;
+        margin-left: auto;
+    }
+
+    .message.user {
+        background-color: #f8d7da;
+        text-align: left;
+        margin-right: auto;
+    }
+</style>
+
+</head>
+<body>
+
+<div class="chat-container">
+    <div class="user-list" id="userList">
+        <h3>Active Chats</h3>
+        <!-- User list will be populated here by JavaScript -->
+    </div>
+
+    <div class="chat-box">
+        <div class="messages" id="messagesList">
+            <!-- Messages will be displayed here -->
+        </div>
+        <div class="message-input">
+            <input type="text" id="messageInput" placeholder="Type a message...">
+            <button id="sendButton">Send</button>
+        </div>
+    </div>
+</div>
+
+<!-- SignalR client library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/chatHub") // This URL must match the one in your API's Program.cs
+            .withAutomaticReconnect()
+            .build();
+
+        let targetUserId = ""; // This variable will store the user ID you are currently chatting with.
+        let users = new Set(); // To keep track of unique users.
+
+        // Start the connection
+        connection.start()
+            .then(() => {
+                console.log("Connected to SignalR hub.");
+            })
+            .catch(err => console.error(err.toString()));
+
+        // Function to add a message to the UI
+        function addMessageToUI(senderId, message, isFromAdmin) {
+            const messagesList = document.getElementById("messagesList");
+            const li = document.createElement("div");
+            li.className = "message";
+            li.classList.add(isFromAdmin ? "admin" : "user");
+            li.textContent = `${senderId}: ${message}`;
+            messagesList.appendChild(li);
+            // Scroll to the bottom
+            messagesList.scrollTop = messagesList.scrollHeight;
+        }
+
+        // Function to add a user to the user list
+        function addUserToList(userId) {
+            if (!users.has(userId)) {
+                users.add(userId);
+                const userList = document.getElementById("userList");
+                const userDiv = document.createElement("div");
+                userDiv.className = "user-item";
+                userDiv.textContent = `User: ${userId}`;
+                userDiv.setAttribute('data-user-id', userId);
+                userDiv.addEventListener('click', () => {
+                    // Activate the clicked user and set the target user for replies
+                    document.querySelectorAll('.user-item').forEach(item => item.classList.remove('active'));
+                    userDiv.classList.add('active');
+                    targetUserId = userId;
+                    // You could add logic here to fetch the chat history for this user via an API call
+                });
+                userList.appendChild(userDiv);
+            }
+        }
+
+        // Event listener for receiving messages from the hub
+        connection.on("ReceiveMessage", (senderId, message) => {
+            // If a new user starts a conversation, add them to the list
+            addUserToList(senderId);
+
+            // If the message is for the currently active user, display it
+            if (targetUserId === senderId) {
+                addMessageToUI(senderId, message, false);
+            }
+        });
+
+        // Event handler for the send button
+        document.getElementById("sendButton").addEventListener("click", () => {
+            const messageInput = document.getElementById("messageInput");
+            const message = messageInput.value.trim();
+
+            if (message && targetUserId) {
+                // This invokes the "SendReplyToUser" method on the SignalR Hub.
+                // The admin's ID is hardcoded for this example.
+                connection.invoke("SendReplyToUser", "Admin", message, targetUserId)
+                    .then(() => {
+                        addMessageToUI("Admin", message, true);
+                        messageInput.value = "";
+                    })
+                    .catch(err => console.error(err.toString()));
+            }
+        });
+
+    });
+</script>
+
+</body>
+</html>

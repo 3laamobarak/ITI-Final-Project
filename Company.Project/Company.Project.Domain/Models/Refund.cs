@@ -16,8 +16,8 @@ namespace Company.Project.Domain.Models
 
         // Additional properties can be added as needed
 
-        public int PaymentId { get; set; }
-        public Payment Payment { get; set; }
+        public int? PaymentId { get; set; }
+        public Payment? Payment { get; set; }
 
 
     }

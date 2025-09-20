@@ -97,7 +97,7 @@ namespace Company.Project.MVC
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            
+            app.UseHttpsRedirection();
             
             app.UseStaticFiles();
 
