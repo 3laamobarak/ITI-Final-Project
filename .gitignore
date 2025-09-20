@@ -47,3 +47,4 @@ Company.Project.Domain/obj/
 Company.Project.Infrastructure/obj/
 Company.Project.PL/obj/
 Company.Project.theDbcontext/obj/
+/Company.Project/Company.Project.MVC/Views/Payment/OrderDetails.cshtml
