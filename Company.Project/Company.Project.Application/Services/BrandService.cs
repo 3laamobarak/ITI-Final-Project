@@ -15,9 +15,12 @@ namespace Company.Project.Application.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<BrandDto>> GetAllAsync(int skip, int take)
+        // gett all brands
+           
+
+        public async Task<IEnumerable<BrandDto>> GetAllAsync()
         {
-            var brands = await _unitOfWork.BrandRepository.GetAllAsync(skip, take);
+            var brands = await _unitOfWork.BrandRepository.GetAllAsync();
             return brands.Select(b => new BrandDto
             {
                 Id = b.Id,

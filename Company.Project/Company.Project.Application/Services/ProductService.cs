@@ -27,7 +27,7 @@ namespace Company.Project.Application.Services
         // get all products
         public async Task<IEnumerable<ProductListDto>> GetAllAsync()
         {
-            var products = await _unitOfWork.ProductRepository.GetAllAsync();
+            var products = await _unitOfWork.ProductRepository.GetAllWithIncludesAsync();
 
             if (products == null || !products.Any())
             {
@@ -42,6 +42,7 @@ namespace Company.Project.Application.Services
         public async Task<ProductDetailDto> GetByIdAsync(int id)
         {
             var product = await _unitOfWork.ProductRepository.GetByIdAsync(id);
+
 
             if (product == null)
             {

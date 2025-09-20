@@ -26,6 +26,15 @@ namespace Company.Project.Infrastructure.Repositories
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<Product>> GetAllWithIncludesAsync()
+        {
+            return await _context.Products
+                .Include(p => p.Category)
+                .Include(p => p.Brand)
+                .ToListAsync();
+        }
+    }
+    
         public async Task<IEnumerable<Product>> GetProductsByCategoryIdAsync(int categoryId)
         {
             // First check if the category exists and has any products

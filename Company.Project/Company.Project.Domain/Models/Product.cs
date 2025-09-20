@@ -19,16 +19,15 @@ namespace Company.Project.Domain.Models
         // add imageUrl property
         public string ImageUrl { get; set; }
 
+        public string? Imageone { get; set; }
 
-        //public string? Imageone { get; set; }
+        public string? Imagetwo { get; set; }
 
-        //public string? Imagetwo { get; set; }
+        public string? Imagethree { get; set; }
 
-        //public string? Imagethree { get; set; }
+        public string? Imagefour { get; set; }
 
-        //public string? Imagefour { get; set; }
-
-        //public string? Imagefive { get; set; }
+        public string? Imagefive { get; set; }
 
         public ICollection<ProductCategory> ProductCategories { get; set; } = new List<ProductCategory>();
 
@@ -36,6 +35,10 @@ namespace Company.Project.Domain.Models
         [ForeignKey("Brand")]
         public int BrandId { get; set; }
         public Brand Brand { get; set; }
+
+        [ForeignKey("Category")]
+        public int CategoryId { get; set; }
+        public Category Category { get; set; }
 
         public decimal AverageRating
         {

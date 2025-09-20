@@ -19,7 +19,7 @@ namespace Company.Project.PL.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll(int skip = 0, int take = 10)
         {
-            var brands = await _brandService.GetAllAsync(skip, take);
+            var brands = await _brandService.GetAllAsync();
             return Ok(brands);
         }
 

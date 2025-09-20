@@ -1,0 +1,134 @@
+﻿@model Company.Project.DTO.DTO.Product.UpdateProductDto
+@{
+    ViewData["Title"] = "Update Product";
+}
+
+<h2 class="mb-4">Update Product</h2>
+
+<form asp-action="Update" method="post" class="needs-validation" novalidate>
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.Id)
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label asp-for="Name" class="form-label"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label asp-for="Price" class="form-label"></label>
+            <input asp-for="Price"
+                   class="form-control"
+                   type="number"
+                   step="0.01"
+                   min="0.01"
+                   placeholder="0.00"
+                   oninput="this.value = this.value.replace(/[^0-9.]/g, '')" />
+            <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label asp-for="StockQuantity" class="form-label"></label>
+            <input asp-for="StockQuantity"
+                   class="form-control"
+                   type="number"
+                   min="0"
+                   oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
+            <span asp-validation-for="StockQuantity" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label asp-for="ExpiryDate" class="form-label"></label>
+            <input asp-for="ExpiryDate" class="form-control" type="date" />
+            <span asp-validation-for="ExpiryDate" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label"></label>
+        <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Overview" class="form-label"></label>
+        <textarea asp-for="Overview" class="form-control" rows="2"></textarea>
+        <span asp-validation-for="Overview" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="SuggestedUse" class="form-label"></label>
+        <textarea asp-for="SuggestedUse" class="form-control" rows="2"></textarea>
+        <span asp-validation-for="SuggestedUse" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Warnings" class="form-label"></label>
+        <textarea asp-for="Warnings" class="form-control" rows="2"></textarea>
+        <span asp-validation-for="Warnings" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Disclaimer" class="form-label"></label>
+        <textarea asp-for="Disclaimer" class="form-control" rows="2"></textarea>
+        <span asp-validation-for="Disclaimer" class="text-danger"></span>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label asp-for="CategoryId" class="form-label">Category</label>
+            <select asp-for="CategoryId" asp-items="ViewBag.Categories" class="form-select"></select>
+            <span asp-validation-for="CategoryId" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label asp-for="BrandId" class="form-label">Brand</label>
+            <select asp-for="BrandId" asp-items="ViewBag.Brands" class="form-select"></select>
+            <span asp-validation-for="BrandId" class="text-danger"></span>
+        </div>
+    </div>
+
+    <!-- Images URLs -->
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label asp-for="ImageUrl" class="form-label"></label>
+            <input asp-for="ImageUrl" class="form-control" />
+            <span asp-validation-for="ImageUrl" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="Imageone" class="form-label"></label>
+            <input asp-for="Imageone" class="form-control" />
+            <span asp-validation-for="Imageone" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <label asp-for="Imagetwo" class="form-label"></label>
+            <input asp-for="Imagetwo" class="form-control" />
+            <span asp-validation-for="Imagetwo" class="text-danger"></span>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="Imagethree" class="form-label"></label>
+            <input asp-for="Imagethree" class="form-control" />
+            <span asp-validation-for="Imagethree" class="text-danger"></span>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="Imagefour" class="form-label"></label>
+            <input asp-for="Imagefour" class="form-control" />
+            <span asp-validation-for="Imagefour" class="text-danger"></span>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Update</button>
+    <a asp-action="GetAll" class="btn btn-secondary ms-2">Cancel</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
