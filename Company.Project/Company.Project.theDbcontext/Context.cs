@@ -175,6 +175,10 @@ namespace Company.Project.theDbcontext
                 {
                     entity.HasQueryFilter(c => !c.IsDeleted);
                 });
+            modelBuilder.Entity<ChatMessage>(entity =>
+            {
+                entity.HasQueryFilter(c => !c.IsDeleted);
+            });
             // modelBuilder.Entity<Refund>(entity =>
             //     {
             //         entity.HasQueryFilter(c => !c.IsDeleted);

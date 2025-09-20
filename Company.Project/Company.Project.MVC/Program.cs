@@ -107,6 +107,7 @@ namespace Company.Project.MVC
             app.UseHttpsRedirection();
             
             app.UseStaticFiles();
+            app.UseCors("AllowAllOrigins");
 
             app.UseRouting();
 

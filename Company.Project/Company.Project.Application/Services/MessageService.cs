@@ -8,54 +8,77 @@ namespace Company.Project.Application.Services
 {
     public class MessageService : IMessageService
     {
-        private readonly IMessageRepository _messageRepository;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public MessageService(IMessageRepository messageRepository, IMapper mapper)
+        public MessageService(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _messageRepository = messageRepository;
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public async Task SendMessageAsync(ChatMessageDto chatMessageDto)
+        public async Task SendMessageAsync(ChatMessage message)
         {
-            var chatMessage = new ChatMessage
-            {
-                SenderId = chatMessageDto.SenderId,
-                ReceiverId = chatMessageDto.ReceiverId,
-                Content = chatMessageDto.Content,
-                IsFromAdmin = chatMessageDto.IsFromAdmin,
-                Timestamp = DateTime.UtcNow
-            };
+            await _unitOfWork.ChatMessageRepository.AddAsync(message);
+            await _unitOfWork.Completeasync();
+        }
 
-            await _messageRepository.AddAsync(chatMessage);
-        }
-        public async Task SaveMessageAsync(ChatMessageDto chatMessageDto)
+        public async Task<IEnumerable<ChatMessage>> GetMessagesForUserAsync(string userId)
         {
-            var chatMessage = new ChatMessage
-            {
-                SenderId = chatMessageDto.SenderId,
-                ReceiverId = chatMessageDto.ReceiverId,
-                Content = chatMessageDto.Content,
-                IsFromAdmin = chatMessageDto.IsFromAdmin,
-                Timestamp = DateTime.UtcNow
-            };
+            return await _unitOfWork.ChatMessageRepository.GetMessagesForUserAsync(userId);
+        }
 
-            await _messageRepository.AddAsync(chatMessage);
-        }
-        public async Task<List<ChatMessageDto>> GetConversationHistoryAsync(string userId)
+        public async Task MarkAsReadAsync(int messageId)
         {
-            var messages = await _messageRepository.GetMessagesByUserIdAsync(userId);
-            return messages.Select(m => new ChatMessageDto
-            {
-                SenderId = m.SenderId,
-                ReceiverId = m.ReceiverId,
-                Content = m.Content,
-                IsFromAdmin = m.IsFromAdmin,
-                
-            }).ToList();
-            
-            
-            
+            await _unitOfWork.ChatMessageRepository.MarkAsReadAsync(messageId);
         }
+
+        #region old
+
+        // public async Task SendMessageAsync(ChatMessageDto chatMessageDto)
+        // {
+        //     var chatMessage = new ChatMessage
+        //     {
+        //         SenderId = chatMessageDto.SenderId,
+        //         ReceiverId = chatMessageDto.ReceiverId,
+        //         Content = chatMessageDto.Content,
+        //         IsFromAdmin = chatMessageDto.IsFromAdmin,
+        //         Timestamp = DateTime.UtcNow
+        //     };
+        //
+        //     await _messageRepository.AddAsync(chatMessage);
+        // }
+        // public async Task SaveMessageAsync(ChatMessageDto chatMessageDto)
+        // {
+        //     var chatMessage = new ChatMessage
+        //     {
+        //         SenderId = chatMessageDto.SenderId,
+        //         ReceiverId = chatMessageDto.ReceiverId,
+        //         Content = chatMessageDto.Content,
+        //         IsFromAdmin = chatMessageDto.IsFromAdmin,
+        //         Timestamp = DateTime.UtcNow
+        //     };
+        //
+        //     await _messageRepository.AddAsync(chatMessage);
+        // }
+        // public async Task<List<ChatMessageDto>> GetConversationHistoryAsync(string userId)
+        // {
+        //     var messages = await _messageRepository.GetMessagesByUserIdAsync(userId);
+        //     return messages.Select(m => new ChatMessageDto
+        //     {
+        //         SenderId = m.SenderId,
+        //         ReceiverId = m.ReceiverId,
+        //         Content = m.Content,
+        //         IsFromAdmin = m.IsFromAdmin,
+        //         
+        //     }).ToList();
+        //     
+        //     
+        //     
+        // }
+
+        #endregion
+        
         
     }
 }

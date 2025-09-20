@@ -18,6 +18,7 @@ namespace Company.Project.Domain.Interfaces
 
         IReviewRepository ReviewRepository { get; }
         IChatBotMessageRepository ChatBotMessagesRepository { get; }
+        IMessageRepository ChatMessageRepository { get; }
 
 
         IPaymentRepository PaymentRepository { get; }
