@@ -13,15 +13,25 @@
                 <form asp-action="Create" method="post">
                     <div class="mb-3">
                         <label asp-for="Name" class="form-label fw-bold"></label>
-                        <input asp-for="Name" class="form-control" placeholder="Enter category name" />
+                        <input asp-for="Name"
+                               class="form-control"
+                               placeholder="Enter category name"
+                               maxlength="100"
+                               pattern="[a-zA-Z0-9\s]+"
+                               title="Only letters, numbers and spaces are allowed" />
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
 
                     <div class="mb-3">
                         <label asp-for="Description" class="form-label fw-bold"></label>
-                        <textarea asp-for="Description" class="form-control" rows="3" placeholder="Enter category description"></textarea>
+                        <textarea asp-for="Description"
+                                  class="form-control"
+                                  rows="3"
+                                  placeholder="Enter category description"
+                                  maxlength="500"></textarea>
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
+
 
                     <div class="d-flex justify-content-between">
                         <a asp-action="GetAll" class="btn btn-secondary">

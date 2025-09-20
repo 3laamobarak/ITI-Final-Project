@@ -13,7 +13,22 @@ namespace Company.Project.DTO.DTO.Product
         public decimal Price { get; set; }
         public string Description { get; set; }
         public int StockQuantity { get; set; }
+        public string? Overview { get; set; }
+        public string? SuggestedUse { get; set; }
+        public string? Warnings { get; set; }
+        public string? Disclaimer { get; set; }
         public DateTime ExpiryDate { get; set; }
+        public string ImageUrl { get; set; }
+        public string? Imageone { get; set; }
+
+        public string? Imagetwo { get; set; }
+
+        public string? Imagethree { get; set; }
+
+        public string? Imagefour { get; set; }
+
+        public string? Imagefive { get; set; }
+
         public decimal AverageRating { get; set; }
         public int ReviewCount { get; set; }
 

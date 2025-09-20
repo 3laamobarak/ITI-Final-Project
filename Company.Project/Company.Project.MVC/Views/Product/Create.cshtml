@@ -1,0 +1,142 @@
+﻿@model Company.Project.DTO.DTO.Product.CreateProductDto
+
+@{
+    ViewData["Title"] = "Create Product";
+}
+
+<div class="container mt-4">
+    <h2 class="text-primary mb-4">
+        <i class="bi bi-plus-circle"></i> Create New Product
+    </h2>
+
+    <form asp-action="Create" method="post" class="needs-validation" novalidate>
+        @Html.AntiForgeryToken()
+
+        <div class="row g-3">
+
+            <!-- Name -->
+            <div class="col-md-6">
+                <label asp-for="Name" class="form-label fw-semibold"></label>
+                <input asp-for="Name" class="form-control" placeholder="Enter product name" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <!-- Price -->
+            <div class="col-md-3">
+                <label asp-for="Price" class="form-label fw-semibold"></label>
+                <input asp-for="Price" class="form-control" placeholder="0.00" type="number" step="0.01" oninput="this.value = this.value.replace(/[^0-9.]/g, '')" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+
+            <!-- Stock -->
+            <div class="col-md-3">
+                <label asp-for="StockQuantity" class="form-label fw-semibold"></label>
+                <input asp-for="StockQuantity" class="form-control" placeholder="Quantity in stock" />
+                <span asp-validation-for="StockQuantity" class="text-danger"></span>
+            </div>
+
+            <!-- Category -->
+            <div class="col-md-6">
+                <label asp-for="CategoryId" class="form-label fw-semibold"></label>
+                <select asp-for="CategoryId" asp-items="ViewBag.Categories"
+                        class="form-select">
+                    <option value="">-- Select Category --</option>
+                </select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+
+            <!-- Brand -->
+            <div class="col-md-6">
+                <label asp-for="BrandId" class="form-label fw-semibold"></label>
+                <select asp-for="BrandId" asp-items="ViewBag.Brands"
+                        class="form-select">
+                    <option value="">-- Select Brand --</option>
+                </select>
+                <span asp-validation-for="BrandId" class="text-danger"></span>
+            </div>
+
+            <!-- Description -->
+            <div class="col-12">
+                <label asp-for="Description" class="form-label fw-semibold"></label>
+                <textarea asp-for="Description" class="form-control" rows="3"
+                          placeholder="Short product description"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <!-- Overview -->
+            <div class="col-12">
+                <label asp-for="Overview" class="form-label fw-semibold"></label>
+                <textarea asp-for="Overview" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Overview" class="text-danger"></span>
+            </div>
+
+            <!-- SuggestedUse -->
+            <div class="col-12">
+                <label asp-for="SuggestedUse" class="form-label fw-semibold"></label>
+                <textarea asp-for="SuggestedUse" class="form-control" rows="2"></textarea>
+                <span asp-validation-for="SuggestedUse" class="text-danger"></span>
+            </div>
+
+            <!-- Warnings -->
+            <div class="col-12">
+                <label asp-for="Warnings" class="form-label fw-semibold"></label>
+                <textarea asp-for="Warnings" class="form-control" rows="2"></textarea>
+                <span asp-validation-for="Warnings" class="text-danger"></span>
+            </div>
+
+            <!-- Disclaimer -->
+            <div class="col-12">
+                <label asp-for="Disclaimer" class="form-label fw-semibold"></label>
+                <textarea asp-for="Disclaimer" class="form-control" rows="2"></textarea>
+                <span asp-validation-for="Disclaimer" class="text-danger"></span>
+            </div>
+
+            <!-- Expiry Date -->
+            <div class="col-md-6">
+                <label asp-for="ExpiryDate" class="form-label fw-semibold"></label>
+                <input asp-for="ExpiryDate" type="date" class="form-control" />
+                <span asp-validation-for="ExpiryDate" class="text-danger"></span>
+            </div>
+
+            <!-- Image URLs -->
+            <div class="col-md-6">
+                <label asp-for="ImageUrl" class="form-label fw-semibold"></label>
+                <input asp-for="ImageUrl" class="form-control" placeholder="Main image URL" />
+                <span asp-validation-for="ImageUrl" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="Imageone" class="form-label fw-semibold"></label>
+                <input asp-for="Imageone" class="form-control" placeholder="Optional image 2 URL" />
+            </div>
+            <div class="col-md-6">
+                <label asp-for="Imagetwo" class="form-label fw-semibold"></label>
+                <input asp-for="Imagetwo" class="form-control" placeholder="Optional image 3 URL" />
+            </div>
+            <div class="col-md-6">
+                <label asp-for="Imagethree" class="form-label fw-semibold"></label>
+                <input asp-for="Imagethree" class="form-control" placeholder="Optional image 4 URL" />
+            </div>
+            <div class="col-md-6">
+                <label asp-for="Imagefour" class="form-label fw-semibold"></label>
+                <input asp-for="Imagefour" class="form-control" placeholder="Optional image 5 URL" />
+            </div>
+
+        </div>
+
+        <div class="mt-4 d-flex justify-content-between">
+            <a asp-action="GetAll" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Back to List
+            </a>
+            <button type="submit" class="btn btn-primary">
+                <i class="bi bi-check-circle"></i> Save Product
+            </button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
