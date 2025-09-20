@@ -6,7 +6,7 @@ namespace Company.Project.Application.Contracts
 {
     public interface IBrandService
     {
-        Task<IEnumerable<BrandDto>> GetAllAsync(int skip, int take);
+        Task<IEnumerable<BrandDto>> GetAllAsync();
         Task<BrandWithProductsDto> GetByIdAsync(int id);
         Task<IEnumerable<BrandDto>> SearchAsync(string query);
         Task<Brand> CreateAsync(CreateBrandDto createDto);

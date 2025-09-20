@@ -25,6 +25,14 @@ namespace Company.Project.Infrastructure.Repositories
                 .Where(p => p.Name.Contains(query) || p.Description.Contains(query))
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<Product>> GetAllWithIncludesAsync()
+        {
+            return await _context.Products
+                .Include(p => p.Category)
+                .Include(p => p.Brand)
+                .ToListAsync();
+        }
     }
 
 }
