@@ -6,7 +6,9 @@ namespace Company.Project.MVC.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            //return View();
+            // direct to dashboard in controller
+            return RedirectToAction("Index", "Dashboard");
         }
         public IActionResult Error()
         {

@@ -1,9 +1,11 @@
 ﻿using Company.Project.Application.Contracts;
 using Company.Project.DTO.DTO.Refund;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Company.Project.MVC.Controllers
 {
+    [Authorize]
     public class RefundController : Controller
     {
         private readonly IPaymentService _paymentService;

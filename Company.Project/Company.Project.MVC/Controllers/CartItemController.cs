@@ -1,9 +1,11 @@
 ﻿using System.Security.Claims;
 using Company.Project.Application.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Company.Project.MVC.Controllers;
 
+[Authorize]
 public class CartItemController : Controller
 {
     private readonly ICartItemService _cartItemService;

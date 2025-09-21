@@ -4,6 +4,7 @@ using Company.Project.Application.Contracts;
 using Company.Project.Domain.Models;
 using Company.Project.DTO.DTO.Account;
 using Company.Project.DTO.DTO.OTPs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -87,6 +88,7 @@ namespace Company.Project.PL.Controllers
         }
 
         [HttpPost("ChangePassword")]
+        [Authorize]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDTO cpDto)
         {
             if (ModelState.IsValid)
@@ -110,6 +112,7 @@ namespace Company.Project.PL.Controllers
         }
 
         [HttpPost("Request-Reset-Password")]
+        [Authorize]
         public async Task<IActionResult> RequestPasswordReset([FromBody] EmailDTO emailDto)
         {
             var user = await userManager.FindByEmailAsync(emailDto.To);
@@ -128,6 +131,7 @@ namespace Company.Project.PL.Controllers
             });
             return Ok("Password reset link has been sent to your email.");
         }
+        [Authorize]
         [HttpPost("Reset-Password")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDTO resetDto)
         {

@@ -1,10 +1,12 @@
 ﻿using Company.Project.Application.Contracts;
 using Company.Project.Application.Services;
 using Company.Project.DTO.DTO.Category;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Company.Project.MVC.Controllers
 {
+    [Authorize]
     public class CategoryController : Controller
     {
         private readonly ICategoryService _CategoryService;

@@ -168,7 +168,7 @@ namespace Company.Project.PL
 
             app.UseAuthentication();
             app.UseAuthorization();
-            app.MapHub<ChatHub>("/chathub"); // Ensure this is correct
+            app.MapHub<ChatHub>("/chat"); // Ensure this is correct
 
             app.MapControllers();
 
