@@ -10,7 +10,6 @@ using static Company.Project.Domain.Enums.Enums;
 
 namespace Company.Project.MVC.Controllers
 {
-    [Authorize(Policy = "admin")]
     public class OrderController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

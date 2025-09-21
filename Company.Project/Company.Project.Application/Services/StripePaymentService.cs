@@ -21,6 +21,10 @@ public class StripePaymentService : IPaymentService
 
     public async Task<string> CreatePaymentIntentAsync(CreatePaymentDto dto, string userId)
     {
+        Console.WriteLine($"[PAYMENT DEBUG] Starting payment creation for user: {userId}");
+        Console.WriteLine($"[PAYMENT DEBUG] Cart items count: {dto.CartItems?.Count ?? 0}");
+        Console.WriteLine($"[PAYMENT DEBUG] Amount: {dto.Amount}");
+        
         // 1️⃣ إنشاء Order أولاً
         var order = new Order
         {
@@ -35,6 +39,8 @@ public class StripePaymentService : IPaymentService
             OrderType = OrderType.Online,
             OrderItems = new List<OrderItem>()
         };
+        
+        Console.WriteLine($"[PAYMENT DEBUG] Order created with Total: {order.Total}");
 
         foreach (var item in dto.CartItems)
         {
@@ -51,6 +57,8 @@ public class StripePaymentService : IPaymentService
 
         await _unitOfWork.OrderRepository.AddAsync(order);
         await _unitOfWork.Completeasync();
+        
+        Console.WriteLine($"[PAYMENT DEBUG] Order saved to database with ID: {order.Id}");
 
         // 2️⃣ إنشاء PaymentIntent
         var options = new PaymentIntentCreateOptions
@@ -81,23 +89,36 @@ public class StripePaymentService : IPaymentService
 
         await _unitOfWork.PaymentRepository.AddAsync(payment);
         await _unitOfWork.Completeasync();
+        
+        Console.WriteLine($"[PAYMENT DEBUG] Payment saved to database with ID: {payment.Id}, PaymentIntentId: {payment.PaymentIntentId}");
 
         return intent.ClientSecret;
     }
 
     public async Task<bool> ConfirmPaymentAsync(string paymentIntentId)
     {
+        Console.WriteLine($"[PAYMENT DEBUG] Starting payment confirmation for PaymentIntentId: {paymentIntentId}");
+        
         var service = new PaymentIntentService();
         var intent = await service.GetAsync(paymentIntentId);
+        
+        Console.WriteLine($"[PAYMENT DEBUG] Stripe payment status: {intent.Status}");
 
         var payment = await _unitOfWork.PaymentRepository.GetByPaymentIntentIdAsync(paymentIntentId);
-        if (payment == null) throw new Exception("Payment not found");
+        if (payment == null) 
+        {
+            Console.WriteLine($"[PAYMENT DEBUG] Payment not found in database for PaymentIntentId: {paymentIntentId}");
+            throw new Exception("Payment not found");
+        }
+        
+        Console.WriteLine($"[PAYMENT DEBUG] Found payment in database with ID: {payment.Id}, current IsSuccessful: {payment.IsSuccessful}");
 
         if (intent.Status == "succeeded")
         {
             payment.IsSuccessful = true;
             await _unitOfWork.PaymentRepository.UpdateAsync(payment);
             await _unitOfWork.Completeasync();
+            Console.WriteLine($"[PAYMENT DEBUG] Payment confirmed successfully in database");
             return true;
         }
         else
@@ -105,6 +126,7 @@ public class StripePaymentService : IPaymentService
             payment.IsSuccessful = false;
             await _unitOfWork.PaymentRepository.UpdateAsync(payment);
             await _unitOfWork.Completeasync();
+            Console.WriteLine($"[PAYMENT DEBUG] Payment marked as failed in database");
             return false;
         }
     }
