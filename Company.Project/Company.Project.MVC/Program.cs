@@ -8,8 +8,15 @@ using Company.Project.Application;
 using Company.Project.Domain.Models;
 using Company.Project.DTO.DTO.OTPs;
 using Company.Project.Infrastructure;
+using Company.Project.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Company.Project.Infrastructure.Repositories;
+using Company.Project.Application.Services;
+using Company.Project.Domain.Interfaces;
+using Company.Project.Infrastructure.Repositories;
+using Company.Project.Infrastructure.UnitOfWork;
+using Company.Project.theDbcontext;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using AutoMapper;
     

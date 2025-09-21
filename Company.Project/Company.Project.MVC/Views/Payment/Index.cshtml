@@ -1,55 +1,325 @@
 ﻿@model IEnumerable<Company.Project.DTO.DTO.Payment.PaymentDto>
 
-<h2>Payments Management</h2>
+@{
+    ViewData["Title"] = "Payments Management";
+}
 
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Governorate / Country</th>
-            <th>Street</th>
-            <th>ZIP</th>
-            <th>User Name</th>
-            <th>Full Name</th>
-            <th>Amount</th>
-            <th>Refunded</th>
-            <th>Date</th>
-            <th>Method</th>
-            <th>Status</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var p in Model)
-        {
-            var addressParts = p.ShippingAddress.Split(',');
-            var name = addressParts.Length > 0 ? addressParts[0].Trim() : "";
-            var governorate = addressParts.Length > 1 ? addressParts[1].Trim() : "";
-            var country = addressParts.Length > 2 ? addressParts[2].Trim() : "";
-            var street = addressParts.Length > 3 ? addressParts[3].Trim() : "";
-            var zip = addressParts.Length > 4 ? addressParts[4].Trim() : "";
+<style>
+    .payment-card {
+        background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+        border: none;
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(42, 124, 70, 0.08);
+        transition: all 0.3s ease;
+    }
+    
+    .payment-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 30px rgba(42, 124, 70, 0.15);
+    }
+    
+    .payment-header {
+        background: linear-gradient(135deg, #2a7c46 0%, #34a853 100%);
+        color: white;
+        border-radius: 16px 16px 0 0;
+        padding: 1.5rem;
+        border: none;
+    }
+    
+    .payment-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin: 0;
+        display: flex;
+        align-items: center;
+    }
+    
+    .payment-title i {
+        background: rgba(255, 255, 255, 0.2);
+        padding: 8px;
+        border-radius: 8px;
+        margin-right: 12px;
+    }
+    
+    .stats-card {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        border-left: 4px solid #2a7c46;
+        margin-bottom: 1rem;
+    }
+    
+    .stats-number {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #2a7c46;
+        margin: 0;
+    }
+    
+    .stats-label {
+        color: #6b7280;
+        font-size: 0.875rem;
+        font-weight: 500;
+        margin: 0;
+    }
+    
+    .payment-table {
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+    
+    .table-header {
+        background: linear-gradient(135deg, #2a7c46 0%, #34a853 100%);
+        color: white;
+        border: none;
+    }
+    
+    .table-header th {
+        border: none;
+        padding: 1rem;
+        font-weight: 600;
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .payment-row {
+        transition: all 0.2s ease;
+        border: none;
+    }
+    
+    .payment-row:hover {
+        background: linear-gradient(135deg, #f0fdf4 0%, #e9f5ee 100%);
+        transform: scale(1.01);
+    }
+    
+    .payment-row td {
+        padding: 1rem;
+        border: none;
+        vertical-align: middle;
+    }
+    
+    .customer-info {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .customer-name {
+        font-weight: 600;
+        color: #1f2937;
+        margin-bottom: 2px;
+    }
+    
+    .customer-username {
+        font-size: 0.8rem;
+        color: #6b7280;
+    }
+    
+    .address-info {
+        font-size: 0.875rem;
+        color: #6b7280;
+        line-height: 1.4;
+    }
+    
+    .amount-value {
+        font-weight: 700;
+        color: #2a7c46;
+        font-size: 1.1rem;
+    }
+    
+    .refunded-amount {
+        font-weight: 600;
+        color: #f59e0b;
+        font-size: 0.9rem;
+    }
+    
+    .payment-date {
+        font-size: 0.875rem;
+        color: #6b7280;
+    }
+    
+    .payment-method {
+        background: #e9f5ee;
+        color: #2a7c46;
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+    
+    .status-badge {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .status-success { background: #d1fae5; color: #065f46; }
+    .status-failed { background: #fee2e2; color: #991b1b; }
+    
+    .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+    
+    .empty-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #e9f5ee 0%, #d1fae5 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        color: #2a7c46;
+        font-size: 2rem;
+    }
+</style>
 
-            <tr>
-                <td>@name</td>
-                <td>@governorate @((!string.IsNullOrEmpty(country) ? "/" + country : ""))</td>
-                <td>@street</td>
-                <td>@zip</td>
-                <td>@p.UserName</td>
-                <td>@p.FullName</td>
-                <td>@p.Amount.ToString("C")</td>
-                <td>@p.RefundedAmount.ToString("C")</td>
-                <td>@p.PaymentDate.ToString("yyyy-MM-dd")</td>
-                <td>@p.PaymentMethod</td>
-                <td>
-                    @if (p.IsSuccessful)
-                    {
-                        <span class="badge bg-success">Success</span>
-                    }
-                    else
-                    {
-                        <span class="badge bg-danger">Failed</span>
-                    }
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="payment-title text-dark mb-2">
+            <i class="fa fa-credit-card"></i>
+            Payments Management
+        </h1>
+        <p class="text-muted mb-0">View and manage all payment transactions</p>
+    </div>
+</div>
+
+@if (Model != null && Model.Any())
+{
+    <!-- Stats Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="stats-card">
+                <p class="stats-number">@Model.Count()</p>
+                <p class="stats-label">Total Payments</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stats-card">
+                <p class="stats-number">@Model.Count(p => p.IsSuccessful)</p>
+                <p class="stats-label">Successful</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stats-card">
+                <p class="stats-number">@Model.Count(p => !p.IsSuccessful)</p>
+                <p class="stats-label">Failed</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stats-card">
+                <p class="stats-number">$@Model.Sum(p => p.Amount).ToString("F0")</p>
+                <p class="stats-label">Total Amount</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payments Table -->
+    <div class="payment-card">
+        <div class="payment-header">
+            <h5 class="mb-0">
+                <i class="fa fa-list me-2"></i>All Payments
+            </h5>
+        </div>
+        <div class="p-0">
+            <div class="table-responsive">
+                <table class="table mb-0 payment-table">
+                    <thead class="table-header">
+                        <tr>
+                            <th>Customer</th>
+                            <th>Address</th>
+                            <th>Amount</th>
+                            <th>Refunded</th>
+                            <th>Date</th>
+                            <th>Method</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var p in Model)
+                        {
+                            var addressParts = p.ShippingAddress.Split(',');
+                            var name = addressParts.Length > 0 ? addressParts[0].Trim() : "";
+                            var governorate = addressParts.Length > 1 ? addressParts[1].Trim() : "";
+                            var country = addressParts.Length > 2 ? addressParts[2].Trim() : "";
+                            var street = addressParts.Length > 3 ? addressParts[3].Trim() : "";
+                            var zip = addressParts.Length > 4 ? addressParts[4].Trim() : "";
+
+                            <tr class="payment-row">
+                                <td>
+                                    <div class="customer-info">
+                                        <span class="customer-name">@p.FullName</span>
+                                        <span class="customer-username">@p.UserName</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="address-info">
+                                        <div><strong>@name</strong></div>
+                                        <div>@governorate @((!string.IsNullOrEmpty(country) ? "/" + country : ""))</div>
+                                        <div>@street</div>
+                                        <div>@zip</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="amount-value">@p.Amount.ToString("C")</span>
+                                </td>
+                                <td>
+                                    <span class="refunded-amount">@p.RefundedAmount.ToString("C")</span>
+                                </td>
+                                <td>
+                                    <span class="payment-date">@p.PaymentDate.ToString("MMM dd, yyyy")</span>
+                                </td>
+                                <td>
+                                    <span class="payment-method">@p.PaymentMethod</span>
+                                </td>
+                                <td>
+                                    @if (p.IsSuccessful)
+                                    {
+                                        <span class="status-badge status-success">Success</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="status-badge status-failed">Failed</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="empty-state">
+        <div class="empty-icon">
+            <i class="fa fa-credit-card"></i>
+        </div>
+        <h4 class="text-dark mb-3">No payments found</h4>
+        <p class="text-muted mb-4">There are no payments to display at the moment.</p>
+    </div>
+}
+
+@section Scripts {
+    <script>
+        // Add smooth animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const rows = document.querySelectorAll('.payment-row');
+            rows.forEach((row, index) => {
+                row.style.animationDelay = `${index * 0.1}s`;
+                row.classList.add('animate__animated', 'animate__fadeInUp');
+            });
+        });
+    </script>
+}

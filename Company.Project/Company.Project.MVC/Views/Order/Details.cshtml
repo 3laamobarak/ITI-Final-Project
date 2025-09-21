@@ -1,0 +1,560 @@
+@model Company.Project.Domain.Models.Order
+
+@{
+    ViewData["Title"] = "Order Details";
+}
+
+<style>
+    .order-details-card {
+        background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+        border: none;
+        border-radius: 20px;
+        box-shadow: 0 8px 32px rgba(42, 124, 70, 0.1);
+        overflow: hidden;
+    }
+    
+    .order-header-details {
+        background: linear-gradient(135deg, #2a7c46 0%, #34a853 100%);
+        color: white;
+        padding: 2rem;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .order-header-details::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+        animation: float 6s ease-in-out infinite;
+    }
+    
+    @@keyframes float {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-20px) rotate(180deg); }
+    }
+    
+    .order-title-details {
+        font-size: 2rem;
+        font-weight: 700;
+        margin: 0;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .order-subtitle {
+        font-size: 1rem;
+        opacity: 0.9;
+        margin: 0.5rem 0 0 0;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .action-buttons-details {
+        position: relative;
+        z-index: 1;
+    }
+    
+    .btn-custom {
+        border-radius: 12px;
+        padding: 10px 20px;
+        font-weight: 600;
+        border: none;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .btn-custom:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+    
+    .btn-back { background: #6b7280; color: white; }
+    .btn-edit { background: #f59e0b; color: white; }
+    .btn-status { background: #3b82f6; color: white; }
+    
+    .info-card {
+        background: white;
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        border: 1px solid #f1f5f9;
+        margin-bottom: 1.5rem;
+    }
+    
+    .info-card-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #f1f5f9;
+    }
+    
+    .info-card-icon {
+        width: 48px;
+        height: 48px;
+        background: linear-gradient(135deg, #e9f5ee 0%, #d1fae5 100%);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #2a7c46;
+        font-size: 1.2rem;
+        margin-right: 1rem;
+    }
+    
+    .info-card-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #1f2937;
+        margin: 0;
+    }
+    
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+    }
+    
+    .info-item {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .info-label {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #6b7280;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 0.5rem;
+    }
+    
+    .info-value {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #1f2937;
+    }
+    
+    .status-badge-large {
+        padding: 8px 16px;
+        border-radius: 25px;
+        font-weight: 700;
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .status-pending { background: #fef3c7; color: #92400e; }
+    .status-processing { background: #dbeafe; color: #1e40af; }
+    .status-shipped { background: #e0e7ff; color: #3730a3; }
+    .status-delivered { background: #d1fae5; color: #065f46; }
+    .status-cancelled { background: #fee2e2; color: #991b1b; }
+    
+    .items-table {
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+    
+    .items-header {
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        color: #475569;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-size: 0.875rem;
+    }
+    
+    .item-row {
+        transition: all 0.2s ease;
+        border-bottom: 1px solid #f1f5f9;
+    }
+    
+    .item-row:hover {
+        background: linear-gradient(135deg, #f0fdf4 0%, #e9f5ee 100%);
+    }
+    
+    .item-row:last-child {
+        border-bottom: none;
+    }
+    
+    .product-name {
+        font-weight: 600;
+        color: #1f2937;
+        margin-bottom: 4px;
+    }
+    
+    .product-id {
+        font-size: 0.8rem;
+        color: #6b7280;
+    }
+    
+    .quantity-badge {
+        background: linear-gradient(135deg, #e9f5ee 0%, #d1fae5 100%);
+        color: #2a7c46;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-weight: 700;
+        font-size: 0.875rem;
+    }
+    
+    .price-value {
+        font-weight: 600;
+        color: #1f2937;
+    }
+    
+    .total-value {
+        font-weight: 700;
+        color: #2a7c46;
+        font-size: 1.1rem;
+    }
+    
+    .summary-card {
+        background: linear-gradient(135deg, #f0fdf4 0%, #e9f5ee 100%);
+        border-radius: 16px;
+        padding: 2rem;
+        border: 2px solid #d1fae5;
+    }
+    
+    .summary-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid rgba(42, 124, 70, 0.1);
+    }
+    
+    .summary-item:last-child {
+        border-bottom: none;
+        border-top: 2px solid #2a7c46;
+        margin-top: 1rem;
+        padding-top: 1.5rem;
+    }
+    
+    .summary-label {
+        font-weight: 600;
+        color: #374151;
+    }
+    
+    .summary-value {
+        font-weight: 700;
+        color: #1f2937;
+    }
+    
+    .summary-total {
+        font-size: 1.25rem;
+        color: #2a7c46;
+    }
+    
+    .payment-card, .refund-card {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        border-left: 4px solid #2a7c46;
+        margin-bottom: 1rem;
+    }
+    
+    .payment-item, .refund-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid #f1f5f9;
+    }
+    
+    .payment-item:last-child, .refund-item:last-child {
+        border-bottom: none;
+    }
+    
+    .payment-date, .refund-date {
+        font-size: 0.875rem;
+        color: #6b7280;
+        margin-bottom: 4px;
+    }
+    
+    .payment-amount {
+        background: #d1fae5;
+        color: #065f46;
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 0.875rem;
+    }
+    
+    .refund-amount {
+        background: #fef3c7;
+        color: #92400e;
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 0.875rem;
+    }
+    
+    .refund-status {
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+    
+    .refund-pending { background: #fef3c7; color: #92400e; }
+    .refund-approved { background: #d1fae5; color: #065f46; }
+    .refund-rejected { background: #fee2e2; color: #991b1b; }
+    .refund-completed { background: #dbeafe; color: #1e40af; }
+</style>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="order-title-details text-dark mb-2">
+            <i class="fa fa-shopping-cart me-3"></i>Order Details
+        </h1>
+        <p class="order-subtitle">Order #@Model.Id - @Model.OrderDate.ToString("MMM dd, yyyy 'at' HH:mm")</p>
+    </div>
+    <div class="action-buttons-details">
+        <a asp-action="Index" class="btn btn-custom btn-back me-2">
+            <i class="fa fa-arrow-left me-2"></i>Back to Orders
+        </a>
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-custom btn-edit me-2">
+            <i class="fa fa-edit me-2"></i>Edit
+        </a>
+        <a asp-action="UpdateStatus" asp-route-id="@Model.Id" class="btn btn-custom btn-status">
+            <i class="fa fa-sync me-2"></i>Update Status
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Order Information -->
+    <div class="col-md-8">
+        <div class="info-card">
+            <div class="info-card-header">
+                <div class="info-card-icon">
+                    <i class="fa fa-info-circle"></i>
+                </div>
+                <h5 class="info-card-title">Order Information</h5>
+            </div>
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="info-label">Order ID</span>
+                    <span class="info-value">#@Model.Id</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Order Date</span>
+                    <span class="info-value">@Model.OrderDate.ToString("MMM dd, yyyy HH:mm")</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Status</span>
+                    <span class="info-value">
+                        @{
+                            var statusClass = Model.Status switch
+                            {
+                                Enums.OrderStatus.Pending => "status-pending",
+                                Enums.OrderStatus.Processing => "status-processing",
+                                Enums.OrderStatus.Shipped => "status-shipped",
+                                Enums.OrderStatus.Delivered => "status-delivered",
+                                Enums.OrderStatus.Cancelled => "status-cancelled",
+                                _ => "status-pending"
+                            };
+                        }
+                        <span class="status-badge-large @statusClass">@Model.Status</span>
+                    </span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Type</span>
+                    <span class="info-value">
+                        <span class="badge bg-secondary">@Model.OrderType</span>
+                    </span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Customer</span>
+                    <span class="info-value">
+                        <div>
+                            <strong>@(Model.User?.UserName ?? "Unknown")</strong>
+                            <br>
+                            <small class="text-muted">@(Model.User?.Email ?? "No email")</small>
+                        </div>
+                    </span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Shipping Address</span>
+                    <span class="info-value">@Model.ShippingAddress</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Created</span>
+                    <span class="info-value">@Model.CreatedAt.ToString("MMM dd, yyyy HH:mm")</span>
+                </div>
+                @if (Model.UpdatedAt.HasValue)
+                {
+                    <div class="info-item">
+                        <span class="info-label">Last Updated</span>
+                        <span class="info-value">@Model.UpdatedAt.Value.ToString("MMM dd, yyyy HH:mm")</span>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Order Items -->
+        <div class="info-card">
+            <div class="info-card-header">
+                <div class="info-card-icon">
+                    <i class="fa fa-box"></i>
+                </div>
+                <h5 class="info-card-title">Order Items (@Model.OrderItems.Count)</h5>
+            </div>
+            @if (Model.OrderItems.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table mb-0 items-table">
+                        <thead class="items-header">
+                            <tr>
+                                <th style="padding: 1rem;">Product</th>
+                                <th style="padding: 1rem;">Quantity</th>
+                                <th style="padding: 1rem;">Price</th>
+                                <th style="padding: 1rem;">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.OrderItems)
+                            {
+                                <tr class="item-row">
+                                    <td style="padding: 1rem;">
+                                        <div>
+                                            <div class="product-name">@(item.Product?.Name ?? "Unknown Product")</div>
+                                            @if (item.Product != null)
+                                            {
+                                                <div class="product-id">ID: @item.Product.Id</div>
+                                            }
+                                        </div>
+                                    </td>
+                                    <td style="padding: 1rem;">
+                                        <span class="quantity-badge">@item.Quantity</span>
+                                    </td>
+                                    <td style="padding: 1rem;">
+                                        @if (item.Product != null)
+                                        {
+                                            <span class="price-value">$@item.Product.Price.ToString("F2")</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">N/A</span>
+                                        }
+                                    </td>
+                                    <td style="padding: 1rem;">
+                                        @if (item.Product != null)
+                                        {
+                                            <span class="total-value">$@((item.Product.Price * item.Quantity).ToString("F2"))</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">N/A</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-5">
+                    <div class="empty-icon" style="width: 60px; height: 60px; font-size: 1.5rem;">
+                        <i class="fa fa-box"></i>
+                    </div>
+                    <h5 class="text-muted mt-3">No items in this order</h5>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Order Summary -->
+    <div class="col-md-4">
+        <div class="summary-card">
+            <div class="info-card-header">
+                <div class="info-card-icon">
+                    <i class="fa fa-calculator"></i>
+                </div>
+                <h5 class="info-card-title">Order Summary</h5>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Subtotal:</span>
+                <span class="summary-value">$@Model.Subtotal.ToString("F2")</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Tax:</span>
+                <span class="summary-value">$@Model.Tax.ToString("F2")</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Shipping Cost:</span>
+                <span class="summary-value">$@Model.ShippingCost.ToString("F2")</span>
+            </div>
+            @if (Model.Discount > 0)
+            {
+                <div class="summary-item">
+                    <span class="summary-label">Discount:</span>
+                    <span class="summary-value" style="color: #10b981;">-$@Model.Discount.ToString("F2")</span>
+                </div>
+            }
+            <div class="summary-item">
+                <span class="summary-label">Total:</span>
+                <span class="summary-value summary-total">$@Model.Total.ToString("F2")</span>
+            </div>
+        </div>
+
+        <!-- Payments -->
+        @if (Model.Payments.Any())
+        {
+            <div class="payment-card">
+                <div class="info-card-header">
+                    <div class="info-card-icon">
+                        <i class="fa fa-credit-card"></i>
+                    </div>
+                    <h5 class="info-card-title">Payments (@Model.Payments.Count)</h5>
+                </div>
+                @foreach (var payment in Model.Payments)
+                {
+                    <div class="payment-item">
+                        <div>
+                            <div class="payment-date">@payment.CreatedAt.ToString("MMM dd, yyyy")</div>
+                            <span class="payment-amount">$@payment.Amount.ToString("F2")</span>
+                        </div>
+                        <small class="text-muted">@payment.PaymentMethod</small>
+                    </div>
+                }
+            </div>
+        }
+
+        <!-- Refunds -->
+        @if (Model.Refunds.Any())
+        {
+            <div class="refund-card">
+                <div class="info-card-header">
+                    <div class="info-card-icon">
+                        <i class="fa fa-undo"></i>
+                    </div>
+                    <h5 class="info-card-title">Refunds (@Model.Refunds.Count)</h5>
+                </div>
+                @foreach (var refund in Model.Refunds)
+                {
+                    <div class="refund-item">
+                        <div>
+                            <div class="refund-date">@refund.CreatedAt.ToString("MMM dd, yyyy")</div>
+                            <span class="refund-amount">$@refund.Amount.ToString("F2")</span>
+                        </div>
+                        <span class="refund-status refund-@(refund.Status.ToString().ToLower())">@refund.Status</span>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>
