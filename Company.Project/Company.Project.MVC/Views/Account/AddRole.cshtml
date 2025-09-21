@@ -1,42 +1,196 @@
 ﻿@model Company.Project.MVC.Models.RoleViewModel
 
 @{
-    ViewData["Title"] = "AddRole";
+    ViewData["Title"] = "Role Management";
+    Layout = "_Layout";
 }
 
-<h1>AddRole</h1>
+<div class="container-fluid">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h2 class="fw-bold text-dark mb-1">
+                        <i class="fas fa-user-shield me-2 text-success"></i>Role Management
+                    </h2>
+                    <p class="text-muted mb-0">Create and manage system roles and permissions</p>
+                </div>
+                <div class="d-flex gap-2">
+                    <span class="badge bg-success bg-gradient px-3 py-2">
+                        <i class="fas fa-shield-alt me-1"></i>@ViewBag.Roles.Count Roles
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="SaveRole">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="RoleName" class="control-label"></label>
-                <input asp-for="RoleName" class="form-control" />
-                <span asp-validation-for="RoleName" class="text-danger"></span>
+    <div class="row">
+        <!-- Add New Role -->
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0 rounded-4 mb-4">
+                <div class="card-header bg-white border-0 pb-0">
+                    <h4 class="fw-bold text-dark mb-1">
+                        <i class="fas fa-plus-circle me-2 text-success"></i>Add New Role
+                    </h4>
+                    <p class="text-muted mb-0">Create a new role for the system</p>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="SaveRole" method="post">
+                        <div asp-validation-summary="All" class="alert alert-danger" role="alert"></div>
+                        
+                        <div class="mb-3">
+                            <label asp-for="RoleName" class="form-label fw-semibold">
+                                <i class="fas fa-tag me-2 text-success"></i>Role Name
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0">
+                                    <i class="fas fa-tag text-muted"></i>
+                                </span>
+                                <input asp-for="RoleName" class="form-control border-start-0 ps-0" placeholder="Enter role name (e.g., Manager, Editor)" />
+                            </div>
+                            <div class="form-text">
+                                <small class="text-muted">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Use descriptive names like "Admin", "Manager", "Editor", etc.
+                                </small>
+                            </div>
+                            <span asp-validation-for="RoleName" class="text-danger small"></span>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success fw-semibold">
+                                <i class="fas fa-plus me-2"></i>Create Role
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
+
+        <!-- Current Roles -->
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0 rounded-4">
+                <div class="card-header bg-white border-0 pb-0">
+                    <h4 class="fw-bold text-dark mb-1">
+                        <i class="fas fa-list me-2 text-success"></i>Current Roles
+                    </h4>
+                    <p class="text-muted mb-0">Manage existing system roles</p>
+                </div>
+                <div class="card-body p-4">
+                    @if (ViewBag.Roles != null && ViewBag.Roles.Count > 0)
+                    {
+                        <div class="row">
+                            @foreach (var role in ViewBag.Roles)
+                            {
+                                <div class="col-12 mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-3 bg-light rounded-3">
+                                        <div class="d-flex align-items-center">
+                                            <div class="bg-success bg-gradient rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                                <i class="fas fa-shield-alt text-white"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-0 fw-semibold text-dark">@role.Name</h6>
+                                                <small class="text-muted">System Role</small>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex gap-2">
+                                            <a asp-action="DeleteRole" asp-route-roleName="@role.Name" 
+                                               class="btn btn-outline-danger btn-sm" 
+                                               title="Delete Role"
+                                               onclick="return confirm('Are you sure you want to delete the role \'@role.Name\'? This action cannot be undone.')">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-4">
+                            <div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                                <i class="fas fa-shield-alt text-muted" style="font-size: 1.5rem;"></i>
+                            </div>
+                            <h6 class="text-muted">No roles found</h6>
+                            <p class="text-muted small">Create your first role to get started</p>
+                        </div>
+                    }
+                </div>
             </div>
-        </form>
-        @*current roles list from viewbag*@
-        <h3>Current Roles</h3>
-        <ul>
-            @foreach (var role in ViewBag.Roles)
-            {
-                <li>@role</li>
-                
-                    <a asp-action="DeleteRole" asp-route-roleName="@role" class="btn btn-danger btn-sm">Delete</a>
-                
-            }
-        </ul>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card shadow-sm border-0 rounded-4">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="fw-semibold mb-1">
+                                <i class="fas fa-bolt me-2 text-success"></i>Quick Actions
+                            </h6>
+                            <p class="text-muted mb-0">Manage user roles and permissions</p>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <a asp-action="AssignRole" class="btn btn-outline-success">
+                                <i class="fas fa-user-plus me-2"></i>Assign Roles
+                            </a>
+                            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="fas fa-home me-2"></i>Dashboard
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-controller="Home" asp-action="Index">Back to List</a>
-</div>
+<style>
+    .card {
+        backdrop-filter: blur(10px);
+        background: rgba(255, 255, 255, 0.95);
+        transition: all 0.3s ease;
+    }
+    
+    .card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1) !important;
+    }
+    
+    .input-group-text {
+        border-color: #dee2e6;
+    }
+    
+    .form-control:focus {
+        border-color: #28a745;
+        box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+    }
+    
+    .btn-success {
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        border: none;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-success:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+    }
+    
+    .btn-outline-success:hover,
+    .btn-outline-danger:hover,
+    .btn-outline-secondary:hover {
+        transform: translateY(-1px);
+    }
+    
+    .badge {
+        font-size: 0.8rem;
+    }
+</style>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

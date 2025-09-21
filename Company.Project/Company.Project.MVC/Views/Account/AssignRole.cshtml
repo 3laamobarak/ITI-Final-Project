@@ -1,76 +1,248 @@
 ﻿@model Company.Project.MVC.Models.AssignRoleViewModel
 
 @{
-    ViewData["Title"] = "Assign Role";
+    ViewData["Title"] = "Assign Roles";
+    Layout = "_Layout";
 }
 
-<h1>Assign Role</h1>
-<hr />
+<div class="container-fluid">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h2 class="fw-bold text-dark mb-1">
+                        <i class="fas fa-user-plus me-2 text-success"></i>Assign Roles
+                    </h2>
+                    <p class="text-muted mb-0">Assign and manage user roles and permissions</p>
+                </div>
+                <div class="d-flex gap-2">
+                    <span class="badge bg-success bg-gradient px-3 py-2">
+                        <i class="fas fa-users me-1"></i>@ViewBag.UserRoles.Count Users with Roles
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<div class="row">
-    <div class="col-md-6">
-        <form asp-action="AssignRole" method="post">
-            <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="row">
+        <!-- Assign Role Form -->
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0 rounded-4 mb-4">
+                <div class="card-header bg-white border-0 pb-0">
+                    <h4 class="fw-bold text-dark mb-1">
+                        <i class="fas fa-user-plus me-2 text-success"></i>Assign New Role
+                    </h4>
+                    <p class="text-muted mb-0">Assign a role to a user</p>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="AssignRole" method="post">
+                        <div asp-validation-summary="All" class="alert alert-danger" role="alert"></div>
 
-            <div class="form-group">
-                <label asp-for="UserName" class="control-label">Select User</label>
-                <select asp-for="UserName" class="form-control">
-                    <option value="">-- Select User --</option>
-                    @foreach (var user in ViewBag.Users)
+                        <div class="mb-3">
+                            <label asp-for="UserName" class="form-label fw-semibold">
+                                <i class="fas fa-user me-2 text-success"></i>Select User
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0">
+                                    <i class="fas fa-user text-muted"></i>
+                                </span>
+                                <select asp-for="UserName" class="form-control border-start-0 ps-0">
+                                    <option value="">-- Select User --</option>
+                                    @foreach (var user in ViewBag.Users)
+                                    {
+                                        <option value="@user.Value">@user.Text</option>
+                                    }
+                                </select>
+                            </div>
+                            <span asp-validation-for="UserName" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="RoleName" class="form-label fw-semibold">
+                                <i class="fas fa-shield-alt me-2 text-success"></i>Select Role
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0">
+                                    <i class="fas fa-shield-alt text-muted"></i>
+                                </span>
+                                <select asp-for="RoleName" class="form-control border-start-0 ps-0">
+                                    <option value="">-- Select Role --</option>
+                                    @foreach (var role in ViewBag.Roles)
+                                    {
+                                        <option value="@role.Value">@role.Text</option>
+                                    }
+                                </select>
+                            </div>
+                            <span asp-validation-for="RoleName" class="text-danger small"></span>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success fw-semibold">
+                                <i class="fas fa-user-plus me-2"></i>Assign Role
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0 rounded-4">
+                <div class="card-header bg-white border-0 pb-0">
+                    <h4 class="fw-bold text-dark mb-1">
+                        <i class="fas fa-bolt me-2 text-success"></i>Quick Actions
+                    </h4>
+                    <p class="text-muted mb-0">Manage roles and permissions</p>
+                </div>
+                <div class="card-body p-4">
+                    <div class="d-grid gap-3">
+                        <a asp-action="AddRole" class="btn btn-outline-success">
+                            <i class="fas fa-plus me-2"></i>Create New Role
+                        </a>
+                        <a asp-action="GetAll" class="btn btn-outline-info">
+                            <i class="fas fa-users me-2"></i>View All Users
+                        </a>
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">
+                            <i class="fas fa-home me-2"></i>Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Users and Their Roles -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card shadow-sm border-0 rounded-4">
+                <div class="card-header bg-white border-0 pb-0">
+                    <h4 class="fw-bold text-dark mb-1">
+                        <i class="fas fa-list me-2 text-success"></i>Users and Their Roles
+                    </h4>
+                    <p class="text-muted mb-0">View and manage user role assignments</p>
+                </div>
+                <div class="card-body p-0">
+                    @if (ViewBag.UserRoles != null && ViewBag.UserRoles.Count > 0)
                     {
-                        <option value="@user.Value">@user.Text</option>
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th class="border-0 py-3 px-4">
+                                            <i class="fas fa-user me-2 text-success"></i>User
+                                        </th>
+                                        <th class="border-0 py-3 px-4">
+                                            <i class="fas fa-shield-alt me-2 text-success"></i>Roles
+                                        </th>
+                                        <th class="border-0 py-3 px-4">
+                                            <i class="fas fa-cog me-2 text-success"></i>Actions
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var userRole in ViewBag.UserRoles)
+                                    {
+                                        <tr>
+                                            <td class="py-3 px-4">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="bg-success bg-gradient rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                                        <i class="fas fa-user text-white"></i>
+                                                    </div>
+                                                    <div>
+                                                        <div class="fw-semibold text-dark">@userRole.UserName</div>
+                                                        <small class="text-muted">System User</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="py-3 px-4">
+                                                <div class="d-flex flex-wrap gap-1">
+                                                    @foreach (var role in userRole.Roles)
+                                                    {
+                                                        <span class="badge bg-success bg-gradient">@role</span>
+                                                    }
+                                                </div>
+                                            </td>
+                                            <td class="py-3 px-4">
+                                                <a asp-action="RemoveRole" asp-route-username="@userRole.UserName" 
+                                                   class="btn btn-outline-warning btn-sm" 
+                                                   title="Manage Roles">
+                                                    <i class="fas fa-edit me-1"></i>Manage
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
                     }
-                </select>
-                <span asp-validation-for="UserName" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="RoleName" class="control-label">Select Role</label>
-                <select asp-for="RoleName" class="form-control">
-                    <option value="">-- Select Role --</option>
-                    @foreach (var role in ViewBag.Roles)
+                    else
                     {
-                        <option value="@role.Value">@role.Text</option>
+                        <div class="text-center py-5">
+                            <div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                                <i class="fas fa-users text-muted" style="font-size: 2rem;"></i>
+                            </div>
+                            <h5 class="text-muted">No role assignments found</h5>
+                            <p class="text-muted">Start by assigning roles to users</p>
+                        </div>
                     }
-                </select>
-                <span asp-validation-for="RoleName" class="text-danger"></span>
+                </div>
             </div>
-
-            <div class="form-group mt-3">
-                <input type="submit" value="Assign Role" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 
-<hr />
-
-<h2>Users and Their Roles</h2>
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>User</th>
-            <th>Roles</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var userRole in ViewBag.UserRoles)
-        {
-            <tr>
-                <td>@userRole.UserName</td>
-                <td>@string.Join(", ", userRole.Roles)</td>
-                <td>
-                    <a asp-action="RemoveRole" asp-route-username="@userRole.UserName" class="btn btn-warning">Edit</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-
-<div class="mt-3">
-    <a asp-action="AssignRole" class="btn btn-secondary">Back to List</a>
-</div>
+<style>
+    .card {
+        backdrop-filter: blur(10px);
+        background: rgba(255, 255, 255, 0.95);
+        transition: all 0.3s ease;
+    }
+    
+    .card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1) !important;
+    }
+    
+    .table-hover tbody tr:hover {
+        background-color: rgba(40, 167, 69, 0.05);
+        transform: scale(1.01);
+        transition: all 0.2s ease;
+    }
+    
+    .input-group-text {
+        border-color: #dee2e6;
+    }
+    
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #28a745;
+        box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+    }
+    
+    .btn-success {
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        border: none;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-success:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+    }
+    
+    .btn-outline-success:hover,
+    .btn-outline-info:hover,
+    .btn-outline-warning:hover,
+    .btn-outline-secondary:hover {
+        transform: translateY(-1px);
+    }
+    
+    .badge {
+        font-size: 0.8rem;
+    }
+</style>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
