@@ -38,62 +38,103 @@ namespace Company.Project.Application.Services
 
         public async Task<(ChatBotMessages userMsg, ChatBotMessages botMsg)> SendMessageAsync(string userId, string message)
         {
-            // Save user message
-            var userMessage = new ChatBotMessages
+            try
             {
-                Message = message,
-                Sender = "User",
-                UserId = userId
-            };
+                // Save user message
+                var userMessage = new ChatBotMessages
+                {
+                    Message = message,
+                    Sender = "User",
+                    UserId = userId
+                };
 
-            await _unitOfWork.ChatBotMessagesRepository.AddAsync(userMessage);
+                await _unitOfWork.ChatBotMessagesRepository.AddAsync(userMessage);
 
-            // Determine the type of query and generate appropriate response
-            string botReply;
-            
-            if (IsOrderQuery(message))
-            {
-                // Handle order-related queries
-                botReply = await HandleOrderQueryAsync(userId, message);
-            }
-            else if (IsCartQuery(message))
-            {
-                // Handle cart-related queries
-                botReply = await HandleCartQueryAsync(userId, message);
-            }
-            else if (IsUserProfileQuery(message))
-            {
-                // Handle user profile queries
-                botReply = await HandleUserProfileQueryAsync(userId, message);
-            }
-            else if (IsProductQuery(message))
-            {
-                // Extract filter criteria from the message
-                var filters = ExtractProductFilters(message);
-                var products = await GetFilteredProductsAsync(filters);
+                // Determine the type of query and generate appropriate response
+                string botReply;
                 
-                // Format products as a response
-                botReply = FormatProductResponse(products, message);
+                try
+                {
+                    if (IsOrderQuery(message))
+                    {
+                        // Handle order-related queries
+                        botReply = await HandleOrderQueryAsync(userId, message);
+                    }
+                    else if (IsCartQuery(message))
+                    {
+                        // Handle cart-related queries
+                        botReply = await HandleCartQueryAsync(userId, message);
+                    }
+                    else if (IsUserProfileQuery(message))
+                    {
+                        // Handle user profile queries
+                        botReply = await HandleUserProfileQueryAsync(userId, message);
+                    }
+                    else if (IsProductQuery(message))
+                    {
+                        // Extract filter criteria from the message
+                        var filters = ExtractProductFilters(message);
+                        var products = await GetFilteredProductsAsync(filters);
+                        
+                        // Format products as a response
+                        botReply = FormatProductResponse(products, message);
+                    }
+                    else
+                    {
+                        // Get regular bot reply
+                        botReply = await GetBotReplyAsync(message);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // If any specific handler fails, fall back to general bot reply
+                    botReply = await GetBotReplyAsync(message);
+                }
+
+                var botMessage = new ChatBotMessages
+                {
+                    Message = botReply,
+                    Sender = "Bot",
+                    UserId = userId
+                };
+
+                await _unitOfWork.ChatBotMessagesRepository.AddAsync(botMessage);
+
+                // Commit both
+                await _unitOfWork.Completeasync();
+
+                return (userMessage, botMessage);
             }
-            else
+            catch (Exception ex)
             {
-                // Get regular bot reply
-                botReply = await GetBotReplyAsync(message);
+                // If everything fails, return a basic response
+                var userMessage = new ChatBotMessages
+                {
+                    Message = message,
+                    Sender = "User",
+                    UserId = userId
+                };
+
+                var botMessage = new ChatBotMessages
+                {
+                    Message = "I'm sorry, I'm having trouble processing your request right now. Please try again later.",
+                    Sender = "Bot",
+                    UserId = userId
+                };
+
+                try
+                {
+                    await _unitOfWork.ChatBotMessagesRepository.AddAsync(userMessage);
+                    await _unitOfWork.ChatBotMessagesRepository.AddAsync(botMessage);
+                    await _unitOfWork.Completeasync();
+                }
+                catch
+                {
+                    // If even saving fails, just return the messages without saving
+                }
+
+                return (userMessage, botMessage);
             }
-
-            var botMessage = new ChatBotMessages
-            {
-                Message = botReply,
-                Sender = "Bot",
-                UserId = userId
-            };
-
-            await _unitOfWork.ChatBotMessagesRepository.AddAsync(botMessage);
-
-            // Commit both
-            await _unitOfWork.Completeasync();
-
-            return (userMessage, botMessage);
         }
 
         #region Query Type Detection
@@ -540,7 +581,7 @@ namespace Company.Project.Application.Services
             {
                 response.AppendLine($"{count}. {product.Name}");
                 response.AppendLine($"   Price: ${product.Price:F2}");
-                response.AppendLine($"   Category: {product.ProductCategories}");
+                response.AppendLine($"   Category: {product.ProductCategories?.FirstOrDefault()?.Category?.Name ?? "N/A"}");
                 if (!string.IsNullOrEmpty(product.Description))
                 {
                     response.AppendLine($"   Description: {product.Description}");
@@ -563,38 +604,51 @@ namespace Company.Project.Application.Services
 
         private async Task<string> GetBotReplyAsync(string message)
         {
-            var requestData = new
+            try
             {
-                model = "meta-llama/llama-3.1-8b-instruct", // ✅ good free/fast model on OpenRouter
-                messages = new object[]
+                var requestData = new
                 {
-                    new { role = "system", content = "You are a helpful e-commerce customer service chatbot. You can help users find products, manage their cart, check order status, and update their profile information. Be friendly and helpful. Always address the user by their name if available." },
-                    new { role = "user", content = message }
-                },
-                max_tokens = 200
-            };
+                    model = "meta-llama/llama-3.1-8b-instruct", // ✅ good free/fast model on OpenRouter
+                    messages = new object[]
+                    {
+                        new { role = "system", content = "You are a helpful e-commerce customer service chatbot. You can help users find products, manage their cart, check order status, and update their profile information. Be friendly and helpful. Always address the user by their name if available." },
+                        new { role = "user", content = message }
+                    },
+                    max_tokens = 200
+                };
 
-            var json = JsonSerializer.Serialize(requestData);
+                var json = JsonSerializer.Serialize(requestData);
 
-            var response = await _httpClient.PostAsync(
-                "chat/completions", // ✅ OpenRouter endpoint
-                new StringContent(json, Encoding.UTF8, "application/json")
-            );
+                var response = await _httpClient.PostAsync(
+                    "chat/completions", // ✅ OpenRouter endpoint
+                    new StringContent(json, Encoding.UTF8, "application/json")
+                );
 
-            if (!response.IsSuccessStatusCode)
-            {
-                var error = await response.Content.ReadAsStringAsync();
-                throw new Exception($"OpenRouter API error {response.StatusCode}: {error}");
+                if (!response.IsSuccessStatusCode)
+                {
+                    var error = await response.Content.ReadAsStringAsync();
+                    return "I'm having trouble processing your request right now. Please try again later.";
+                }
+
+                var result = await response.Content.ReadAsStringAsync();
+                using var doc = JsonDocument.Parse(result);
+
+                var choices = doc.RootElement.GetProperty("choices");
+                if (choices.GetArrayLength() > 0)
+                {
+                    return choices[0]
+                        .GetProperty("message")
+                        .GetProperty("content")
+                        .GetString() ?? "I'm sorry, I couldn't generate a response. Please try again.";
+                }
+                
+                return "I'm sorry, I couldn't generate a response. Please try again.";
             }
-
-            var result = await response.Content.ReadAsStringAsync();
-            using var doc = JsonDocument.Parse(result);
-
-            return doc.RootElement
-                      .GetProperty("choices")[0]
-                      .GetProperty("message")
-                      .GetProperty("content")
-                      .GetString();
+            catch (Exception ex)
+            {
+                // Log the exception if you have logging configured
+                return "I'm having trouble processing your request right now. Please try again later.";
+            }
         }
     }
 }

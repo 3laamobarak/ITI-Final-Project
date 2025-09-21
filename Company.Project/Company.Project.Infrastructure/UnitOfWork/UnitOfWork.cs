@@ -30,9 +30,10 @@ namespace Company.Project.Infrastructure.UnitOfWork
         private IOrderItemRepository _orderItemRepository;
         private IProductCategoryRepository _productCategoryRepository;
         private IRefundRepository _refundRepository;
-        public UnitOfWork(Context context)
+        public UnitOfWork(Context context, UserManager<ApplicationUser> userManager)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
+            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             OTPs = new BaseRepository<OTP>(_context);
             // _brandRepository = new BrandRepository<Brand>(_context);
             // _cartItemRepository = new CartItemRepository<CartItem>(_context);
