@@ -19,26 +19,51 @@ namespace Company.Project.PL.Controllers
         [HttpPost("send")]
         public async Task<IActionResult> SendMessage([FromBody] string message)
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrEmpty(userId)) return Unauthorized();
-
-            var (userMsg, botMsg) = await _chatBotMessageService.SendMessageAsync(userId, message);
-
-            return Ok(new
+            try
             {
-                user = userMsg.Message,
-                bot = botMsg.Message
-            });
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (string.IsNullOrEmpty(userId)) 
+                {
+                    return Unauthorized("User not authenticated");
+                }
+
+                if (string.IsNullOrEmpty(message))
+                {
+                    return BadRequest("Message cannot be empty");
+                }
+
+                var (userMsg, botMsg) = await _chatBotMessageService.SendMessageAsync(userId, message);
+
+                return Ok(new
+                {
+                    user = userMsg.Message,
+                    bot = botMsg.Message
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
 
         [HttpGet("history")]
         public async Task<IActionResult> GetHistory()
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrEmpty(userId)) return Unauthorized();
+            try
+            {
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (string.IsNullOrEmpty(userId)) 
+                {
+                    return Unauthorized("User not authenticated");
+                }
 
-            var messages = await _chatBotMessageService.GetMessagesByUserAsync(userId);
-            return Ok(messages);
+                var messages = await _chatBotMessageService.GetMessagesByUserAsync(userId);
+                return Ok(messages);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
 
         [HttpPost("product-query")]
