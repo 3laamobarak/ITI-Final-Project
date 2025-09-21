@@ -35,6 +35,7 @@ namespace Company.Project.Application
             services.AddScoped<IOTPService, OTPService>();
             services.AddScoped<IPaymentService, StripePaymentService>();
             services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IMessageService, MessageService>();
             
             // Register AutoMapper
             services.AddAutoMapper(cfg => { }, AppDomain.CurrentDomain.GetAssemblies());

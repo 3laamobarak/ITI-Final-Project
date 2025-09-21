@@ -40,13 +40,23 @@ namespace Company.Project.PL
             //jwt configuration
             builder.Services.Configure<JWT>(builder.Configuration.GetSection("JWT"));
             // allow CORS
+            //builder.Services.AddCors(options =>
+            //{
+            //    options.AddPolicy("AllowAllOrigins",
+            //        builder => builder.AllowAnyOrigin()
+            //            .AllowAnyMethod()
+            //            .AllowAnyHeader());
+            //});
             builder.Services.AddCors(options =>
             {
-                options.AddPolicy("AllowAllOrigins",
-                    builder => builder.AllowAnyOrigin()
+                options.AddPolicy("AllowMVCAndAngular",
+                    builder => builder
+                        .WithOrigins("http://localhost:4200", "http://localhost:5156","http://localhost:5297", "http://3mk-3laa.runasp.net") // Explicit origins
                         .AllowAnyMethod()
-                        .AllowAnyHeader());
+                        .AllowAnyHeader()
+                        .AllowCredentials()); // Required for SignalR with credentials
             });
+
             // bind email 
             builder.Services.Configure<EmailSettingsDTO>(builder.Configuration.GetSection("EmailSettings"));
             
@@ -144,6 +154,7 @@ namespace Company.Project.PL
 
 
             var app = builder.Build();
+            app.UseStaticFiles();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -151,13 +162,14 @@ namespace Company.Project.PL
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-            app.UseCors("AllowAllOrigins");
+//            app.UseCors("AllowAllOrigins");
+            app.UseCors("AllowMVCAndAngular");
             app.UseHttpsRedirection();
 
             app.UseAuthentication();
             app.UseAuthorization();
-            app.MapHub<ChatHub>("/chathub");
-            
+            app.MapHub<ChatHub>("/chathub"); // Ensure this is correct
+
             app.MapControllers();
 
             app.Run();

@@ -1,32 +1,35 @@
 ﻿using Company.Project.Domain.Interfaces;
 using Company.Project.Domain.Models;
 using Company.Project.theDbcontext;
+using Microsoft.EntityFrameworkCore;
 
 namespace Company.Project.Infrastructure.Repositories
 {
-    public class MessageRepository :IMessageRepository
+    public class MessageRepository : BaseRepository<ChatMessage> , IMessageRepository 
     {
-        private readonly Context _context;
+//        private readonly Context _context;
 
-        public MessageRepository(Context context)
+        public MessageRepository(Context context) : base(context)
         {
-            _context = context;
+//            _context = context;
         }
 
-        public async Task AddAsync(ChatMessage message)
+        public async Task<IEnumerable<ChatMessage>> GetMessagesForUserAsync(string userId, string adminId = "admin")
         {
-            await _context.ChatMessages.AddAsync(message);
-            await _context.SaveChangesAsync();
-        }
-        public async Task<List<ChatMessage>> GetMessagesByUserIdAsync(string userId)
-        {
-            return await Task.FromResult(_context.ChatMessages
-                .Where(m => m.SenderId == userId || m.ReceiverId == userId)
+            return await _dbContext.ChatMessages
+                .Where(m => (m.SenderId == userId && m.ReceiverId == adminId) || (m.SenderId == adminId && m.ReceiverId == userId))
                 .OrderBy(m => m.Timestamp)
-                .ToList());
+                .ToListAsync();
         }
 
-        // Other methods for retrieving messages can be implemented here
-        
+        public async Task MarkAsReadAsync(int messageId)
+        {
+            var message = await _dbContext.ChatMessages.FindAsync(messageId);
+            if (message != null)
+            {
+                message.IsRead = true;
+                await _dbContext.SaveChangesAsync();
+            }
+        }      
     }
 }

@@ -1,60 +1,31 @@
-﻿using System.Security.Claims;
+﻿using AutoMapper;
 using Company.Project.Application.Contracts;
-using Microsoft.AspNetCore.Http;
+using Company.Project.DTO.DTO.ChatMessage;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Company.Project.PL.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ChatController : ControllerBase
     {
-        private readonly IChatBotMessageService _chatBotMessageService;
+        private readonly IMessageService _messageService;
+        private readonly IMapper _mapper;
 
-        public ChatController(IChatBotMessageService chatBotMessageService)
+        public ChatController(IMessageService messageService, IMapper mapper)
         {
-            _chatBotMessageService = chatBotMessageService;
+            _messageService = messageService;
+            _mapper = mapper;
         }
 
-        [HttpPost("send")]
-        public async Task<IActionResult> SendMessage([FromBody] string message)
+        [HttpGet("messages")]
+        public async Task<IActionResult> GetMessages()
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrEmpty(userId)) return Unauthorized();
-
-            var (userMsg, botMsg) = await _chatBotMessageService.SendMessageAsync(userId, message);
-
-            return Ok(new
-            {
-                user = userMsg.Message,
-                bot = botMsg.Message
-            });
-        }
-
-        [HttpGet("history")]
-        public async Task<IActionResult> GetHistory()
-        {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrEmpty(userId)) return Unauthorized();
-
-            var messages = await _chatBotMessageService.GetMessagesByUserAsync(userId);
-            return Ok(messages);
-        }
-
-        [HttpPost("product-query")]
-        public async Task<IActionResult> ProductQuery([FromBody] string query)
-        {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrEmpty(userId)) return Unauthorized();
-
-            // This will use the product filtering logic in the service
-            var (userMsg, botMsg) = await _chatBotMessageService.SendMessageAsync(userId, query);
-
-            return Ok(new
-            {
-                user = userMsg.Message,
-                bot = botMsg.Message
-            });
+            var userId = User.Identity.Name;
+            var messages = await _messageService.GetMessagesForUserAsync(userId);
+            return Ok(_mapper.Map<IEnumerable<MessageDto>>(messages));
         }
     }
 }

@@ -1,0 +1,139 @@
+﻿@model Company.Project.DTO.DTO.Product.ProductDetailDto
+
+@{
+    ViewData["Title"] = "Product Details";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="row g-0">
+            
+            <div class="col-md-5 text-center p-4 bg-light">
+                @if (!string.IsNullOrEmpty(Model.Imagepath))
+                {
+                    <img src="@Model.Imagepath"
+                         alt="@Model.Name"
+                         class="img-fluid rounded border mb-3"
+                         style="max-height:350px;object-fit:cover;" />
+                }
+                else
+                {
+                    <span class="text-muted">No Image</span>
+                }
+
+                
+                <div class="d-flex justify-content-center gap-2 flex-wrap mt-3">
+                    @foreach (var img in new[] { Model.Imagepath, Model.Imagepath2, Model.Imagepath3, Model.Imagepath4, Model.Imagepath5 })
+                    {
+                        if (!string.IsNullOrEmpty(img))
+                        {
+                            <img src="@img" class="img-thumbnail rounded"
+                                 style="width:80px;height:80px;object-fit:cover;" />
+                        }
+                    }
+                </div>
+            </div>
+
+           
+            <div class="col-md-7 p-4">
+                <h2 class="text-primary fw-bold">@Model.Name</h2>
+                <h4 class="text-success mb-3">@Model.Price.ToString("C")</h4>
+
+                <dl class="row">
+                    <dt class="col-sm-4">Stock</dt>
+                    <dd class="col-sm-8">@Model.StockQuantity</dd>
+
+                    <dt class="col-sm-4">Category</dt>
+                    <dd class="col-sm-8">@Model.Category?.Name</dd>
+
+                    <dt class="col-sm-4">Brand</dt>
+                    <dd class="col-sm-8">@Model.Brand?.Name</dd>
+
+                    <dt class="col-sm-4">Expiry Date</dt>
+                    <dd class="col-sm-8">@Model.ExpiryDate.ToString("yyyy-MM-dd")</dd>
+
+                    <dt class="col-sm-4">Average Rating</dt>
+                    <dd class="col-sm-8">
+                        @Model.AverageRating.ToString("0.0") / 5 ⭐
+                        <span class="text-muted">(@Model.ReviewCount reviews)</span>
+                    </dd>
+                </dl>
+
+                <hr />
+
+                @if (!string.IsNullOrWhiteSpace(Model.Description))
+                {
+                    <h5 class="fw-semibold">Description</h5>
+                    <p>@Model.Description</p>
+                }
+
+                @if (!string.IsNullOrWhiteSpace(Model.Overview))
+                {
+                    <h5 class="fw-semibold mt-3">Overview</h5>
+                    <p>@Model.Overview</p>
+                }
+
+                @if (!string.IsNullOrWhiteSpace(Model.SuggestedUse))
+                {
+                    <h5 class="fw-semibold mt-3">Suggested Use</h5>
+                    <p>@Model.SuggestedUse</p>
+                }
+
+                @if (!string.IsNullOrWhiteSpace(Model.Warnings))
+                {
+                    <h5 class="fw-semibold mt-3 text-danger">Warnings</h5>
+                    <p>@Model.Warnings</p>
+                }
+
+                @if (!string.IsNullOrWhiteSpace(Model.Disclaimer))
+                {
+                    <h5 class="fw-semibold mt-3">Disclaimer</h5>
+                    <p>@Model.Disclaimer</p>
+                }
+
+                <div class="mt-4">
+                    <a asp-action="GetAll" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Back to List
+                    </a>
+                    <a asp-action="Update" asp-route-id="@Model.Id" class="btn btn-warning">
+                        <i class="bi bi-pencil-square"></i> Edit
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+ 
+    @if (Model.Reviews != null && Model.Reviews.Any())
+    {
+        <div class="card mt-4 shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="bi bi-chat-left-text"></i> Customer Reviews</h5>
+            </div>
+            <div class="list-group list-group-flush">
+                @foreach (var review in Model.Reviews.OrderByDescending(r => r.CreatedAt))
+                {
+                    <div class="list-group-item">
+                        <div class="d-flex justify-content-between">
+                            <strong>@review.ReviewerName</strong>
+                            <small class="text-muted">@review.CreatedAt.ToString("yyyy-MM-dd")</small>
+                        </div>
+                        <div>
+                            Rating: @review.Rating / 5 ⭐
+                        </div>
+                        @if (!string.IsNullOrWhiteSpace(review.Comment))
+                        {
+                            <p class="mt-2">@review.Comment</p>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info mt-4">
+            No reviews yet.
+        </div>
+    }
+</div>

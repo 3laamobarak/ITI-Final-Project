@@ -14,7 +14,7 @@ namespace Company.Project.MVC.Controllers
         // GET ALL
         public async Task<IActionResult> GetAll(int skip = 0, int take = 20)
         {
-            var result = await _brandService.GetAllAsync(skip, take);
+            var result = await _brandService.GetAllAsync();
 
             return View(result);
         }

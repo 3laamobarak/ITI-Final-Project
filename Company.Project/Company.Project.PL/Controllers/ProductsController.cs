@@ -21,6 +21,15 @@ namespace Company.Project.PL.Controllers
         public async Task<IActionResult> GetAll()
         {
             var products = await _productService.GetAllAsync();
+            //
+            foreach (var product in products)
+            {
+                if (!string.IsNullOrEmpty(product.Imagepath))
+                {
+                    product.Imagepath = $"{product.Imagepath}";
+                }
+            }
+            //
             return Ok(products);
         }
 

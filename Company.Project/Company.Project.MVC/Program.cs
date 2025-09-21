@@ -10,6 +10,13 @@ using Company.Project.DTO.DTO.OTPs;
 using Company.Project.Infrastructure;
 using Company.Project.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
+using Company.Project.Infrastructure.Repositories;
+using Company.Project.Application.Services;
+using Company.Project.Domain.Interfaces;
+using Company.Project.Infrastructure.Repositories;
+using Company.Project.Infrastructure.UnitOfWork;
+using Company.Project.theDbcontext;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using AutoMapper;
     
@@ -30,6 +37,7 @@ namespace Company.Project.MVC
             // Add repositories
             builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
             builder.Services.AddScoped<IBrandRepository, BrandRepository>();
+            builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
             // Add UnitOfWork
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -37,6 +45,10 @@ namespace Company.Project.MVC
             // Add services
             builder.Services.AddScoped<ICategoryService, CategoryService>();
             builder.Services.AddScoped<IBrandService, BrandService>();
+            builder.Services.AddScoped<IProductService, ProductService>();
+            builder.Services.AddScoped<ProductService>();
+            builder.Services.AddScoped<CategoryService>();
+            builder.Services.AddScoped<BrandService>();
 
             // AutoMapper
             builder.Services.AddAutoMapper(cfg =>
@@ -100,6 +112,7 @@ namespace Company.Project.MVC
             app.UseHttpsRedirection();
             
             app.UseStaticFiles();
+            app.UseCors("AllowAllOrigins");
 
             app.UseRouting();
 

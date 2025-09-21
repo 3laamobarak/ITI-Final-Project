@@ -65,9 +65,9 @@ namespace Company.Project.Domain.Models
 
         public ICollection<Order> Orders { get; set; } = new List<Order>();
         public ICollection<ChatBotMessages> ChatMessages { get; set; } = new List<ChatBotMessages>();
-        public ICollection<Chat> Chats { get; set; } = new List<Chat>();
+        // public ICollection<Chat> Chats { get; set; } = new List<Chat>();
         public ICollection<Review> Reviews { get; set; } = new List<Review>();
-        public ICollection<ChatMember> ChatMembers { get; set; } = new List<ChatMember>();
+        // public ICollection<ChatMember> ChatMembers { get; set; } = new List<ChatMember>();
 //        public List<RefreshToken>? RefreshTokens { get; set; }
 
     }
