@@ -127,7 +127,7 @@
         @* { *@
             <div>
                 <label asp-for="image" class="form-label">Main Image</label>
-                <input asp-for="image" type="file" class="form-control" />
+                <input asp-for="image" accept="image/*" type="file" class="form-control" />
                 <img src="/@Model.Imagepath" style="width: 100px; height: 100px;" />
                 <span asp-validation-for="image" class="text-danger"></span>
             </div>
@@ -136,7 +136,7 @@
         @* { *@
             <div>
                 <label asp-for="image2" class="form-label">Optional Image 2</label>
-                <input asp-for="image2" type="file" class="form-control" />
+                <input asp-for="image2" accept="image/*" type="file" class="form-control" />
                 <img src="/@Model.Imagepath2" style="width: 100px; height: 100px;" />
                 <span asp-validation-for="image2" class="text-danger"></span>
             </div>
@@ -145,7 +145,7 @@
         @* { *@
             <div>
                 <label asp-for="image3" class="form-label">Optional Image 3</label>
-                <input asp-for="image3" type="file" class="form-control" />
+                <input asp-for="image3" accept="image/*" type="file" class="form-control" />
                 <img src="/@Model.Imagepath3" style="width: 100px; height: 100px;" />
                 <span asp-validation-for="image3" class="text-danger"></span>
             </div>
@@ -154,7 +154,7 @@
         @* { *@
             <div>
                 <label asp-for="image4" class="form-label">Optional Image 4</label>
-                <input asp-for="image4" type="file" class="form-control" />
+                <input asp-for="image4" accept="image/*" type="file" class="form-control" />
                 <img src="/@Model.Imagepath4"  style="width: 100px; height: 100px;" />
                 <span asp-validation-for="image4" class="text-danger"></span>
             </div>
@@ -163,7 +163,7 @@
         @* { *@
             <div>
                 <label asp-for="image5" class="form-label">Optional Image 5</label>
-                <input asp-for="image5" type="file" class="form-control" />
+                <input asp-for="image5" accept="image/*" type="file" class="form-control" />
                 <img src="/@Model.Imagepath5" style="width: 100px; height: 100px;" />
                 <span asp-validation-for="image5" class="text-danger"></span>
             </div>

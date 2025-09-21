@@ -59,43 +59,58 @@ namespace Company.Project.MVC.Controllers
 
             if (dto.image != null)
             {
-                string folder = "Images\\Product";
-                string fileName = Guid.NewGuid().ToString() + "_" + dto.image.FileName;
-                string serverFolder = Path.Combine(webHostEnvironment.WebRootPath, folder, fileName);
-                await dto.image.CopyToAsync(new FileStream(serverFolder, FileMode.Create));
-                dto.Imagepath = Path.Combine(folder, fileName);
+                using (var ms = new MemoryStream())
+                {
+                    await dto.image.CopyToAsync(ms);
+                    var base64 = Convert.ToBase64String(ms.ToArray());
+                    base64 = "data:" + dto.image.ContentType + ";base64," + base64;
+                    dto.Imagepath = base64;
+                }
+                
             }
             if (dto.image2 != null)
             {
-                string folder = "Images\\Product";
-                string fileName = Guid.NewGuid().ToString() + "_" + dto.image2.FileName;
-                string serverFolder = Path.Combine(webHostEnvironment.WebRootPath, folder, fileName);
-                await dto.image2.CopyToAsync(new FileStream(serverFolder, FileMode.Create));
-                dto.Imagepath2 = Path.Combine(folder, fileName);
+                using (var ms = new MemoryStream())
+                {
+                    await dto.image2.CopyToAsync(ms);
+                    var base64 = Convert.ToBase64String(ms.ToArray());
+                    base64 = "data:" + dto.image2.ContentType + ";base64," + base64;
+                    dto.Imagepath2 = base64;
+                }
+                
             }
             if (dto.image3 != null)
             {
-                string folder = "Images\\Product";
-                string fileName = Guid.NewGuid().ToString() + "_" + dto.image3.FileName;
-                string serverFolder = Path.Combine(webHostEnvironment.WebRootPath, folder, fileName);
-                await dto.image3.CopyToAsync(new FileStream(serverFolder, FileMode.Create));
-                dto.Imagepath3 = Path.Combine(folder, fileName);
+                using (var ms = new MemoryStream())
+                {
+                    await dto.image3.CopyToAsync(ms);
+                    var base64 = Convert.ToBase64String(ms.ToArray());
+                    base64 = "data:" + dto.image3.ContentType + ";base64," + base64;
+                    dto.Imagepath3 = base64;
+                }
+                
             }
             if (dto.image4 != null)
             {
-                string folder = "Images\\Product";
-                string fileName = Guid.NewGuid().ToString() + "_" + dto.image4.FileName;
-                string serverFolder = Path.Combine(webHostEnvironment.WebRootPath, folder, fileName);
-                await dto.image4.CopyToAsync(new FileStream(serverFolder, FileMode.Create));
-                dto.Imagepath4 = Path.Combine(folder, fileName);
+                using (var ms = new MemoryStream())
+                {
+                    await dto.image4.CopyToAsync(ms);
+                    var base64 = Convert.ToBase64String(ms.ToArray());
+                    base64 = "data:" + dto.image4.ContentType + ";base64," + base64;
+                    dto.Imagepath4 = base64;
+                }
+                
             }
             if (dto.image5 != null)
             {
-                string folder = "Images\\Product";
-                string fileName = Guid.NewGuid().ToString() + "_" + dto.image5.FileName;
-                string serverFolder = Path.Combine(webHostEnvironment.WebRootPath, folder, fileName);
-                await dto.image5.CopyToAsync(new FileStream(serverFolder, FileMode.Create));
-                dto.Imagepath5 = Path.Combine(folder, fileName);
+                using (var ms = new MemoryStream())
+                {
+                    await dto.image5.CopyToAsync(ms);
+                    var base64 = Convert.ToBase64String(ms.ToArray());
+                    base64 = "data:" + dto.image5.ContentType + ";base64," + base64;
+                    dto.Imagepath5 = base64;
+                }
+                
             }
             
 
@@ -148,43 +163,63 @@ namespace Company.Project.MVC.Controllers
             // Handle image uploads
             if (dto.image != null)
             {
-                string folder = "Images\\Product";
-                string fileName = Guid.NewGuid().ToString() + "_" + dto.image.FileName;
-                string serverFolder = Path.Combine(webHostEnvironment.WebRootPath, folder, fileName);
-                await dto.image.CopyToAsync(new FileStream(serverFolder, FileMode.Create));
-                dto.Imagepath = Path.Combine(folder, fileName);
+                // do the same here but with the update
+                // using (var ms = new MemoryStream())
+                // {
+                //     await dto.image4.CopyToAsync(ms);
+                //     var base64 = Convert.ToBase64String(ms.ToArray());
+                //     base64 = "data:" + dto.image4.ContentType + ";base64," + base64;
+                //     dto.Imagepath4 = base64;
+                // }
+                // like that
+                using (var ms = new MemoryStream())
+                {
+                    await dto.image.CopyToAsync(ms);
+                    var base64 = Convert.ToBase64String(ms.ToArray());
+                    base64 = "data:" + dto.image.ContentType + ";base64," + base64;
+                    dto.Imagepath = base64;
+                }
             }
             if (dto.image2 != null)
             {
-                string folder = "Images\\Product";
-                string fileName = Guid.NewGuid().ToString() + "_" + dto.image2.FileName;
-                string serverFolder = Path.Combine(webHostEnvironment.WebRootPath, folder, fileName);
-                await dto.image2.CopyToAsync(new FileStream(serverFolder, FileMode.Create));
-                dto.Imagepath2 = Path.Combine(folder, fileName);
+                using (var ms = new MemoryStream())
+                {
+                    await dto.image2.CopyToAsync(ms);
+                    var base64 = Convert.ToBase64String(ms.ToArray());
+                    base64 = "data:" + dto.image2.ContentType + ";base64," + base64;
+                    dto.Imagepath4 = base64;
+                }
             }
             if (dto.image3 != null)
             {
-                string folder = "Images\\Product";
-                string fileName = Guid.NewGuid().ToString() + "_" + dto.image3.FileName;
-                string serverFolder = Path.Combine(webHostEnvironment.WebRootPath, folder, fileName);
-                await dto.image3.CopyToAsync(new FileStream(serverFolder, FileMode.Create));
-                dto.Imagepath3 = Path.Combine(folder, fileName);
+                using (var ms = new MemoryStream())
+                {
+                    await dto.image3.CopyToAsync(ms);
+                    var base64 = Convert.ToBase64String(ms.ToArray());
+                    base64 = "data:" + dto.image3.ContentType + ";base64," + base64;
+                    dto.Imagepath3 = base64;
+                }
+                
             }
             if (dto.image4 != null)
             {
-                string folder = "Images\\Product";
-                string fileName = Guid.NewGuid().ToString() + "_" + dto.image4.FileName;
-                string serverFolder = Path.Combine(webHostEnvironment.WebRootPath, folder, fileName);
-                await dto.image4.CopyToAsync(new FileStream(serverFolder, FileMode.Create));
-                dto.Imagepath4 = Path.Combine(folder, fileName);
+                using (var ms = new MemoryStream())
+                {
+                    await dto.image4.CopyToAsync(ms);
+                    var base64 = Convert.ToBase64String(ms.ToArray());
+                    base64 = "data:" + dto.image4.ContentType + ";base64," + base64;
+                    dto.Imagepath4 = base64;
+                }
             }
             if (dto.image5 != null)
             {
-                string folder = "Images\\Product";
-                string fileName = Guid.NewGuid().ToString() + "_" + dto.image5.FileName;
-                string serverFolder = Path.Combine(webHostEnvironment.WebRootPath, folder, fileName);
-                await dto.image5.CopyToAsync(new FileStream(serverFolder, FileMode.Create));
-                dto.Imagepath5 = Path.Combine(folder, fileName);
+                using (var ms = new MemoryStream())
+                {
+                    await dto.image5.CopyToAsync(ms);
+                    var base64 = Convert.ToBase64String(ms.ToArray());
+                    base64 = "data:" + dto.image5.ContentType + ";base64," + base64;
+                    dto.Imagepath5 = base64;
+                }
             }
 
             await _productService.UpdateAsync(dto);
