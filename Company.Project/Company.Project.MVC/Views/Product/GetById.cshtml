@@ -9,9 +9,9 @@
         <div class="row g-0">
             
             <div class="col-md-5 text-center p-4 bg-light">
-                @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                @if (!string.IsNullOrEmpty(Model.Imagepath))
                 {
-                    <img src="@Model.ImageUrl"
+                    <img src="@Model.Imagepath"
                          alt="@Model.Name"
                          class="img-fluid rounded border mb-3"
                          style="max-height:350px;object-fit:cover;" />
@@ -23,7 +23,7 @@
 
                 
                 <div class="d-flex justify-content-center gap-2 flex-wrap mt-3">
-                    @foreach (var img in new[] { Model.Imageone, Model.Imagetwo, Model.Imagethree, Model.Imagefour })
+                    @foreach (var img in new[] { Model.Imagepath, Model.Imagepath2, Model.Imagepath3, Model.Imagepath4, Model.Imagepath5 })
                     {
                         if (!string.IsNullOrEmpty(img))
                         {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Microsoft.AspNetCore.Http;
 namespace Company.Project.DTO.DTO.Product
 {
     public class ProductDetailDto
@@ -18,16 +18,32 @@ namespace Company.Project.DTO.DTO.Product
         public string? Warnings { get; set; }
         public string? Disclaimer { get; set; }
         public DateTime ExpiryDate { get; set; }
-        public string ImageUrl { get; set; }
-        public string? Imageone { get; set; }
+        // public string ImageUrl { get; set; }
+        // public string? Imageone { get; set; }
+        //
+        // public string? Imagetwo { get; set; }
+        //
+        // public string? Imagethree { get; set; }
+        //
+        // public string? Imagefour { get; set; }
+        //
+        // public string? Imagefive { get; set; }
+        public IFormFile? image { get; set; }
+        public string? Imagepath { get; set; }
 
-        public string? Imagetwo { get; set; }
+        public IFormFile? image2 { get; set; }
+        public string? Imagepath2 { get; set; }
 
-        public string? Imagethree { get; set; }
+        public IFormFile? image3 { get; set; }
+        public string? Imagepath3 { get; set; }
+        
+        public IFormFile? image4 { get; set; }
+        public string? Imagepath4 { get; set; }
+        
+        public IFormFile? image5 { get; set; }
+        public string? Imagepath5 { get; set; }
 
-        public string? Imagefour { get; set; }
 
-        public string? Imagefive { get; set; }
 
         public decimal AverageRating { get; set; }
         public int ReviewCount { get; set; }

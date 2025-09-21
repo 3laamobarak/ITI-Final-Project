@@ -14,7 +14,7 @@ namespace Company.Project.Infrastructure.UnitOfWork
         private IBrandRepository _brandRepository;
         public ICartItemRepository _cartItemRepository;
         public ICategoryRepository _categoryRepository;
-
+        public IMessageRepository _messageRepository;
         public IUserRepository _userRepository;
         
 
@@ -122,6 +122,10 @@ namespace Company.Project.Infrastructure.UnitOfWork
         public IPaymentRepository PaymentRepository
         {
             get { return _paymentRepository ??= new PaymentRepository(_context); }
+        }
+        public IMessageRepository ChatMessageRepository
+        {
+            get { return _messageRepository ??= new MessageRepository(_context); }
         }
 
 

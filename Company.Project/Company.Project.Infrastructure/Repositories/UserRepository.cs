@@ -29,7 +29,7 @@ namespace Company.Project.Infrastructure.Repositories
             return await _context.Users
                 .Include(u => u.Orders)
                 .Include(u => u.Reviews)
-                .Include(u => u.Chats)
+                //.Include(u => u.Chats)
                 .Include(u => u.ChatMessages)
                 .FirstOrDefaultAsync(u => u.Id == userId);
         }

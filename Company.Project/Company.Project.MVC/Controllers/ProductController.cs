@@ -10,9 +10,11 @@ namespace Company.Project.MVC.Controllers
         private readonly ProductService _productService;
         private readonly CategoryService _categoryService;
         private readonly BrandService _brandService;
+        private readonly IWebHostEnvironment webHostEnvironment;
 
-        public ProductController(ProductService productService , CategoryService categoryService , BrandService brandService)
+        public ProductController(ProductService productService , CategoryService categoryService , BrandService brandService, IWebHostEnvironment webHostEnvironment)
         {
+            this.webHostEnvironment = webHostEnvironment;
             _productService = productService;
             _categoryService = categoryService;
             _brandService = brandService;
@@ -55,6 +57,48 @@ namespace Company.Project.MVC.Controllers
                 return View(dto);
             }
 
+            if (dto.image != null)
+            {
+                string folder = "Images\\Product";
+                string fileName = Guid.NewGuid().ToString() + "_" + dto.image.FileName;
+                string serverFolder = Path.Combine(webHostEnvironment.WebRootPath, folder, fileName);
+                await dto.image.CopyToAsync(new FileStream(serverFolder, FileMode.Create));
+                dto.Imagepath = Path.Combine(folder, fileName);
+            }
+            if (dto.image2 != null)
+            {
+                string folder = "Images\\Product";
+                string fileName = Guid.NewGuid().ToString() + "_" + dto.image2.FileName;
+                string serverFolder = Path.Combine(webHostEnvironment.WebRootPath, folder, fileName);
+                await dto.image2.CopyToAsync(new FileStream(serverFolder, FileMode.Create));
+                dto.Imagepath2 = Path.Combine(folder, fileName);
+            }
+            if (dto.image3 != null)
+            {
+                string folder = "Images\\Product";
+                string fileName = Guid.NewGuid().ToString() + "_" + dto.image3.FileName;
+                string serverFolder = Path.Combine(webHostEnvironment.WebRootPath, folder, fileName);
+                await dto.image3.CopyToAsync(new FileStream(serverFolder, FileMode.Create));
+                dto.Imagepath3 = Path.Combine(folder, fileName);
+            }
+            if (dto.image4 != null)
+            {
+                string folder = "Images\\Product";
+                string fileName = Guid.NewGuid().ToString() + "_" + dto.image4.FileName;
+                string serverFolder = Path.Combine(webHostEnvironment.WebRootPath, folder, fileName);
+                await dto.image4.CopyToAsync(new FileStream(serverFolder, FileMode.Create));
+                dto.Imagepath4 = Path.Combine(folder, fileName);
+            }
+            if (dto.image5 != null)
+            {
+                string folder = "Images\\Product";
+                string fileName = Guid.NewGuid().ToString() + "_" + dto.image5.FileName;
+                string serverFolder = Path.Combine(webHostEnvironment.WebRootPath, folder, fileName);
+                await dto.image5.CopyToAsync(new FileStream(serverFolder, FileMode.Create));
+                dto.Imagepath5 = Path.Combine(folder, fileName);
+            }
+            
+
             await _productService.CreateAsync(dto);
             return RedirectToAction(nameof(GetAll));
         }
@@ -77,14 +121,13 @@ namespace Company.Project.MVC.Controllers
                 Warnings = product.Warnings,
                 Disclaimer = product.Disclaimer,
                 ExpiryDate = product.ExpiryDate,
-                ImageUrl = product.ImageUrl,
-                Imageone = product.Imageone,
-                Imagetwo = product.Imagetwo,
-                Imagethree = product.Imagethree,
-                Imagefour = product.Imagefour,
+                Imagepath = product.Imagepath,
+                Imagepath2 = product.Imagepath2,
+                Imagepath3 = product.Imagepath3,
+                Imagepath4 = product.Imagepath4,
+                Imagepath5 = product.Imagepath5,
                 CategoryId = product.Category?.Id ?? 0,
                 BrandId = product.Brand?.Id ?? 0
-
             };
 
             await LoadDropDowns();
@@ -92,7 +135,6 @@ namespace Company.Project.MVC.Controllers
             return View(updateDto);
         }
 
-        // UPDATE POST
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Update(UpdateProductDto dto)
@@ -101,6 +143,48 @@ namespace Company.Project.MVC.Controllers
             {
                 await LoadDropDowns();
                 return View(dto);
+            }
+
+            // Handle image uploads
+            if (dto.image != null)
+            {
+                string folder = "Images\\Product";
+                string fileName = Guid.NewGuid().ToString() + "_" + dto.image.FileName;
+                string serverFolder = Path.Combine(webHostEnvironment.WebRootPath, folder, fileName);
+                await dto.image.CopyToAsync(new FileStream(serverFolder, FileMode.Create));
+                dto.Imagepath = Path.Combine(folder, fileName);
+            }
+            if (dto.image2 != null)
+            {
+                string folder = "Images\\Product";
+                string fileName = Guid.NewGuid().ToString() + "_" + dto.image2.FileName;
+                string serverFolder = Path.Combine(webHostEnvironment.WebRootPath, folder, fileName);
+                await dto.image2.CopyToAsync(new FileStream(serverFolder, FileMode.Create));
+                dto.Imagepath2 = Path.Combine(folder, fileName);
+            }
+            if (dto.image3 != null)
+            {
+                string folder = "Images\\Product";
+                string fileName = Guid.NewGuid().ToString() + "_" + dto.image3.FileName;
+                string serverFolder = Path.Combine(webHostEnvironment.WebRootPath, folder, fileName);
+                await dto.image3.CopyToAsync(new FileStream(serverFolder, FileMode.Create));
+                dto.Imagepath3 = Path.Combine(folder, fileName);
+            }
+            if (dto.image4 != null)
+            {
+                string folder = "Images\\Product";
+                string fileName = Guid.NewGuid().ToString() + "_" + dto.image4.FileName;
+                string serverFolder = Path.Combine(webHostEnvironment.WebRootPath, folder, fileName);
+                await dto.image4.CopyToAsync(new FileStream(serverFolder, FileMode.Create));
+                dto.Imagepath4 = Path.Combine(folder, fileName);
+            }
+            if (dto.image5 != null)
+            {
+                string folder = "Images\\Product";
+                string fileName = Guid.NewGuid().ToString() + "_" + dto.image5.FileName;
+                string serverFolder = Path.Combine(webHostEnvironment.WebRootPath, folder, fileName);
+                await dto.image5.CopyToAsync(new FileStream(serverFolder, FileMode.Create));
+                dto.Imagepath5 = Path.Combine(folder, fileName);
             }
 
             await _productService.UpdateAsync(dto);

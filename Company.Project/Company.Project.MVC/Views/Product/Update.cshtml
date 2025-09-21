@@ -5,7 +5,7 @@
 
 <h2 class="mb-4">Update Product</h2>
 
-<form asp-action="Update" method="post" class="needs-validation" novalidate>
+<form asp-action="Update" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
     @Html.AntiForgeryToken()
     @Html.HiddenFor(m => m.Id)
 
@@ -92,36 +92,84 @@
     </div>
 
     <!-- Images URLs -->
-    <div class="row">
-        <div class="col-md-6 mb-3">
-            <label asp-for="ImageUrl" class="form-label"></label>
-            <input asp-for="ImageUrl" class="form-control" />
-            <span asp-validation-for="ImageUrl" class="text-danger"></span>
-        </div>
-        <div class="col-md-6 mb-3">
-            <label asp-for="Imageone" class="form-label"></label>
-            <input asp-for="Imageone" class="form-control" />
-            <span asp-validation-for="Imageone" class="text-danger"></span>
-        </div>
-    </div>
+    @* <div class="row"> *@
+    @*     <div class="col-md-6 mb-3"> *@
+    @*         <label asp-for="ImageUrl" class="form-label"></label> *@
+    @*         <input asp-for="ImageUrl" class="form-control" /> *@
+    @*         <span asp-validation-for="ImageUrl" class="text-danger"></span> *@
+    @*     </div> *@
+    @*     <div class="col-md-6 mb-3"> *@
+    @*         <label asp-for="Imageone" class="form-label"></label> *@
+    @*         <input asp-for="Imageone" class="form-control" /> *@
+    @*         <span asp-validation-for="Imageone" class="text-danger"></span> *@
+    @*     </div> *@
+    @* </div> *@
+    @* *@
+    @* <div class="row"> *@
+    @*     <div class="col-md-4 mb-3"> *@
+    @*         <label asp-for="Imagetwo" class="form-label"></label> *@
+    @*         <input asp-for="Imagetwo" class="form-control" /> *@
+    @*         <span asp-validation-for="Imagetwo" class="text-danger"></span> *@
+    @*     </div> *@
+    @*     <div class="col-md-4 mb-3"> *@
+    @*         <label asp-for="Imagethree" class="form-label"></label> *@
+    @*         <input asp-for="Imagethree" class="form-control" /> *@
+    @*         <span asp-validation-for="Imagethree" class="text-danger"></span> *@
+    @*     </div> *@
+    @*     <div class="col-md-4 mb-3"> *@
+    @*         <label asp-for="Imagefour" class="form-label"></label> *@
+    @*         <input asp-for="Imagefour" class="form-control" /> *@
+    @*         <span asp-validation-for="Imagefour" class="text-danger"></span> *@
+    @*     </div> *@
+    @* </div> *@
+    
+        @* @if (!string.IsNullOrEmpty(Model.Imagepath)) *@
+        @* { *@
+            <div>
+                <label asp-for="image" class="form-label">Main Image</label>
+                <input asp-for="image" type="file" class="form-control" />
+                <img src="/@Model.Imagepath" style="width: 100px; height: 100px;" />
+                <span asp-validation-for="image" class="text-danger"></span>
+            </div>
+        @* } *@
+        @* @if (!string.IsNullOrEmpty(Model.Imagepath2)) *@
+        @* { *@
+            <div>
+                <label asp-for="image2" class="form-label">Optional Image 2</label>
+                <input asp-for="image2" type="file" class="form-control" />
+                <img src="/@Model.Imagepath2" style="width: 100px; height: 100px;" />
+                <span asp-validation-for="image2" class="text-danger"></span>
+            </div>
+        @* } *@
+        @* @if (!string.IsNullOrEmpty(Model.Imagepath3)) *@
+        @* { *@
+            <div>
+                <label asp-for="image3" class="form-label">Optional Image 3</label>
+                <input asp-for="image3" type="file" class="form-control" />
+                <img src="/@Model.Imagepath3" style="width: 100px; height: 100px;" />
+                <span asp-validation-for="image3" class="text-danger"></span>
+            </div>
+        @* } *@
+        @* @if (!string.IsNullOrEmpty(Model.Imagepath4)) *@
+        @* { *@
+            <div>
+                <label asp-for="image4" class="form-label">Optional Image 4</label>
+                <input asp-for="image4" type="file" class="form-control" />
+                <img src="/@Model.Imagepath4"  style="width: 100px; height: 100px;" />
+                <span asp-validation-for="image4" class="text-danger"></span>
+            </div>
+        @* } *@
+        @* @if (!string.IsNullOrEmpty(Model.Imagepath5)) *@
+        @* { *@
+            <div>
+                <label asp-for="image5" class="form-label">Optional Image 5</label>
+                <input asp-for="image5" type="file" class="form-control" />
+                <img src="/@Model.Imagepath5" style="width: 100px; height: 100px;" />
+                <span asp-validation-for="image5" class="text-danger"></span>
+            </div>
+        @* } *@
+    
 
-    <div class="row">
-        <div class="col-md-4 mb-3">
-            <label asp-for="Imagetwo" class="form-label"></label>
-            <input asp-for="Imagetwo" class="form-control" />
-            <span asp-validation-for="Imagetwo" class="text-danger"></span>
-        </div>
-        <div class="col-md-4 mb-3">
-            <label asp-for="Imagethree" class="form-label"></label>
-            <input asp-for="Imagethree" class="form-control" />
-            <span asp-validation-for="Imagethree" class="text-danger"></span>
-        </div>
-        <div class="col-md-4 mb-3">
-            <label asp-for="Imagefour" class="form-label"></label>
-            <input asp-for="Imagefour" class="form-control" />
-            <span asp-validation-for="Imagefour" class="text-danger"></span>
-        </div>
-    </div>
 
     <button type="submit" class="btn btn-primary">Update</button>
     <a asp-action="GetAll" class="btn btn-secondary ms-2">Cancel</a>

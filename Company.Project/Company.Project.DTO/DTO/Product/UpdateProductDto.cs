@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
 namespace Company.Project.DTO.DTO.Product;
 
@@ -34,24 +35,41 @@ public class UpdateProductDto
     [DataType(DataType.Date)]
     public DateTime ExpiryDate { get; set; }
 
-    [Required(ErrorMessage = "Main image URL is required")]
-    [Url(ErrorMessage = "Please enter a valid URL")]
-    public string ImageUrl { get; set; }
+    // [Required(ErrorMessage = "Main image URL is required")]
+    // [Url(ErrorMessage = "Please enter a valid URL")]
+    // public string ImageUrl { get; set; }
+    //
+    // [Url(ErrorMessage = "Please enter a valid URL")]
+    // public string? Imageone { get; set; }
+    //
+    // [Url(ErrorMessage = "Please enter a valid URL")]
+    // public string? Imagetwo { get; set; }
+    //
+    // [Url(ErrorMessage = "Please enter a valid URL")]
+    // public string? Imagethree { get; set; }
+    //
+    // [Url(ErrorMessage = "Please enter a valid URL")]
+    // public string? Imagefour { get; set; }
+    //
+    // [Url(ErrorMessage = "Please enter a valid URL")]
+    // public string? Imagefive { get; set; }
+    
+    public IFormFile? image { get; set; }
+    public string? Imagepath { get; set; }
 
-    [Url(ErrorMessage = "Please enter a valid URL")]
-    public string? Imageone { get; set; }
+    public IFormFile? image2 { get; set; }
+    public string? Imagepath2 { get; set; }
 
-    [Url(ErrorMessage = "Please enter a valid URL")]
-    public string? Imagetwo { get; set; }
+    public IFormFile? image3 { get; set; }
+    public string? Imagepath3 { get; set; }
+        
+    public IFormFile? image4 { get; set; }
+    public string? Imagepath4 { get; set; }
+        
+    public IFormFile? image5 { get; set; }
+    public string? Imagepath5 { get; set; }
 
-    [Url(ErrorMessage = "Please enter a valid URL")]
-    public string? Imagethree { get; set; }
 
-    [Url(ErrorMessage = "Please enter a valid URL")]
-    public string? Imagefour { get; set; }
-
-    [Url(ErrorMessage = "Please enter a valid URL")]
-    public string? Imagefive { get; set; }
 
     [Required(ErrorMessage = "Category is required")]
     [Range(1, int.MaxValue, ErrorMessage = "Please select a valid category")]
