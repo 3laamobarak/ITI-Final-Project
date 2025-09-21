@@ -1,10 +1,12 @@
 ﻿using Company.Project.Application.Services;
 using Company.Project.DTO.DTO.Product;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Company.Project.MVC.Controllers
 {
+    [Authorize]
     public class ProductController : Controller
     {
         private readonly ProductService _productService;

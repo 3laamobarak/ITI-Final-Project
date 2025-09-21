@@ -1,9 +1,11 @@
 ﻿using Company.Project.Application.Contracts;
 using Company.Project.DTO.DTO.BrandDTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Company.Project.MVC.Controllers
 {
+    [Authorize]
     public class BrandController : Controller
     {
         private readonly IBrandService _brandService;

@@ -15,6 +15,22 @@ namespace Company.Project.PL.Hub
             _messageService = messageService;
         }
 
+        public async Task SendMessage(string user,string message)
+        {
+            //await Clients.All.SendAsync("ReceiveMessage", user, message);
+            // send to all admins roles users
+            await Clients.Group("admins").SendAsync("ReceiveMessage", user, message);
+            // store in data bse
+            var msg = new ChatMessage
+            {
+                SenderId = user,
+                ReceiverId = "admin",
+                Content = message,
+                Timestamp = DateTime.UtcNow
+            };
+            await _messageService.SendMessageAsync(msg);
+        }
+
         public override async Task OnConnectedAsync()
         {
             var userId = Context.User.Identity.Name;

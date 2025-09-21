@@ -202,7 +202,7 @@ namespace Company.Project.MVC.Controllers
             }
             return View("AddRole", roleViewModel);
         }
-//        [Authorize("admin")]
+        [Authorize("admin")]
         public IActionResult AssignRole()
         {
             var users = UserManager.Users.ToList();
@@ -232,7 +232,7 @@ namespace Company.Project.MVC.Controllers
             return View();
         }
         [HttpPost]
-    //    [Authorize("admin")]
+        [Authorize("admin")]
         public async Task<IActionResult> AssignRole(AssignRoleViewModel assignRole)
         {
             if (ModelState.IsValid)

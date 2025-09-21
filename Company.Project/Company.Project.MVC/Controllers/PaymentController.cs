@@ -1,10 +1,12 @@
 ﻿using Company.Project.Application.Contracts;
 using Company.Project.DTO;
 using Company.Project.DTO.DTO.Payment;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Company.Project.MVC.Controllers
 {
+    [Authorize]
     public class PaymentController : Controller
     {
         private readonly IPaymentService _paymentService;
