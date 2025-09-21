@@ -32,17 +32,45 @@
                 {
                     <tr class="text-center">
                         <td>
-                            @if (!string.IsNullOrEmpty(item.ImageUrl))
+                            @if (!string.IsNullOrEmpty(item.Imagepath))
                             {
-                                <img src="@item.ImageUrl"
-                                     alt="@item.Name"
-                                     class="rounded border"
-                                     style="width:70px;height:70px;object-fit:cover;" />
+                                @* <img src="@item.ImageUrl" *@
+                                @*      alt="@item.Name" *@
+                                @*      class="rounded border" *@
+                                @*      style="width:70px;height:70px;object-fit:cover;" /> *@
+                                <td>
+                                    <img src="/@item.Imagepath" style="width: 50px; height: 50px;" />
+                                </td>
                             }
-                            else
+                            @if (!string.IsNullOrEmpty(item.Imagepath2))
                             {
-                                <span class="text-muted">No Image</span>
+                                <td>
+                                    <img src="/@item.Imagepath2" style="width: 50px; height: 50px;"/>
+                                </td>
                             }
+                            @if (!string.IsNullOrEmpty(item.Imagepath3))
+                            {
+                                <td>
+                                    <img src="/@item.Imagepath3" style="width: 50px; height: 50px;"/>
+                                </td>
+                            }
+                            @if(!string.IsNullOrEmpty(item.Imagepath4))
+                            {
+                                <td>
+                                    <img src="/@item.Imagepath4" style="width: 50px; height: 50px;"/>
+                                </td>
+                            }
+                            @if(!string.IsNullOrEmpty(item.Imagepath5))
+                            {
+                                <td>
+                                    <img src="/@item.Imagepath5" style="width: 50px; height: 50px;"/>
+                                </td>
+                            }
+                            
+                            @* else *@
+                            @* { *@
+                            @*     <span class="text-muted">No Image</span> *@
+                            @* } *@
                         </td>
 
                         <td class="fw-semibold">@item.Name</td>

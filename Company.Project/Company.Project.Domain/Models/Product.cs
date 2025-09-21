@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Company.Project.Domain.Models
@@ -17,19 +18,27 @@ namespace Company.Project.Domain.Models
         public DateTime ExpiryDate { get; set; }
 
         // add imageUrl property
-        public string ImageUrl { get; set; }
+        [NotMapped]
+        public IFormFile? image { get; set; }
+        public string? Imagepath { get; set; }
+        [NotMapped]
+        public IFormFile? image2 { get; set; }
+        public string? Imagepath2 { get; set; }
 
-        public string? Imageone { get; set; }
+        [NotMapped]
+        public IFormFile? image3 { get; set; }
+        public string? Imagepath3 { get; set; }
+        
+        [NotMapped]
+        public IFormFile? image4 { get; set; }
+        public string? Imagepath4 { get; set; }
+        
+        [NotMapped]
+        public IFormFile? image5 { get; set; }
+        public string? Imagepath5 { get; set; }
 
-        public string? Imagetwo { get; set; }
 
-        public string? Imagethree { get; set; }
-
-        public string? Imagefour { get; set; }
-
-        public string? Imagefive { get; set; }
-
-        public ICollection<ProductCategory> ProductCategories { get; set; } = new List<ProductCategory>();
+        public ICollection<ProductCategory>? ProductCategories { get; set; } = new List<ProductCategory>();
 
 
         [ForeignKey("Brand")]
@@ -37,8 +46,8 @@ namespace Company.Project.Domain.Models
         public Brand Brand { get; set; }
 
         [ForeignKey("Category")]
-        public int CategoryId { get; set; }
-        public Category Category { get; set; }
+        public int? CategoryId { get; set; }
+        public Category? Category { get; set; }
 
         public decimal AverageRating
         {

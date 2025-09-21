@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
 namespace Company.Project.DTO.DTO.Product
 {
@@ -31,14 +32,21 @@ namespace Company.Project.DTO.DTO.Product
         public DateTime ExpiryDate { get; set; }
 
         [Required(ErrorMessage = "Main image URL is required")]
-        [Url(ErrorMessage = "Please enter a valid URL")]
-        public string ImageUrl { get; set; }
+ 
+        public IFormFile? image { get; set; }
+        public string? Imagepath { get; set; }
 
-        public string? Imageone { get; set; }
-        public string? Imagetwo { get; set; }
-        public string? Imagethree { get; set; }
-        public string? Imagefour { get; set; }
-        public string? Imagefive { get; set; }
+        public IFormFile? image2 { get; set; }
+        public string? Imagepath2 { get; set; }
+
+        public IFormFile? image3 { get; set; }
+        public string? Imagepath3 { get; set; }
+        
+        public IFormFile? image4 { get; set; }
+        public string? Imagepath4 { get; set; }
+        
+        public IFormFile? image5 { get; set; }
+        public string? Imagepath5 { get; set; }
 
         [Required(ErrorMessage = "Category is required")]
         [Range(1, int.MaxValue, ErrorMessage = "Please select a category")]

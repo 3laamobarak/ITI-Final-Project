@@ -33,7 +33,7 @@ namespace Company.Project.Infrastructure.Repositories
                 .Include(p => p.Brand)
                 .ToListAsync();
         }
-    }
+    
     
         public async Task<IEnumerable<Product>> GetProductsByCategoryIdAsync(int categoryId)
         {
