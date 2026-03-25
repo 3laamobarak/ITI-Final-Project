@@ -78,8 +78,8 @@ Company.Project/
 ├── Application/     # Business logic & services
 ├── Infrastructure/  # Repositories, UnitOfWork, configs
 ├── DbContext/       # EF Core + migrations + seeding
-├── PL/              # Customer MVC app
-├── MVC/             # Admin dashboard
+├── PL API/          # Swagger Api
+├── PL MVC/          # Admin dashboard
 └── Company.Project.sln
 ```
 
